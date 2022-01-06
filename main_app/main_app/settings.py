@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'plants.apps.PlantsConfig',
+    'forum.apps.ForumConfig',
+    'news.apps.NewsConfig'
 ]
 
 MIDDLEWARE = [
