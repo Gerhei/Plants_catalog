@@ -1,0 +1,48 @@
+header {
+    background-image:  url(/static/main_app/images/site_header.jpg);
+    height: 200px;
+}
+
+.header_title{
+    text-align: left;
+    vertical-align: middle;
+    position:relative;
+    top: 80%;
+    left: 0%;
+}
+
+.header_link{
+    text-decoration: none;
+    vertical-align: middle;
+    color: white;
+    font-size: 30px;
+}
+
+nav{
+    background-color: yellow;
+}
+
+.menu_link{
+    color: red;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+ul.menu {
+    margin: 0; /* Обнуляем значение отступов */
+    padding: 4px; /* Значение полей */
+   }
+
+ul.menu li {
+    display: inline; /* Отображать как строчный элемент */
+    margin-right: 5px; /* Отступ слева */
+    padding: 3px; /* Поля вокруг текста */
+   }
+
+.content {
+    min-height: calc(100vh - 200px);
+  }
+
+footer {
+    background-color: yellow;
+}

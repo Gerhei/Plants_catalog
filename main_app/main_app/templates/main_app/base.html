@@ -1,0 +1,55 @@
+{% load static %}
+{% load main_app_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="keywords" content="растения, справочник, энциклопедия, каталог, новости">
+    <meta name="rights" content="Павлов Андрей">
+    <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
+    {% endblock %}
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <header>
+            {% block header %}
+                <h2 class="header_title">
+                    <a href="{% url 'main' %}" class="header_link">Главная</a>
+                </h2>
+            {% endblock header%}
+        </header>
+
+        <nav>
+            {% block navigation %}
+                <ul class="menu">
+                    {% get_menu %}
+                </ul>
+            {% endblock navigation %}
+        </nav>
+
+        <div class="content">
+            {% block content %}
+            {% endblock content%}
+        </div>
+
+
+        <aside>
+            {% block aside %}
+            {% endblock aside%}
+        </aside>
+
+
+        <footer>
+            {% block footer %}
+                <p>Все права защищены.</p>
+            {% endblock footer %}
+        </footer>
+    </div>
+
+</body>
+</html>

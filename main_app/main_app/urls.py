@@ -19,8 +19,10 @@ from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index,name="main_page"),
+    path('', index,name="main"),
     path('plants/',include('plants.urls'),name="plants"),
     path('forum/',include('forum.urls'),name="forum"),
     path('news/',include('news.urls'),name="news")
 ]
+
+handler404=pageNotFound

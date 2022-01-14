@@ -3,5 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Главная страница новостей")
+    context={
+        'title':'Новости',
+    }
+    return render(request,'news/index.html',context=context)
 

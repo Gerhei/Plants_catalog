@@ -3,4 +3,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Главная страница форума")
+    context={
+        'title':'Форум',
+    }
+    return render(request,'forum/index.html',context=context)
