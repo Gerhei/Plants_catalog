@@ -1,2 +1,6 @@
 plants_env/
 .idea/
+migrations/
+__pycache__/
+Database structure requirements.docx
+Infological and datalogical models of the Plants database.drawio
