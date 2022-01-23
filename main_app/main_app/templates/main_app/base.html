@@ -8,7 +8,10 @@
     <meta name="keywords" content="растения, справочник, энциклопедия, каталог, новости">
     <meta name="rights" content="Павлов Андрей">
     <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
+    {% block title %}
+
     <title>{{title}}</title>
+        {% endblock %}
     <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
     {% endblock %}
 </head>
@@ -32,17 +35,17 @@
             {% endblock navigation %}
         </nav>
 
+        <div class="main">
         <div class="content">
             {% block content %}
             {% endblock content%}
         </div>
 
-
         <aside>
             {% block aside %}
             {% endblock aside%}
         </aside>
-
+        </div>
 
         <footer>
             {% block footer %}

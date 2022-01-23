@@ -1,0 +1,25 @@
+h2.title  {
+    display: block;
+    text-align: center;
+}
+
+.taxons{
+    border: black 1px solid;
+    border-collapse: collapse;
+}
+
+.taxon-column{
+    border-bottom: 1px solid black; 
+    border: black 1px solid;
+}
+
+ul.categories {
+    margin: 0;
+    padding: 4px; 
+   }
+
+ul.categories li {
+    display: inline; 
+    margin-right: 5px; 
+    padding: 3px; 
+   }

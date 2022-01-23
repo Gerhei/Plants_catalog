@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+DATA_UPLOAD_MAX_NUMBER_FIELDS =None
 
 DATABASES = {
     'default': {
@@ -116,7 +117,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

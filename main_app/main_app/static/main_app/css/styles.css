@@ -22,6 +22,12 @@ nav{
     background-color: yellow;
 }
 
+.main {
+  min-height: calc(100vh - 200px);
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+}
+
 .menu_link{
     color: red;
     text-decoration: none;
@@ -38,10 +44,6 @@ ul.menu li {
     margin-right: 5px; /* Отступ слева */
     padding: 3px; /* Поля вокруг текста */
    }
-
-.content {
-    min-height: calc(100vh - 200px);
-  }
 
 footer {
     background-color: yellow;

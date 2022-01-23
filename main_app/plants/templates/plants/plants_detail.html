@@ -1,0 +1,38 @@
+{% extends "main_app/base.html" %}
+{%load static%}
+
+{% block head %}
+        {% block title %}
+    <title>{{object.name}}</title>
+        {% endblock %}
+    {{block.super}}
+    <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <h2 class="title">{{object.name}}</h2>
+    {% for description in object.descriptions_set.all %}
+        <h3>{{description.category}}</h3>
+        <p>{{description.text}}</p>
+    {% endfor %}
+
+    <ul class="categories">
+    {% for category in object.categories.all %}
+        <li>
+            {{category.name}}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block aside %}
+    <img src="{{object.image_url }}">
+    <table class="taxons">
+    {% for taxon in object.taxons.all %}
+        <tr class="taxon-row">
+            <td class="taxon-column">{{taxon.rang}}: </td>
+            <td class="taxon-column">{{taxon.name}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock aside%}
