@@ -1,0 +1,14 @@
+{% extends "plants/plants_list.html" %}
+
+{% block content %}
+       {% for taxon in page_obj %}
+    <div class="taxons">
+        <a href="{% url 'taxon_name' taxon.slug %}">{{taxon.name}}</a>
+    </div>
+    {% endfor %}
+
+    {% block pagination %}
+        {{block.super}}
+    {% endblock pagination%}
+
+{% endblock content%}

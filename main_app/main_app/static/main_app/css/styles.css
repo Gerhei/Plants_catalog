@@ -1,20 +1,21 @@
 header {
-    background-image:  url(/static/main_app/images/site_header.jpg);
-    height: 200px;
+    height: 150px;
+    overflow:hidden;
+}
+
+.header-background {
+    width: 100%;
+    height: auto;
 }
 
 .header_title{
-    text-align: left;
-    vertical-align: middle;
-    position:relative;
-    top: 80%;
-    left: 0%;
+    text-align: center;
+    background:url(/static/main_app/images/header_backgrounds/site_header.jpg)
 }
 
 .header_link{
     text-decoration: none;
-    vertical-align: middle;
-    color: white;
+    color: black;
     font-size: 30px;
 }
 

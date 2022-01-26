@@ -1,0 +1,54 @@
+{% extends "main_app/base.html" %}
+
+{% block head %}
+        {% block title %}
+    <title>{{title}}</title>
+        {% endblock %}
+    {{block.super}}
+{% endblock %}
+
+
+{% block content %}
+       {% for plant in page_obj %}
+    <div class="plant">
+        <a href="{{ plant.get_absolute_url }}">{{plant.name}}</a>
+    </div>
+    {% endfor %}
+
+    {% block pagination %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endblock pagination %}
+{% endblock content%}
+
+{% block aside %}
+    <ul>
+        <li>
+            <a href="{% url 'plants' %}">Все растения</a>
+        </li>
+        <li>
+            <a href="{% url 'categories' %}">Категории</a>
+        </li>
+        <li>
+            <a href="{% url 'taxons' %}">Таксоны</a>
+        </li>
+        <li>
+            <a href="{% url 'random_plant' %}">Случайное растение</a>
+        </li>
+    </ul>
+{% endblock aside%}

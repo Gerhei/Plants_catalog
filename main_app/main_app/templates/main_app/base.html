@@ -9,11 +9,13 @@
     <meta name="rights" content="Павлов Андрей">
     <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
     {% block title %}
-
     <title>{{title}}</title>
-        {% endblock %}
+        {% endblock title%}
     <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
-    {% endblock %}
+    {% block icon %}
+    <link rel="shortcut icon" href="/static/main_app/images/site_icon.ico" type="image/x-icon">
+    {% endblock icon %}
+    {% endblock head%}
 </head>
 
 <body>
@@ -21,9 +23,10 @@
 
         <header>
             {% block header %}
-                <h2 class="header_title">
-                    <a href="{% url 'main' %}" class="header_link">Главная</a>
-                </h2>
+            <div  class="header_title">
+                <a href="{% url 'main' %}" class="header_link">Главная</a>
+            </div>
+                <img src="{% get_random_background_image %}" class="header-background">
             {% endblock header%}
         </header>
 

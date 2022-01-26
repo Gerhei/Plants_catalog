@@ -1,0 +1,13 @@
+{% extends "plants/plants_list.html" %}
+
+{% block content %}
+       {% for taxon in rangs %}
+    <div class="taxons">
+        <a href="/plants/taxons/{{taxon.0}}">{{taxon.1}}</a>
+    </div>
+    {% endfor %}
+
+    {% block pagination %}
+    {% endblock pagination%}
+
+{% endblock content%}

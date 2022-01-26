@@ -1,5 +1,6 @@
 {% extends "main_app/base.html" %}
 {%load static%}
+{% load plants_tags %}
 
 {% block head %}
         {% block title %}
@@ -12,14 +13,18 @@
 {% block content %}
     <h2 class="title">{{object.name}}</h2>
     {% for description in object.descriptions_set.all %}
-        <h3>{{description.category}}</h3>
-        <p>{{description.text}}</p>
+        {% if description.text != '' %}
+            <div class="description-block">
+                <h3>{{description.category}}</h3>
+                <p>{{description.text}}</p>
+            </div>
+        {% endif %}
     {% endfor %}
 
     <ul class="categories">
     {% for category in object.categories.all %}
         <li>
-            {{category.name}}
+            <a href="{% url 'category' category.slug %}">{{category.name}}</a>
         </li>
     {% endfor %}
     </ul>
@@ -28,10 +33,14 @@
 {% block aside %}
     <img src="{{object.image_url }}">
     <table class="taxons">
-    {% for taxon in object.taxons.all %}
+    {% for taxon in object.taxons.all|sort_taxons %}
         <tr class="taxon-row">
-            <td class="taxon-column">{{taxon.rang}}: </td>
-            <td class="taxon-column">{{taxon.name}}</td>
+            <td class="taxon-column">
+                <a href="{% url 'taxons_rang' taxon.order%}">{{taxon.get_order_display}}: </a>
+            </td>
+            <td class="taxon-column">
+                <a href="{% url 'taxon_name' taxon.slug%}">{{taxon.name}} </a>
+            </td>
         </tr>
     {% endfor %}
     </table>

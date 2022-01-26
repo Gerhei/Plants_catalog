@@ -1,0 +1,15 @@
+{% extends "plants/plants_list.html" %}
+
+{% block content %}
+
+       {% for category in page_obj %}
+    <div class="categories">
+        <a href="{% url 'category' category.slug %}">{{category.name}}</a>
+    </div>
+    {% endfor %}
+
+    {% block pagination %}
+        {{block.super}}
+    {% endblock pagination%}
+
+{% endblock content%}
