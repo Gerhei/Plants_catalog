@@ -72,7 +72,8 @@ class Taxons(models.Model):
 
 class Plants(models.Model):
     name=models.CharField(max_length=255,unique=True,verbose_name='Название')
-    slug=models.SlugField(max_length=255,unique=True,db_index=True,verbose_name='URL')
+    name_lower=models.CharField(max_length=255,unique=True,null=True,editable=False)
+    slug=models.SlugField(max_length=255,unique=True,db_index=True,editable=False,verbose_name='URL')
     image=models.ImageField(upload_to="./static",blank=True)
     image_url=models.CharField(max_length=1024,blank=True)
     time_create=models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
@@ -82,6 +83,7 @@ class Plants(models.Model):
 
     objects = NaturalKeyManager()
 
+
     def __str__(self):
         return self.name
 
@@ -90,6 +92,7 @@ class Plants(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug=slugify(self.name)
+        self.name_lower=self.name.lower()
         super(Plants, self).save(*args, **kwargs)
 
     class Meta:

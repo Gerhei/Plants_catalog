@@ -10,6 +10,9 @@
     <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
 {% endblock %}
 
+{% block search-and-filters %}
+{% endblock search-and-filters %}
+
 {% block content %}
     <h2 class="title">{{object.name}}</h2>
     {% for description in object.descriptions_set.all %}

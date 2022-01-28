@@ -39,15 +39,25 @@
         </nav>
 
         <div class="main">
-        <div class="content">
-            {% block content %}
-            {% endblock content%}
-        </div>
+            {% block search-and-filters %}
 
-        <aside>
-            {% block aside %}
-            {% endblock aside%}
-        </aside>
+                {% block search %}
+                {% endblock search%}
+
+                {% block filters %}
+                {% endblock filters%}
+
+            {% endblock search-and-filters %}
+
+            <div class="content">
+                {% block content %}
+                {% endblock content%}
+            </div>
+
+            <aside>
+                {% block aside %}
+                {% endblock aside%}
+            </aside>
         </div>
 
         <footer>

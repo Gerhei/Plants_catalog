@@ -2,15 +2,10 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.http import HttpResponse
-from django.db.models import Count, F, Value
+from django.db.models import Count, F, Value, Q
 from .models import *
+from .forms import *
 # Create your views here.
-def index(request):
-    context={
-        'title':'Каталог растений',
-    }
-    return HttpResponse('123')
-
 def random_plant(request):
     return redirect(Plants.objects.order_by('?').first(). get_absolute_url())
 
@@ -20,6 +15,7 @@ class PlantsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if ('slug_cat' in self.kwargs):
             context['title'] = "Категория: "+Categories.objects.get(slug=self.kwargs['slug_cat']).name
         elif ('slug_taxon' in self.kwargs):
@@ -30,16 +26,19 @@ class PlantsListView(ListView):
         return context
 
     def get_queryset(self):
+        queries=Q()
         if ('slug_cat' in self.kwargs):
             filter_val = self.kwargs['slug_cat']
-            new_context = Plants.objects.filter(categories__slug=filter_val)
-            return new_context
+            queries=Q(categories__slug=filter_val)
         elif ('slug_taxon' in self.kwargs):
             filter_val = self.kwargs['slug_taxon']
-            new_context = Plants.objects.filter(taxons__slug=filter_val)
-            return new_context
-        else:
-            return super().get_queryset()
+            queries = Q(taxons__slug=filter_val)
+        if ('q' in self.request.GET):
+            filter_q = self.request.GET['q'].lower()
+            queries=queries & Q(name_lower__icontains=filter_q)
+
+        queryset=Plants.objects.filter(queries)
+        return queryset
 
 
 class CategoriesListView(ListView):

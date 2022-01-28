@@ -1,12 +1,31 @@
 {% extends "main_app/base.html" %}
-
+{%load static%}
 {% block head %}
         {% block title %}
     <title>{{title}}</title>
         {% endblock %}
     {{block.super}}
+    <link type="text/css" href="{% static 'plants/css/data_list.css'%}" rel="stylesheet"/>
 {% endblock %}
 
+
+{% block search-and-filters %}
+    <div class="search-and-filters">
+        {% block search %}
+        <div class="search">
+            <form action="{% url 'plants' %}" method="get">
+                {% csrf_token %}
+                {{search_form}}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+        {% endblock search%}
+
+        {% block filters %}
+            <div class="filters">Фильтры</div>
+        {% endblock filters%}
+    </div>
+{% endblock search-and-filters %}
 
 {% block content %}
        {% for plant in page_obj %}
