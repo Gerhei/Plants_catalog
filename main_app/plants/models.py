@@ -2,6 +2,16 @@ from django.db import models
 from  django.shortcuts import reverse
 from slugify import slugify
 
+PRIORITIES = (
+    (0, 'Домен'), (1, 'Надцарство'), (2, 'Царство'), (3, 'Подцарство'), (4, 'Клада'),
+    (5, 'Надотдел'), (6, 'Отдел'), (7, 'Подотдел'), (8, 'Надкласс'), (9, 'Класс'),
+    (10, 'Подкласс'), (11, 'Надпорядок'), (12, 'Порядок'), (13, 'Ряд'), (14, 'Тип'),
+    (15, 'Семейство'), (16, 'Подсемейство'), (17, 'Надтриба'), (18, 'Триба'),
+    (19, 'Подтриба'), (20, 'Род'), (21, 'Подрод'), (22, 'Секция'), (23, 'Подсекция'),
+    (24, 'Грекс'), (25, 'Естественный гибрид'), (26, 'Вид'), (27, 'Разновидность'),
+    (28, 'Подвид'), (29, 'Без ранга'),
+)
+
 # Managers
 class NaturalKeyManager(models.Manager):
     def get_by_natural_key(self, name):
@@ -14,6 +24,7 @@ class NaturalKeyTaxonsManager(models.Manager):
 # Create your models here.
 class Categories(models.Model):
     name = models.CharField(max_length=255, unique=True,verbose_name='Наименование')
+    name_lower = models.CharField(max_length=255, unique=True, null=True, editable=False)
     slug=models.SlugField(max_length=255,unique=True,db_index=True,verbose_name='URL')
     time_create = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True,verbose_name='Дата изменения')
@@ -23,11 +34,9 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('caterory', kwargs={'slug':self.slug})
-
     def save(self, *args, **kwargs):
         self.slug=slugify(self.name)
+        self.name_lower=self.name.lower()
         super(Categories, self).save(*args, **kwargs)
 
     class Meta:
@@ -36,16 +45,6 @@ class Categories(models.Model):
         ordering=['name']
 
 class Taxons(models.Model):
-    PRIORITIES = (
-        (0, 'Домен'), (1, 'Надцарство'), (2, 'Царство'), (3, 'Подцарство'),(4, 'Клада'),
-        (5, 'Надотдел'), (6, 'Отдел'), (7, 'Подотдел'), (8, 'Надкласс'), (9, 'Класс'),
-        (10, 'Подкласс'), (11, 'Надпорядок'), (12, 'Порядок'), (13, 'Ряд'), (14, 'Тип'),
-        (15, 'Семейство'), (16, 'Подсемейство'), (17, 'Надтриба'), (18, 'Триба'),
-        (19, 'Подтриба'), (20, 'Род'), (21, 'Подрод'), (22, 'Секция'), (23, 'Подсекция'),
-        (24, 'Грекс'), (25, 'Естественный гибрид'), (26, 'Вид'), (27, 'Разновидность'),
-        (28, 'Подвид'), (29, 'Без ранга'),
-    )
-
     name = models.CharField(max_length=255,verbose_name='Наименование')
     slug=models.SlugField(max_length=255,unique=True,db_index=True,verbose_name='URL')
     order=models.IntegerField(default=0, choices=PRIORITIES, verbose_name='Ранг')
@@ -60,9 +59,6 @@ class Taxons(models.Model):
     def save(self, *args, **kwargs):
         self.slug=slugify(self.name+'-'+self.get_order_display())
         super(Taxons, self).save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('taxon_name', kwargs={'slug':self.slug})
 
     class Meta:
         verbose_name="Таксон"

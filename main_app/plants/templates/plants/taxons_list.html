@@ -1,10 +1,23 @@
 {% extends "plants/plants_list.html" %}
+{%load static%}
+{% load plants_tags %}
+
+{% block filters %}
+{% endblock filters%}
 
 {% block content %}
+    {% block titles %}
+        {{block.super}}
+    {% endblock titles %}
        {% for taxon in page_obj %}
-    <div class="taxons">
-        <a href="{% url 'taxon_name' taxon.slug %}">{{taxon.name}}</a>
-    </div>
+            <table class="taxons-table">
+                            <tr>
+                                <td class="number">{% get_number forloop.counter%}</td>
+                                <td>
+                                    <a href="{% url 'plants' %}?taxon={{taxon.slug}}" class="name"><h2>{{taxon.name}}</h2></a>
+                                </td>
+                            </tr>
+            </table>
     {% endfor %}
 
     {% block pagination %}

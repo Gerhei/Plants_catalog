@@ -1,0 +1,5 @@
+{% for m in menu %}
+    <li>
+        <a href="{% url m.url_name %}" class="menu_plant_link">{{m.title}}</a>
+    </li>
+{% endfor %}

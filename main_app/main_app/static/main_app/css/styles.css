@@ -10,7 +10,7 @@ header {
 
 .header_title{
     text-align: center;
-    background:url(/static/main_app/images/header_backgrounds/site_header.jpg)
+    background-color:PaleGreen;
 }
 
 .header_link{
@@ -30,20 +30,20 @@ nav{
 }
 
 .menu_link{
-    color: red;
+    color: black;
     text-decoration: none;
     font-size: 20px;
 }
 
 ul.menu {
-    margin: 0; /* Обнуляем значение отступов */
-    padding: 4px; /* Значение полей */
+    margin: 0;
+    padding: 4px;
    }
 
 ul.menu li {
-    display: inline; /* Отображать как строчный элемент */
-    margin-right: 5px; /* Отступ слева */
-    padding: 3px; /* Поля вокруг текста */
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
    }
 
 footer {

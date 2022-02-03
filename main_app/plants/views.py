@@ -1,8 +1,10 @@
 from django.shortcuts import render,get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.db.models import Count, F, Value, Q
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import *
 # Create your views here.
@@ -16,28 +18,42 @@ class PlantsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        if ('slug_cat' in self.kwargs):
-            context['title'] = "Категория: "+Categories.objects.get(slug=self.kwargs['slug_cat']).name
-        elif ('slug_taxon' in self.kwargs):
-            taxon= Taxons.objects.get(slug=self.kwargs['slug_taxon'])
+        form=FilterForm(self.request.GET)
+        context['filter_form']=form
+
+        if ('cat' in self.request.GET):
+            context['title'] = "Категория: "+Categories.objects.get(slug=self.request.GET['cat']).name
+            context['super_title'] = 'Категории'
+            context['super_url']='categories'
+        elif ('taxon' in self.request.GET):
+            taxon= Taxons.objects.get(slug=self.request.GET['taxon'])
             context['title'] = taxon.get_order_display()+': '+taxon.name
+            context['super_title'] = 'Таксоны'
+            context['super_url'] = 'taxons'
         else:
             context['title'] = "Каталог растений"
+            context['super_title'] = 'Все растения'
+            context['super_url'] ='plants'
         return context
 
     def get_queryset(self):
         queries=Q()
-        if ('slug_cat' in self.kwargs):
-            filter_val = self.kwargs['slug_cat']
-            queries=Q(categories__slug=filter_val)
-        elif ('slug_taxon' in self.kwargs):
-            filter_val = self.kwargs['slug_taxon']
-            queries = Q(taxons__slug=filter_val)
-        if ('q' in self.request.GET):
-            filter_q = self.request.GET['q'].lower()
-            queries=queries & Q(name_lower__icontains=filter_q)
+        filter=self.request.GET
+
+        if ('cat' in filter):
+            queries&=Q(categories__slug=filter['cat'])
+        if ('taxon' in filter):
+            queries &= Q(taxons__slug=filter['taxon'])
+        if('name' in filter):
+            queries &= Q(name_lower__icontains=filter['name'].lower())
 
         queryset=Plants.objects.filter(queries)
+
+        if ('order' in filter and 'sort' in filter):
+            order=''
+            if(filter['order']=='desc'):
+                order='-'
+            queryset=queryset.order_by(f'{order}{filter["sort"]}')
         return queryset
 
 
@@ -47,8 +63,28 @@ class CategoriesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        form=FilterForm(self.request.GET)
+        context['filter_form']=form
+
         context['title'] = "Категории"
+        context['super_title'] = 'Все категории'
+        context['super_url'] = 'categories'
         return context
+
+    def get_queryset(self):
+        queries=Q()
+        filter = self.request.GET
+        if('name' in filter):
+            queries &= Q(name_lower__icontains=filter['name'].lower())
+
+        queryset=Categories.objects.filter(queries)
+        if ('order' in filter and 'sort' in filter):
+            order = ''
+            if (filter['order'] == 'desc'):
+                order = '-'
+            queryset = queryset.order_by(f'{order}{filter["sort"]}')
+        return queryset
 
 class TaxonsListView(ListView):
     model=Taxons
@@ -56,18 +92,25 @@ class TaxonsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = Taxons.objects.filter(order=self.kwargs['id_rang'])[0].get_order_display()
+        title = Taxons.objects.filter(order=self.kwargs['id_rang'])
+        if (len(title)==0):
+            raise Http404
+        context['title']=title[0].get_order_display()
+        context['super_title'] = 'Таксоны'
+        context['super_url'] = 'taxons'
         return context
 
     def get_queryset(self):
-        filter_val = self.kwargs['id_rang']
-        new_context = Taxons.objects.filter(order=filter_val)
-        return new_context
+        rang = self.kwargs['id_rang']
+        queries = Q(order=rang)
+        queryset = Taxons.objects.filter(queries)
+
+        return queryset
 
 def taxons_rang(request):
     context={
         'title':'Таксоны',
-        'rangs':Taxons.PRIORITIES
+        'rangs':PRIORITIES
     }
     return render(request,'plants/taxons_rangs.html',context)
 

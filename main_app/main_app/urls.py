@@ -15,14 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from main_app import settings
 from .views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls,name="admin"),
     path('', index,name="main"),
     path('plants/',include('plants.urls'),name="plants"),
     path('forum/',include('forum.urls'),name="forum"),
     path('news/',include('news.urls'),name="news")
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    import mimetypes
+
+    mimetypes.add_type("application/javascript", ".js", True)
+
+    urlpatterns = [
+                      path('__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns
+
 
 handler404=pageNotFound

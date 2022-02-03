@@ -1,12 +1,35 @@
 {% extends "plants/plants_list.html" %}
+{%load static%}
+{% load plants_tags %}
+
+{% block filters %}
+    <div class="filters">
+        <form action="{% url 'categories' %}" method="get">
+            {{filter_form}}
+            <input type="submit" value="Применить"/>
+    </form>
+    </div>
+{% endblock filters%}
 
 {% block content %}
+    {% block titles %}
+        {{block.super}}
+    {% endblock titles %}
 
+    {% if object_list.count != 0 %}
        {% for category in page_obj %}
-    <div class="categories">
-        <a href="{% url 'category' category.slug %}">{{category.name}}</a>
-    </div>
-    {% endfor %}
+            <table class="categories">
+                    <tr>
+                        <td class="number">{% get_number forloop.counter%}</td>
+                        <td>
+                            <a href="{% url 'plants' %}?cat={{category.slug}}" class="name"><h2 class="category-name">{{category.name}}</h2></a>
+                        </td>
+                    </tr>
+                </table>
+        {% endfor %}
+   {% else %}
+        <h3 class="search-result">Результаты отсутствуют</h3>
+    {% endif %}
 
     {% block pagination %}
         {{block.super}}

@@ -24,7 +24,7 @@
         <header>
             {% block header %}
             <div  class="header_title">
-                <a href="{% url 'main' %}" class="header_link">Главная</a>
+                <a href="{% url 'main' %}" class="header_link">Энциклопедия растений</a>
             </div>
                 <img src="{% get_random_background_image %}" class="header-background">
             {% endblock header%}
@@ -34,6 +34,9 @@
             {% block navigation %}
                 <ul class="menu">
                     {% get_menu %}
+                     <li>
+                        <a href="/admin/" class="menu_link">Администрирование</a>
+                    </li>
                 </ul>
             {% endblock navigation %}
         </nav>

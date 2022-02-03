@@ -1,73 +1,90 @@
 {% extends "main_app/base.html" %}
 {%load static%}
+{% load plants_tags %}
 {% block head %}
         {% block title %}
     <title>{{title}}</title>
         {% endblock %}
     {{block.super}}
-    <link type="text/css" href="{% static 'plants/css/data_list.css'%}" rel="stylesheet"/>
+    <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
 {% endblock %}
 
 
-{% block search-and-filters %}
-    <div class="search-and-filters">
-        {% block search %}
-        <div class="search">
-            <form action="{% url 'plants' %}" method="get">
-                {% csrf_token %}
-                {{search_form}}
-                <input type="submit" value="Submit" />
-            </form>
-        </div>
-        {% endblock search%}
-
-        {% block filters %}
-            <div class="filters">Фильтры</div>
-        {% endblock filters%}
+{% block filters %}
+    <div class="filters">
+                <form action="{% url 'plants' %}" method="get">
+                    <ul class="filters">
+                        {{filter_form.as_ul}}
+                        <li>
+                            <input type="submit" value="Применить"/>
+                        </li>
+                    </ul>
+                </form>
     </div>
-{% endblock search-and-filters %}
+{% endblock filters %}
 
 {% block content %}
-       {% for plant in page_obj %}
-    <div class="plant">
-        <a href="{{ plant.get_absolute_url }}">{{plant.name}}</a>
-    </div>
-    {% endfor %}
+    {% block titles %}
+        <a href="{% url super_url %}" class="super-title"><h2>{{super_title}}</h2></a>
+        <h3 class="title">{{title}}</h3>
+    {% endblock titles %}
+    {% if object_list.count != 0 %}
+        <table class="list">
+        {% for plant in page_obj %}
+                    <tr>
+                        <td class="number">{% get_number forloop.counter%}</td>
+                        <td><a href="{{ plant.get_absolute_url }}" class="name"><h2>{{plant.name}}</h2></a></td>
+                        <td>
+                            {% for description in plant.descriptions_set.all %}
+                                {% if description.category == '' %}
+                                    <div class="description-block">
+                                        <h3>{{description.category}}</h3>
+                                        <p>{{description.text}}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% if plant.image_url %}
+                                <img src="{{plant.image_url }}" class="plant-image">
+                            {% endif %}
+                        </td>
+                    </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h3 class="search-result">Результаты отсутстуют</h3>
+    {% endif %}
 
     {% block pagination %}
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; Первая</a>
-                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
-            {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?{% url_replace page=1 %}">&laquo; Первая</a>
+                    <a href="?{% url_replace page=page_obj.previous_page_number %}">Предыдущая</a>
+                {% endif %}
 
-            <span class="current">
-                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?{% url_replace page=page_obj.next_page_number %}">Следующая</a>
+                    <a href="?{% url_replace page=page_obj.paginator.num_pages %}">Последняя &raquo;</a>
+                {% endif %}
             </span>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+        </div>
     {% endblock pagination %}
 {% endblock content%}
 
 {% block aside %}
-    <ul>
+    <ul class="menu_plant">
         <li>
-            <a href="{% url 'plants' %}">Все растения</a>
+            <h2 class="menu-title">Разделы</h2>
         </li>
+        {% get_menu_plant %}
         <li>
-            <a href="{% url 'categories' %}">Категории</a>
-        </li>
-        <li>
-            <a href="{% url 'taxons' %}">Таксоны</a>
-        </li>
-        <li>
-            <a href="{% url 'random_plant' %}">Случайное растение</a>
+            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
         </li>
     </ul>
 {% endblock aside%}

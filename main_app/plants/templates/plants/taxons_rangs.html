@@ -1,13 +1,22 @@
 {% extends "plants/plants_list.html" %}
 
+{% block filters %}
+{% endblock filters %}
+
+
 {% block content %}
+    <h2 class="title">{{title}}</h2>
        {% for taxon in rangs %}
-    <div class="taxons">
-        <a href="/plants/taxons/{{taxon.0}}">{{taxon.1}}</a>
-    </div>
+            <table class="taxons-table">
+                <tr>
+                    <td>
+                        <a href="/plants/taxons/{{taxon.0}}" class="name"><h2>{{taxon.1}}</h2></a>
+                    </td>
+                </tr>
+            </table>
     {% endfor %}
 
-    {% block pagination %}
-    {% endblock pagination%}
+{% block pagination %}
+{% endblock pagination%}
 
 {% endblock content%}

@@ -1,6 +1,126 @@
-h2.title  {
-    display: block;
-    text-align: center;
+.filters{
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+ul.filters{
+    list-style-type:none;
+}
+
+ul.filters li{
+    display: inline;
+    margin-right: 3px;
+    padding: 2px;
+}
+
+ul.menu_plant{
+    font-size:20px;
+    list-style-type:none;
+    margin:20px;
+    position: fixed;
+}
+
+ul.menu_plant li{
+    margin-top:20px;
+}
+
+ul.menu_plant li a.topbutton{
+    text-decoration:none;
+    color:blue;
+}
+
+.super-title{
+    text-decoration:none;
+    color:black;
+}
+
+.super-title h2{
+    font-size:34px;
+    text-align:center;
+}
+
+.title{
+    font-size:24px;
+}
+
+table.list{
+    border: black 2px solid;
+    border-collapse: collapse;
+}
+
+table.list td{
+    border: 2px solid black;
+}
+
+td.number{
+    font-size:18px;
+}
+
+td a.name{
+    font-size:14px;
+    color:blue;
+    text-decoration:none;
+
+}
+
+.plant-image{
+    width:200px;
+    height:200px;
+}
+
+.pagination{
+    text-align:center;
+}
+
+.pagination span.step-links a{
+    text-decoration:none;
+    color:blue;
+    font-size:18px;
+}
+
+.pagination span.current{
+    font-size:18px;
+}
+
+.detail-title
+{
+    text-align:center;
+}
+
+.description-block p {
+    text-indent: 1.5em;
+    font-size:18px;
+}
+
+.description-block h3 {
+    font-size:22px;
+}
+
+ul.menu_detail_plant
+{
+    margin-top: 20px;;
+    padding: 4px;
+    text-align:center;
+}
+
+ul.menu_detail_plant li {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+   }
+
+.menu_plant_link{
+    color: green;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.image{
+    margin-top:30px;
+}
+
+.image p{
+    margin-top:5px;
 }
 
 .taxons{
@@ -8,18 +128,34 @@ h2.title  {
     border-collapse: collapse;
 }
 
+.taxons-title {
+    text-align:center;
+}
+
 .taxon-column{
-    border-bottom: 1px solid black; 
+    border-bottom: 1px solid black;
     border: black 1px solid;
+    text-decoration:none;
+}
+
+.taxon-column a{
+    text-decoration:none;
+    color:blue;
 }
 
 ul.categories {
     margin: 0;
-    padding: 4px; 
+    padding: 4px;
    }
 
 ul.categories li {
-    display: inline; 
-    margin-right: 5px; 
-    padding: 3px; 
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+    font-size:18px;
+   }
+
+ul.categories li a {
+    color:blue;
+    text-decoration: none;
    }

@@ -6,7 +6,7 @@ class PlantsAdmin(admin.ModelAdmin):
     list_display = ('id','name','time_create','time_update')
     readonly_fields=['slug']
     list_display_links = ('id','name')
-    search_fields = ('id','name_lower')
+    search_fields = ('id','name_lower', 'name')
 
 class DescriptionsAdmin(admin.ModelAdmin):
     list_display = ('id','category','plant','time_create','time_update')
@@ -17,7 +17,7 @@ class CategoriesAdmin(admin.ModelAdmin):
     list_display = ('id','name','time_create','time_update')
     readonly_fields=['slug']
     list_display_links = ('id','name')
-    search_fields = ('id','name')
+    search_fields = ('id','name_lower', 'name')
 
 class TaxonsAdmin(admin.ModelAdmin):
     list_display = ('id','order','name','time_create','time_update')
