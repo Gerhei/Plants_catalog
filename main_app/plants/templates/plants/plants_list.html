@@ -38,7 +38,6 @@
                             {% for description in plant.descriptions_set.all %}
                                 {% if description.category == '' %}
                                     <div class="description-block">
-                                        <h3>{{description.category}}</h3>
                                         <p>{{description.text}}</p>
                                     </div>
                                 {% endif %}

@@ -21,20 +21,27 @@ class PlantsListView(ListView):
         form=FilterForm(self.request.GET)
         context['filter_form']=form
 
-        if ('cat' in self.request.GET):
-            context['title'] = "Категория: "+Categories.objects.get(slug=self.request.GET['cat']).name
-            context['super_title'] = 'Категории'
-            context['super_url']='categories'
-        elif ('taxon' in self.request.GET):
-            taxon= Taxons.objects.get(slug=self.request.GET['taxon'])
-            context['title'] = taxon.get_order_display()+': '+taxon.name
-            context['super_title'] = 'Таксоны'
-            context['super_url'] = 'taxons'
-        else:
-            context['title'] = "Каталог растений"
-            context['super_title'] = 'Все растения'
-            context['super_url'] ='plants'
-        return context
+        try:
+            if ('cat' in self.request.GET):
+                context['title'] = "Категория: "+Categories.objects.get(slug=self.request.GET['cat']).name
+                context['super_title'] = 'Категории'
+                context['super_url']='categories'
+            elif ('taxon' in self.request.GET):
+                taxon= Taxons.objects.get(slug=self.request.GET['taxon'])
+                context['title'] = taxon.get_order_display()+': '+taxon.name
+                context['super_title'] = 'Таксоны'
+                context['super_url'] = 'taxons'
+            else:
+                context['title'] = "Каталог растений"
+                context['super_title'] = 'Все растения'
+                context['super_url'] ='plants'
+
+
+            return context
+        except (Categories.DoesNotExist,Taxons.DoesNotExist) as ex:
+            raise Http404
+
+
 
     def get_queryset(self):
         queries=Q()
@@ -47,7 +54,7 @@ class PlantsListView(ListView):
         if('name' in filter):
             queries &= Q(name_lower__icontains=filter['name'].lower())
 
-        queryset=Plants.objects.filter(queries)
+        queryset=Plants.objects.prefetch_related('descriptions_set').filter(queries)
 
         if ('order' in filter and 'sort' in filter):
             order=''
