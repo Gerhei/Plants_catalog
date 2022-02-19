@@ -1,0 +1,18 @@
+{% extends "forum/base.html" %}
+
+{% block title %}
+    <title>{{subsections}}</title>
+{% endblock %}
+
+{% block content %}
+    <h2>{{subsections.name}}</h2>
+    {% for topic in page_obj %}
+        <p>{{topic.name}}</p>
+        <p>{{topic.time_create}}</p>
+        <p>{{topic.author}}</p>
+        <br>
+    {% endfor %}
+    {% block pagination %}
+        {{block.super}}
+    {% endblock pagination %}
+{% endblock content %}

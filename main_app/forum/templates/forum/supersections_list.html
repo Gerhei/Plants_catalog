@@ -1,0 +1,12 @@
+{% extends "forum/base.html" %}
+
+{% block title %}
+    <title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Список разделов</h2>
+    {% for super_section in object_list %}
+        <p>{{super_section.name}}</p>
+    {% endfor %}
+{% endblock content %}

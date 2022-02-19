@@ -1,0 +1,31 @@
+{% extends "main_app/base.html" %}
+
+{% block icon %}
+<link rel="shortcut icon" href="/static/forum/images/forum_icon.svg" type="image/x-icon">
+{% endblock icon %}
+
+{% block content %}
+
+
+{% block pagination %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Первая</a>
+                    <a href="?page={{page_obj.previous_page_number}}">Предыдущая</a>
+                {% endif %}
+
+                <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{page_obj.next_page_number}}">Следующая</a>
+                    <a href="?page={{page_obj.paginator.num_pages}}">Последняя &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endblock pagination %}
+
+{% endblock %}
+
