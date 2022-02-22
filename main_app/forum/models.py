@@ -4,21 +4,13 @@ from  django.shortcuts import reverse
 from django.contrib.auth.models import User
 from slugify import slugify
 
-class SuperSectionsManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(super_sections__isnull=True)
-
-class SubSectionsManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(super_sections__isnull=False)
-
 # Create your models here.
 class Sections(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
     name_lower = models.CharField(max_length=255, editable=False)
-    order=models.SmallIntegerField(default=0,db_index=True,verbose_name='Порядок')
+    order=models.SmallIntegerField(default=0,db_index=True,editable=False,verbose_name='Порядок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, editable=False, verbose_name='URL')
-    super_sections=models.ForeignKey('SuperSections',on_delete=models.PROTECT,null=True,blank=True,verbose_name='Надраздел')
+    super_sections=models.ForeignKey('Sections',on_delete=models.PROTECT,null=True,blank=True,verbose_name='Надраздел')
 
     def __str__(self):
         return self.name
@@ -28,31 +20,18 @@ class Sections(models.Model):
 
     def save(self, *args, **kwargs):
         super(Sections, self).save(*args, **kwargs)
-        self.slug=slugify(f'{self.name}_{self.order}')
         self.name_lower=self.name.lower()
+        if self.super_sections:
+            self.order=self.super_sections.order+1
+            self.slug = slugify(f'{self.super_sections.name}-{self.name}')
+        else:
+            self.slug=slugify(f'{self.name}')
         super(Sections, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name="Раздел"
         verbose_name_plural="Разделы"
         unique_together = ['name', 'order']
-
-class SuperSections(Sections):
-    objects=SuperSectionsManager()
-    class Meta:
-        proxy=True
-        ordering = ['order', 'name']
-
-class SubSections(Sections):
-    objects = SubSectionsManager()
-
-    def __str__(self):
-        f'{self.super_sections.name}-{self.name}'
-
-    class Meta:
-        proxy=True
-        ordering=['super_sections__order','super_sections__name','order','name']
-
 
 class ForumUsers(models.Model):
     username_lower = models.CharField(max_length=255, editable=False)
@@ -82,7 +61,7 @@ class Topics(models.Model):
     name=models.CharField(max_length=255,verbose_name='Заголовок')
     name_lower = models.CharField(max_length=255, editable=False)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, editable=False, verbose_name='URL')
-    view_count=models.IntegerField(validators=[MinValueValidator(0)],default=0)
+    view_count=models.IntegerField(validators=[MinValueValidator(0)],editable=False,default=0)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     author=models.ForeignKey(ForumUsers,on_delete=models.SET_NULL, null=True,verbose_name='Автор')
     sections=models.ForeignKey(Sections,on_delete=models.PROTECT,verbose_name='Раздел')
@@ -91,7 +70,7 @@ class Topics(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('topic', kwargs={'slug':self.slug})
+        return reverse('topic', kwargs={'slug_topic':self.slug})
 
     def save(self, *args, **kwargs):
         super(Topics, self).save(*args, **kwargs)

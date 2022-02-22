@@ -112,3 +112,11 @@ class DescriptionsModelTest(TestCase):
 
     def test_str_method(self):
         self.assertEquals(self.description.plant.name+' '+self.description.category,self.description.__str__())
+
+    def test_category_blank(self):
+        blank = self.description._meta.get_field('category').blank
+        self.assertEquals(blank, True)
+
+    def test_text_blank(self):
+        blank = self.description._meta.get_field('text').blank
+        self.assertEquals(blank, True)

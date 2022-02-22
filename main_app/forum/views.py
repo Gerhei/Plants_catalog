@@ -12,9 +12,8 @@ def index(request):
     }
     return render(request,'forum/base.html',context=context)
 
-class SuperSectionsListView(ListView):
-    model=SuperSections
-    template_name = 'forum/supersections_list.html'
+class SectionsListView(ListView):
+    model=Sections
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -22,6 +21,10 @@ class SuperSectionsListView(ListView):
         context['title']="Форум"
 
         return context
+
+    def get_queryset(self):
+        queryset=Sections.objects.filter(super_sections__isnull=True)
+        return queryset
 
 
 
@@ -32,7 +35,7 @@ class TopicsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if 'slug_subsections' in self.kwargs:
-            context['subsections'] = SubSections.objects.get(slug=self.kwargs['slug_subsections']).name
+            context['subsections'] = Sections.objects.get(slug=self.kwargs['slug_subsections']).name
         else:
             context['subsections']="Все темы"
         return context

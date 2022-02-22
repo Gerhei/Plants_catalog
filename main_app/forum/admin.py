@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 class SectionsAdmin(admin.ModelAdmin):
-    list_display = ('id','order','name')
-    readonly_fields=['slug']
+    list_display = ('id','name','order','super_sections')
+    readonly_fields=['slug','order']
     list_display_links = ('id','name')
     search_fields = ('order', 'name','name_lower')
 
