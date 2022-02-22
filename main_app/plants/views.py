@@ -35,12 +35,9 @@ class PlantsListView(ListView):
                 context['title'] = "Каталог растений"
                 context['super_title'] = 'Все растения'
                 context['super_url'] ='plants'
-
-
             return context
         except (Categories.DoesNotExist,Taxons.DoesNotExist) as ex:
             raise Http404
-
 
 
     def get_queryset(self):

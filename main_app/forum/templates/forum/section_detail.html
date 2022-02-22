@@ -1,0 +1,25 @@
+{% extends "forum/base.html" %}
+
+{% block title %}
+    <title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+    <h2>{{title}}</h2>
+    {% if sections %}
+        <h3>Разделы</h3>
+        {% for section in sections %}
+            <p><a href="{% url 'topics' section.slug %}">{{section.name}}</a></p>
+        {% endfor %}
+    {% endif %}
+
+    {% if page_obj %}
+        <h3>Темы</h3>
+        {% for topic in page_obj %}
+            <p><a href="{{ topic.get_absolute_url }}">{{topic.name}}</a></p>
+        {% endfor %}
+        {% block pagination %}
+            {{block.super}}
+        {% endblock pagination %}
+    {% endif %}
+{% endblock content %}

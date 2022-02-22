@@ -1,11 +1,11 @@
 {% extends "forum/base.html" %}
 
 {% block title %}
-    <title>{{subsections}}</title>
+    <title>{{title}}</title>
 {% endblock %}
 
 {% block content %}
-    <h2>{{subsections}}</h2>
+    <h2>{{title}}</h2>
     {% for topic in page_obj %}
         <a href="{{ topic.get_absolute_url }}">{{topic.name}}</a>
         <p>{{topic.time_create}}</p>
