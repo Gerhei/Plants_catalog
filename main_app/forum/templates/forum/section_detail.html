@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+    {% block menu_forum %}
+        {{block.super}}
+    {% endblock menu_forum %}
+
     <h2>{{title}}</h2>
     {% if sections %}
         <h3>Разделы</h3>

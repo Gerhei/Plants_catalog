@@ -1,8 +1,15 @@
 from django import template
 import os
 import random
+from django.utils.http import urlencode
 
 register=template.Library()
+
+@register.simple_tag(takes_context=True)
+def url_replace(context, **kwargs):
+    query = context['request'].GET.dict()
+    query.update(kwargs)
+    return urlencode(query)
 
 @register.inclusion_tag('main_app/menu.html')
 def get_menu():
@@ -13,6 +20,10 @@ def get_menu():
         {'title': 'Новости', 'url_name': 'news'}
     ]
     return {'menu':menu}
+
+@register.inclusion_tag('main_app/pagination.html',takes_context=True)
+def get_pagination(context):
+    return {'page_obj':context['page_obj'],'request':context['request']}
 
 @register.simple_tag()
 def get_random_background_image():

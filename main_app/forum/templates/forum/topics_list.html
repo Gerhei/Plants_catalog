@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+    {% block menu_forum %}
+        {{block.super}}
+    {% endblock menu_forum %}
+
     <h2>{{title}}</h2>
     {% for topic in page_obj %}
         <a href="{{ topic.get_absolute_url }}">{{topic.name}}</a>

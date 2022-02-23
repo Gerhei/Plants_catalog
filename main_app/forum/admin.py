@@ -15,6 +15,7 @@ class TopicsAdmin(admin.ModelAdmin):
 
 class PostsAdmin(admin.ModelAdmin):
     list_display = ('id','author','topic','time_create')
+    readonly_fields = ['score']
     list_display_links = ('id','author')
     search_fields = ('author','topic')
 

@@ -3,14 +3,12 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 from django.db.models import Count, F, Value, Q
 from .models import *
 # Create your views here.
-def index(request):
-    context={
-        'title':'Форум',
-    }
-    return render(request,'forum/base.html',context=context)
+def random_topic(request):
+    return redirect(Topics.objects.order_by('?').first().get_absolute_url())
 
 class SectionsListView(ListView):
     model=Sections
@@ -27,7 +25,7 @@ class SectionsListView(ListView):
 
 
 class SectionDetailView(SingleObjectMixin, ListView):
-    paginate_by = 2
+    paginate_by = 10
     template_name = "forum/section_detail.html"
 
     def get(self, request, *args, **kwargs):
@@ -38,6 +36,7 @@ class SectionDetailView(SingleObjectMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title']=self.object.name
         context['sections']=self.object.sections_set.all()
+        context['super_section']=self.object.super_sections
         return context
 
     def get_queryset(self):
@@ -65,9 +64,21 @@ class PostsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['topic'] = Topics.objects.get(slug=self.kwargs['slug_topic'])
+        topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
+        context['topic'] = topic
+        context['super_section']=topic.sections
         return context
 
     def get_queryset(self):
         queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.kwargs['slug_topic'])
         return queryset.order_by('post_type','time_create')
+
+class TopicCreateView(CreateView):
+    model=Topics
+    fields = ['name','sections']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title']='Создание темы'
+
+        return context

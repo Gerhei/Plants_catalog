@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+    {% block menu_forum %}
+        {{block.super}}
+    {% endblock menu_forum %}
+
     <h2>{{topic}}</h2>
     {% for post in page_obj %}
         <p>{{post.author}}</p>

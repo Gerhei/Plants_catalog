@@ -1,7 +1,7 @@
 {% extends "plants/plants_list.html" %}
 {%load static%}
 {% load plants_tags %}
-
+{% load main_app_tags %}
 {% block filters %}
     <div class="filters">
         <form action="{% url 'categories' %}" method="get">
@@ -17,6 +17,7 @@
     {% endblock titles %}
 
     {% if object_list.count != 0 %}
+        {% get_pagination %}
        {% for category in page_obj %}
             <table class="categories">
                     <tr>
@@ -27,12 +28,11 @@
                     </tr>
                 </table>
         {% endfor %}
+        {% block pagination %}
+            {{block.super}}
+        {% endblock pagination%}
    {% else %}
         <h3 class="search-result">Результаты отсутствуют</h3>
     {% endif %}
-
-    {% block pagination %}
-        {{block.super}}
-    {% endblock pagination%}
 
 {% endblock content%}
