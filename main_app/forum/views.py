@@ -6,6 +6,8 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 from django.db.models import Count, F, Value, Q
 from .models import *
+from .forms import *
+
 # Create your views here.
 def random_topic(request):
     return redirect(Topics.objects.order_by('?').first().get_absolute_url())
@@ -75,10 +77,11 @@ class PostsListView(ListView):
 
 class TopicCreateView(CreateView):
     model=Topics
-    fields = ['name','sections']
+    form_class = CreateTopicForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title']='Создание темы'
+        context['section']=Sections.objects.get(slug=self.kwargs['slug']).name
 
         return context

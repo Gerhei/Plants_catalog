@@ -10,6 +10,7 @@
     {% endblock menu_forum %}
 
     <form method="post">
+        <h3>Создать тему в разделе: {{section}}</h3>
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Создать">
