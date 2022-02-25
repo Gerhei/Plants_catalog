@@ -20,6 +20,10 @@ class SectionsModelTest(TestCase):
         self.assertEquals(self.super_sections.name, self.super_sections.__str__())
         self.assertEquals(self.sub_sections.name, self.sub_sections.__str__())
 
+    def test_name_unique(self):
+        unique = self.super_sections._meta.get_field('name').unique
+        self.assertEquals(unique, True)
+
     def test_name_lower_editable(self):
         editable = self.super_sections._meta.get_field('name_lower').editable
         self.assertEquals(editable, False)

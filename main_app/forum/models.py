@@ -6,7 +6,7 @@ from slugify import slugify
 
 # Create your models here.
 class Sections(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Название')
+    name = models.CharField(max_length=255, unique=True, verbose_name='Название')
     name_lower = models.CharField(max_length=255, editable=False)
     order=models.SmallIntegerField(default=0,db_index=True,editable=False,verbose_name='Порядок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, editable=False, verbose_name='URL')
@@ -15,23 +15,17 @@ class Sections(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('plant', kwargs={'slug':self.slug})
-
     def save(self, *args, **kwargs):
         super(Sections, self).save(*args, **kwargs)
         self.name_lower=self.name.lower()
         if self.super_sections:
             self.order=self.super_sections.order+1
-            self.slug = slugify(f'{self.super_sections.name}-{self.name}')
-        else:
-            self.slug=slugify(f'{self.name}')
+        self.slug=slugify(f'{self.name}')
         super(Sections, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name="Раздел"
         verbose_name_plural="Разделы"
-        unique_together = ['name', 'order']
 
 class ForumUsers(models.Model):
     username_lower = models.CharField(max_length=255, editable=False)
