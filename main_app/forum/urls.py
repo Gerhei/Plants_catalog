@@ -9,5 +9,6 @@ urlpatterns = [
     path('section/<slug:slug>', SectionDetailView.as_view(),name="topics"),
     path('topics/<slug:slug_topic>', PostsListView.as_view(),name="topic"),
     path('create-topic/section-<slug:slug>', TopicCreateView.as_view(),name="create_topic"),
+    path('captcha/', include('captcha.urls'),name='captcha'),
     #path('accounts/<slug:slug>', index,name="user_profile"),
 ]

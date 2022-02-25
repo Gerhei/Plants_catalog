@@ -85,3 +85,8 @@ class TopicCreateView(CreateView):
         context['section']=Sections.objects.get(slug=self.kwargs['slug']).name
 
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'section': Sections.objects.get(slug=self.kwargs['slug'])})
+        return kwargs

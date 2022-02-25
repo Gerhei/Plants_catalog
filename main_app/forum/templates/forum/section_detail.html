@@ -21,7 +21,13 @@
     {% if page_obj %}
         <h3>Темы</h3>
         {% for topic in page_obj %}
-            <p><a href="{{ topic.get_absolute_url }}">{{topic.name}}</a></p>
+            <p>
+                Просмотры: {{topic.view_count}}
+                <a href="{{ topic.get_absolute_url }}">{{topic.name}}</a>
+                {{topic.author}}
+                {{topic.time_create}}
+            </p>
+            <br>
         {% endfor %}
         {% block pagination %}
             {{block.super}}
