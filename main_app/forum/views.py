@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
@@ -63,12 +63,25 @@ class PostsListView(ListView):
     model=Posts
     paginate_by = 20
 
+    def post(self, request, *args, **kwargs):
+        form = CreatePostForm(self.request.POST)
+        topic = Topics.objects.get(slug=self.kwargs['slug_topic'])
+
+        if form.is_valid():
+            post = Posts.objects.create(text=form.cleaned_data['text'], topic=topic, post_type=1)
+            post.save()
+        return redirect(reverse('topic', kwargs={'slug_topic':kwargs['slug_topic']}))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
         context['topic'] = topic
         context['super_section']=topic.sections
+
+        if self.request.method == 'GET':
+            context['form']=CreatePostForm()
+
         return context
 
     def get_queryset(self):

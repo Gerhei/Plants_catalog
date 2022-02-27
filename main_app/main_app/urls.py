@@ -23,7 +23,8 @@ urlpatterns = [
     path('', index,name="main"),
     path('plants/',include('plants.urls'),name="plants"),
     path('forum/',include('forum.urls'),name="forum"),
-    path('news/',include('news.urls'),name="news")
+    path('news/',include('news.urls'),name="news"),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:

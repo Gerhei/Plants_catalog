@@ -19,4 +19,13 @@
     {% block pagination %}
         {{block.super}}
     {% endblock pagination %}
+    <form action="{% url 'topic' topic.slug %}" method="post">
+        {% csrf_token %}
+        <ul>
+            {{form.as_ul}}
+            <li>
+                <button type="submit">Создать сообщение</button>
+            </li>
+        </ul>
+    </form>
 {% endblock content %}

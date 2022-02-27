@@ -35,7 +35,9 @@
                 <ul class="menu">
                     {% get_menu %}
                      <li>
-                        <a href="/admin/" class="menu_link">Администрирование</a>
+                         {% if user.is_authenticated %}
+                            <a href="/admin/" class="menu_link">Администрирование</a>
+                         {% endif %}
                     </li>
                 </ul>
             {% endblock navigation %}
