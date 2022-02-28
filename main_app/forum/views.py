@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, F, Value, Q
 from .models import *
 from .forms import *
@@ -61,16 +62,18 @@ class TopicsListView(ListView):
 
 class PostsListView(ListView):
     model=Posts
-    paginate_by = 20
+    paginate_by = 10
 
     def post(self, request, *args, **kwargs):
         form = CreatePostForm(self.request.POST)
         topic = Topics.objects.get(slug=self.kwargs['slug_topic'])
 
         if form.is_valid():
-            post = Posts.objects.create(text=form.cleaned_data['text'], topic=topic, post_type=1)
+            author=ForumUsers.objects.get(user=self.request.user)
+            post = Posts.objects.create(text=form.cleaned_data['text'], topic=topic, post_type=1,author=author)
             post.save()
-        return redirect(reverse('topic', kwargs={'slug_topic':kwargs['slug_topic']}))
+        redirect_to=reverse('topic', kwargs={'slug_topic':self.kwargs['slug_topic']})
+        return redirect(f'{redirect_to}?page=last')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,7 +91,7 @@ class PostsListView(ListView):
         queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.kwargs['slug_topic'])
         return queryset.order_by('post_type','time_create')
 
-class TopicCreateView(CreateView):
+class TopicCreateView(LoginRequiredMixin,CreateView):
     model=Topics
     form_class = CreateTopicForm
 
@@ -101,5 +104,6 @@ class TopicCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'section': Sections.objects.get(slug=self.kwargs['slug'])})
+        kwargs.update({'section': Sections.objects.get(slug=self.kwargs['slug']),
+                       'author':self.request.user})
         return kwargs
