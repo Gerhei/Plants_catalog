@@ -1,0 +1,6 @@
+{% extends 'main_app/base.html' %}
+
+{% block content %}
+    <p>Вы не авторизованы.</p>
+    <p><a href="{% url 'login' %}">Войти снова</a></p>
+{% endblock %}

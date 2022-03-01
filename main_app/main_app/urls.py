@@ -24,12 +24,13 @@ urlpatterns = [
     path('plants/',include('plants.urls'),name="plants"),
     path('forum/',include('forum.urls'),name="forum"),
     path('news/',include('news.urls'),name="news"),
+    path('accounts/profile/',index,name="profile"),
+    path('accounts/registration',CreateUserView.as_view(),name="registration"),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-
     import mimetypes
 
     mimetypes.add_type("application/javascript", ".js", True)

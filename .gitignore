@@ -3,5 +3,6 @@ plants_env/
 migrations/
 __pycache__/
 /__pycache__/
+main_app/db.sqlite3
 Database structure requirements.docx
 Infological and datalogical models of the Plants database.drawio
