@@ -30,11 +30,12 @@ ALLOWED_HOSTS = ['127.0.0.1']
 INTERNAL_IPS = ["127.0.0.1"]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'pav.4nd@yandex.ua'
-EMAIL_HOST_PASSWORD = 'yMVrGrj38w4bf9G'
-DEFAULT_FROM_EMAIL = 'pav.4nd@yandex.ua'
-EMAIL_PORT = 465
+EMAIL_HOST = 'smtp.yandex.com'
+EMAIL_HOST_USER = 'pav.4nd@yandex.com'
+EMAIL_HOST_PASSWORD = 'hvrmgsugodbyshhy'
+DEFAULT_FROM_EMAIL = 'pav.4nd@yandex.com'
+SERVER_EMAIL = 'pav.4nd@yandex.com'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Application definition
