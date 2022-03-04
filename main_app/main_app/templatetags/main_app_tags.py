@@ -21,9 +21,26 @@ def get_menu():
     ]
     return {'menu':menu}
 
+
 @register.inclusion_tag('main_app/pagination.html',takes_context=True)
 def get_pagination(context):
     return {'page_obj':context['page_obj'],'request':context['request']}
+
+
+@register.inclusion_tag('main_app/header.html',takes_context=True)
+def get_header(context):
+    return {'request':context['request']}
+
+
+@register.inclusion_tag('main_app/navigation.html',takes_context=True)
+def get_navigation(context):
+    return {'request':context['request']}
+
+
+@register.inclusion_tag('main_app/footer.html',takes_context=True)
+def get_footer(context):
+    return {'request':context['request']}
+
 
 @register.simple_tag()
 def get_random_background_image():

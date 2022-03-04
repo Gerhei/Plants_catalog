@@ -1,0 +1,18 @@
+{% load main_app_tags %}
+<nav>
+    {% block navigation %}
+        <ul class="menu">
+            {% get_menu %}
+            <li>
+                 {% if request.user.is_authenticated%}
+                    <a href="{% url 'profile' request.user.username %}" class="menu_link">Профиль пользователя</a>
+                 {% endif %}
+            </li>
+             <li>
+                 {% if request.user.is_authenticated and request.user.is_staff%}
+                    <a href="/admin/" class="menu_link">Администрирование</a>
+                 {% endif %}
+            </li>
+        </ul>
+    {% endblock navigation %}
+</nav>

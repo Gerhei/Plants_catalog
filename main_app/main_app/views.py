@@ -1,12 +1,17 @@
 from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse, HttpResponseNotFound,HttpResponseRedirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView,DetailView
 from django.contrib.auth import authenticate, login
 from .forms import *
 
 # Create your views here.
 def index(request):
     return render(request,'main_app/index.html',context={'title':'Главная страница'})
+
+class UserDetailView(DetailView):
+    model = User
+    slug_field = 'username'
+    template_name = 'registration/user_detail.html'
 
 class CreateUserView(CreateView):
     template_name = 'registration/user_form.html'
