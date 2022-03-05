@@ -7,6 +7,8 @@ class MyUserForm(UserCreationForm):
 
     def clean_email(self):
         data = self.cleaned_data['email']
+        if data=='':
+            raise ValidationError("Введите почтовый адрес.")
         all_emails=User.objects.values('email')
         for email in all_emails:
             if data==email['email']:
