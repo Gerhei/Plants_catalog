@@ -4,6 +4,19 @@
     <title>{{title}}</title>
 {% endblock %}
 
+{% block filters %}
+    <div class="filters">
+                <form action="{% url 'all_topics' %}" method="get">
+                    <ul class="filters">
+                        {{filter_form.as_ul}}
+                        <li>
+                            <input type="submit" value="Применить"/>
+                        </li>
+                    </ul>
+                </form>
+    </div>
+{% endblock filters %}
+
 {% block content %}
     {% block menu_forum %}
         {{block.super}}

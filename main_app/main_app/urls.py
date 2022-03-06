@@ -26,6 +26,7 @@ urlpatterns = [
     path('news/',include('news.urls'),name="news"),
     path('accounts/profile/<slug:slug>',UserDetailView.as_view(),name="profile"),
     path('accounts/registration',CreateUserView.as_view(),name="registration"),
+    path('accounts/registration/done',registration_done,name="registration_done"),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 

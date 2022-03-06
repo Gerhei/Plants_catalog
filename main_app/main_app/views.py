@@ -8,15 +8,22 @@ from .forms import *
 def index(request):
     return render(request,'main_app/index.html',context={'title':'Главная страница'})
 
+def registration_done(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('profile',kwargs={'slug':request.user.username}))
+    else:
+        return redirect(reverse('registration'))
+
 class UserDetailView(DetailView):
     model = User
     slug_field = 'username'
     template_name = 'registration/user_detail.html'
 
+
 class CreateUserView(CreateView):
-    template_name = 'registration/user_form.html'
+    template_name = 'registration/registration_form.html'
     form_class = MyUserForm
-    success_url = 'profile'
+    success_url = 'registration/done'
 
     def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)

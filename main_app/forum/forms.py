@@ -2,6 +2,19 @@ from django import forms
 from .models import *
 from captcha.fields import CaptchaField
 
+order_choices = [('inc', 'По возрастанию'),
+                 ('desc', 'По убыванию')]
+order_by=[('name', 'По алфавиту'),('time_create','По дате создания',),
+          ('view_count','По просмотрам')]
+
+class FilterForm(forms.Form):
+    name = forms.CharField(max_length=255,required=False,label="Название темы")
+    author=forms.CharField(max_length=255,required=False,label="Автор")
+    sort=forms.ChoiceField(choices=order_by,required=False,label="Сортировка по")
+    order=forms.ChoiceField(choices=order_choices,required=False,label="Сортировка по")
+    page = forms.IntegerField(min_value=1, label="Страница",required=False,initial=1)
+
+
 class CreateTopicForm(forms.ModelForm):
     captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот.")
     text=forms.CharField(label="Текст сообщения",widget=forms.Textarea())

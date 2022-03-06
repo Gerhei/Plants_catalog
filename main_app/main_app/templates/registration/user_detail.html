@@ -1,2 +1,17 @@
 {% extends 'main_app/base.html' %}
 
+{% block title %}
+    <title>{{object.username}}</title>
+{% endblock %}
+
+{% block content %}
+    <p>Изображение {{object.forumusers.user_image}}</p>
+    <p>Имя пользователя: {{object.username}}</p>
+    <p>О пользователе: {{object.forumusers.about_user}}</p>
+    <p>Репутация: {{object.forumusers.reputation}}</p>
+
+    {% if request.user == object %}
+        <p>Почтовый адрес: {{object.email}}</p>
+        <p><a href="{% url 'password_change' %}">Изменить пароль</a></p>
+    {% endif %}
+{% endblock %}
