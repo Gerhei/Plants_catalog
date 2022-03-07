@@ -2,13 +2,12 @@
 {%load static%}
 {% load plants_tags %}
 {% load main_app_tags %}
-{% block head %}
-        {% block title %}
+{% block title %}
     <title>{{title}}</title>
-        {% endblock %}
-    {{block.super}}
-    <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
 {% endblock %}
+{% block extrastyles %}
+    <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
+{% endblock extrastyles %}
 
 
 {% block filters %}

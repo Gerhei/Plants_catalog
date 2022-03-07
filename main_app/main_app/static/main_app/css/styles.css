@@ -49,3 +49,32 @@ ul.menu li {
 #footer {
     background-color: yellow;
 }
+
+.filters{
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+ul.filters{
+    list-style-type:none;
+}
+
+ul.filters li{
+    display: inline;
+    margin-right: 3px;
+    padding: 2px;
+}
+
+.pagination{
+    text-align:center;
+}
+
+.pagination span.step-links a{
+    text-decoration:none;
+    color:blue;
+    font-size:18px;
+}
+
+.pagination span.current{
+    font-size:18px;
+}

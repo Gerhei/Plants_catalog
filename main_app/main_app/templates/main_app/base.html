@@ -11,7 +11,13 @@
     {% block title %}
     <title>{{title}}</title>
     {% endblock title%}
-    <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
+    {% block styles %}
+        <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
+    {% endblock styles %}
+
+    {% block extrastyles %}
+    {% endblock extrastyles %}
+
     {% block icon %}
     <link rel="shortcut icon" href="/static/main_app/images/site_icon.ico" type="image/x-icon">
     {% endblock icon %}

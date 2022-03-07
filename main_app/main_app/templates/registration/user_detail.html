@@ -11,7 +11,9 @@
     <p>Репутация: {{object.forumusers.reputation}}</p>
 
     {% if request.user == object %}
-        <p>Почтовый адрес: {{object.email}}</p>
+        <p>Почтовый адрес: {{object.email}}
+            <a href="{% url 'email_change' %}">Изменить почтовый адрес</a>
+        </p>
         <p><a href="{% url 'password_change' %}">Изменить пароль</a></p>
     {% endif %}
 {% endblock %}
