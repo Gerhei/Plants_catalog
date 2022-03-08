@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from  django.shortcuts import reverse
 from django.contrib.auth.models import User
 from slugify import slugify
+from datetime import timedelta,datetime
 
 # Create your models here.
 class Sections(models.Model):
@@ -89,6 +90,12 @@ class Posts(models.Model):
 
     def __str__(self):
         return f'{self.author}:{self.topic}'
+
+    def is_changed(self):
+        return self.time_update-self.time_create > timedelta(seconds=1)
+
+    def is_editable(self):
+        return datetime.now()-self.time_create < timedelta(minutes=10)
 
     class Meta:
         verbose_name="Сообщение"

@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,HttpResponseForbidden
 from django.urls import reverse
 from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
@@ -137,3 +137,27 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
         kwargs.update({'section': Sections.objects.get(slug=self.kwargs['slug']),
                        'author':self.request.user})
         return kwargs
+
+
+class PostUpdateView(UpdateView):
+    model = Posts
+    form_class = CreatePostForm
+
+    def get(self, request, *args, **kwargs):
+        post=Posts.objects.get(pk=kwargs['pk'])
+        user=post.author
+        if request.user.pk!=user.pk:
+            return HttpResponseForbidden()
+        return super(PostUpdateView, self).get(self,request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.post=Posts.objects.get(pk=kwargs['pk'])
+        return super(PostUpdateView, self).post(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title']='Редактирование сообщения'
+        return context
+
+    def get_success_url(self):
+        return reverse('topic',kwargs={'slug_topic':self.post.topic.slug})

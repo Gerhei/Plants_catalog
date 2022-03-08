@@ -1,0 +1,13 @@
+{% extends "forum/base.html" %}
+
+{% block content %}
+    {% block menu_forum %}
+        {{block.super}}
+    {% endblock menu_forum %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Изменить">
+    </form>
+{% endblock content %}
