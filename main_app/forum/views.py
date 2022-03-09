@@ -117,7 +117,11 @@ class PostsListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.kwargs['slug_topic'])
+        topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
+        topic.view_count = F('view_count') + 1
+        topic.save()
+        topic.refresh_from_db()
+        queryset=Posts.objects.prefetch_related('author').filter(topic__slug=topic.slug)
         return queryset.order_by('post_type','time_create')
 
 
