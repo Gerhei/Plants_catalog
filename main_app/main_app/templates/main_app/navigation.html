@@ -2,10 +2,14 @@
 <nav>
     {% block navigation %}
         <ul class="menu">
-            {% get_menu %}
+            {% for m in menu %}
+                <li>
+                    <a href="{% url m.url_name %}" class="menu_link">{{m.title}}</a>
+                </li>
+            {% endfor %}
             <li>
                  {% if request.user.is_authenticated %}
-                    <a href="{% url 'profile' request.user.forumusers.slug %}" class="menu_link">Профиль пользователя</a>
+                    <a href="{{request.user.forumusers.get_absolute_url}}" class="menu_link">Профиль пользователя</a>
                  {% endif %}
             </li>
              <li>

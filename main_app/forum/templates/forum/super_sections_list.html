@@ -11,6 +11,6 @@
 
     <h2>Список разделов</h2>
     {% for super_section in object_list %}
-        <p><a href="{% url 'topics' super_section.slug %}">{{super_section.name}}</a></p>
+        <p><a href="{{super_section.get_absolute_url}}">{{super_section.name}}</a></p>
     {% endfor %}
 {% endblock content %}

@@ -11,17 +11,6 @@ def url_replace(context, **kwargs):
     query.update(kwargs)
     return urlencode(query)
 
-@register.inclusion_tag('main_app/menu.html')
-def get_menu():
-    menu = [
-        {'title': 'Главная', 'url_name': 'main'},
-        {'title': 'Каталог растений', 'url_name': 'plants'},
-        {'title': 'Форум', 'url_name': 'forum'},
-        {'title': 'Новости', 'url_name': 'news'}
-    ]
-    return {'menu':menu}
-
-
 @register.inclusion_tag('main_app/pagination.html',takes_context=True)
 def get_pagination(context):
     return {'page_obj':context['page_obj'],'request':context['request']}
@@ -34,7 +23,13 @@ def get_header(context):
 
 @register.inclusion_tag('main_app/navigation.html',takes_context=True)
 def get_navigation(context):
-    return {'request':context['request']}
+    menu = [
+        {'title': 'Главная', 'url_name': 'main'},
+        {'title': 'Каталог растений', 'url_name': 'plants'},
+        {'title': 'Форум', 'url_name': 'forum'},
+        {'title': 'Новости', 'url_name': 'news'}
+    ]
+    return {'request':context['request'],'menu':menu}
 
 
 @register.inclusion_tag('main_app/footer.html',takes_context=True)

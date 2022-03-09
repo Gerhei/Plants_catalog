@@ -16,8 +16,10 @@ class Sections(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('topics', kwargs={'slug':self.slug})
+
     def save(self, *args, **kwargs):
-        super(Sections, self).save(*args, **kwargs)
         self.name_lower=self.name.lower()
         if self.super_sections:
             self.order=self.super_sections.order+1
@@ -39,8 +41,8 @@ class ForumUsers(models.Model):
     def __str__(self):
         return self.user.username
 
-    # def get_absolute_url(self):
-    #     return reverse('plant', kwargs={'slug':self.slug})
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
         self.slug=slugify(self.user.username)
@@ -69,6 +71,7 @@ class Topics(models.Model):
 
     def save(self, *args, **kwargs):
         super(Topics, self).save(*args, **kwargs)
+        self.refresh_from_db()
         self.slug=slugify(f'{self.name}_{self.pk}')
         self.name_lower=self.name.lower()
         super(Topics, self).save(*args, **kwargs)

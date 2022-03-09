@@ -96,7 +96,6 @@ class PostsListView(ListView):
     def post(self, request, *args, **kwargs):
         form = CreatePostForm(self.request.POST)
         topic = Topics.objects.get(slug=self.kwargs['slug_topic'])
-
         if form.is_valid():
             author=ForumUsers.objects.get(user=self.request.user)
             post = Posts.objects.create(text=form.cleaned_data['text'], topic=topic, post_type=1,author=author)
@@ -120,7 +119,7 @@ class PostsListView(ListView):
         topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
         topic.view_count = F('view_count') + 1
         topic.save()
-        topic.refresh_from_db()
+
         queryset=Posts.objects.prefetch_related('author').filter(topic__slug=topic.slug)
         return queryset.order_by('post_type','time_create')
 

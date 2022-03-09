@@ -11,7 +11,7 @@
 
     <h2>{{topic}}</h2>
     {% for post in page_obj %}
-    <p><a href="{% url 'profile' post.author.slug %}">{{post.author}}</a></p>
+    <p><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></p>
         <p>{{post.time_create}}</p>
         {% if post.is_changed %}
             <p>Изменено: {{post.time_update}}</p>
