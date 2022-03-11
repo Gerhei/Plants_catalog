@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from django.db.models import F, Value
 from captcha.fields import CaptchaField
 
 order_choices = [('inc', 'По возрастанию'),
@@ -40,3 +41,19 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Posts
         fields = ['text']
+
+
+class UpdateScorePostForm(forms.ModelForm):
+    score=forms.IntegerField(min_value=-1,max_value=1,
+                             widget=forms.RadioSelect(choices=((-1,'-'),(1,'+'))),
+                             label="Ваша оценка")
+
+    def save(self):
+        self.instance.score=F('score') + self.cleaned_data['score']
+        self.instance.save()
+        self.instance.refresh_from_db()
+        return self.instance
+
+    class Meta:
+        model = Posts
+        fields = ['score']

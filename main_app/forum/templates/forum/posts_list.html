@@ -13,8 +13,18 @@
     {% for post in page_obj %}
     <p><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></p>
         <p>{{post.time_create}}</p>
-        {% if post.is_changed %}
-            <p>Изменено: {{post.time_update}}</p>
+        {% if post.is_changed_text %}
+            <p>Изменено: {{post.time_update_text}}</p>
+        {% endif %}
+        <p>Оценка: {{post.score}}</p>
+        {% if user.is_authenticated %}
+        <p>
+            <form action="{% url 'rate_post' post.pk %}" method="post">
+            {% csrf_token %}
+            {{ rate_form.as_p }}
+            <input type="submit" value="Оценить">
+            </form>
+        </p>
         {% endif %}
         <p>{{post.text}}</p>
         {% if user.id == post.author.id and post.post_type != 0 and post.is_editable %}

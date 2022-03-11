@@ -9,6 +9,7 @@ urlpatterns = [
     path('section/<slug:slug>', SectionDetailView.as_view(),name="topics"),
     path('topics/<slug:slug_topic>', PostsListView.as_view(),name="topic"),
     path('update-post/<int:pk>',PostUpdateView.as_view(),name="update_post"),
+    path('rate-post/<int:pk>',PostScoreUpdateView.as_view(),name="rate_post"),
     path('create-topic/section-<slug:slug>', TopicCreateView.as_view(),name="create_topic"),
     path('captcha/', include('captcha.urls'),name='captcha')
 ]

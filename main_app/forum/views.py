@@ -93,34 +93,36 @@ class PostsListView(ListView):
     model=Posts
     paginate_by = 10
 
+    def setup(self, request, *args, **kwargs):
+        self.topic=Topics.objects.get(slug=kwargs['slug_topic'])
+        super(PostsListView, self).setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            self.topic.view_count = F('view_count') + 1
+            self.topic.save()
+        return super(PostsListView, self).get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         form = CreatePostForm(self.request.POST)
-        topic = Topics.objects.get(slug=self.kwargs['slug_topic'])
         if form.is_valid():
             author=ForumUsers.objects.get(user=self.request.user)
-            post = Posts.objects.create(text=form.cleaned_data['text'], topic=topic, post_type=1,author=author)
+            post = Posts.objects.create(text=form.cleaned_data['text'], topic=self.topic, post_type=1,author=author)
             post.save()
-        redirect_to=reverse('topic', kwargs={'slug_topic':self.kwargs['slug_topic']})
-        return redirect(f'{redirect_to}?page=last')
+        return redirect(f'{self.topic.get_absolute_url()}?page=last')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
-        context['topic'] = topic
-        context['super_section']=topic.sections
-
+        context['topic'] = self.topic
+        context['super_section']=self.topic.sections
+        context['rate_form']=UpdateScorePostForm()
         if self.request.method == 'GET':
             context['form']=CreatePostForm()
 
         return context
 
     def get_queryset(self):
-        topic=Topics.objects.get(slug=self.kwargs['slug_topic'])
-        topic.view_count = F('view_count') + 1
-        topic.save()
-
-        queryset=Posts.objects.prefetch_related('author').filter(topic__slug=topic.slug)
+        queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.topic.slug)
         return queryset.order_by('post_type','time_create')
 
 
@@ -128,34 +130,35 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
     model=Topics
     form_class = CreateTopicForm
 
+    def setup(self, request, *args, **kwargs):
+        self.section=Sections.objects.get(slug=kwargs['slug'])
+        super(TopicCreateView, self).setup(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title']='Создание темы'
-        context['section']=Sections.objects.get(slug=self.kwargs['slug']).name
-
+        context['section']=self.section.name
         return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'section': Sections.objects.get(slug=self.kwargs['slug']),
+        kwargs.update({'section': self.section,
                        'author':self.request.user})
         return kwargs
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Posts
     form_class = CreatePostForm
 
+    def setup(self, request, *args, **kwargs):
+        self.model_post=Posts.objects.get(pk=kwargs['pk'])
+        super(PostUpdateView, self).setup(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        post=Posts.objects.get(pk=kwargs['pk'])
-        user=post.author
-        if request.user.pk!=user.pk:
+        if request.user.pk!=self.model_post.author.pk:
             return HttpResponseForbidden()
         return super(PostUpdateView, self).get(self,request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.post=Posts.objects.get(pk=kwargs['pk'])
-        return super(PostUpdateView, self).post(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -163,4 +166,16 @@ class PostUpdateView(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('topic',kwargs={'slug_topic':self.post.topic.slug})
+        return reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
+
+class PostScoreUpdateView(LoginRequiredMixin,UpdateView):
+    model = Posts
+    form_class = UpdateScorePostForm
+    http_method_names = ['post']
+
+    def setup(self, request, *args, **kwargs):
+        self.model_post=Posts.objects.get(pk=kwargs['pk'])
+        super(PostScoreUpdateView, self).setup(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
