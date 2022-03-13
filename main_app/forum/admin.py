@@ -9,7 +9,7 @@ class SectionsAdmin(admin.ModelAdmin):
 
 class TopicsAdmin(admin.ModelAdmin):
     list_display = ('id','name','author','sections','time_create')
-    readonly_fields=['slug']
+    readonly_fields=['view_count','slug']
     list_display_links = ('id','name')
     search_fields = ('name','name_lower','author','sections')
 
@@ -25,7 +25,13 @@ class ForumUsersAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user')
     search_fields = ('username_lower','reputation')
 
+
+class StatisticsAdmin(admin.ModelAdmin):
+    readonly_fields = ['value_type']
+
+
 admin.site.register(Sections,SectionsAdmin)
 admin.site.register(Topics,TopicsAdmin)
 admin.site.register(Posts,PostsAdmin)
 admin.site.register(ForumUsers,ForumUsersAdmin)
+admin.site.register(Statistics,StatisticsAdmin)

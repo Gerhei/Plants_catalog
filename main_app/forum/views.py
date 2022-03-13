@@ -178,4 +178,5 @@ class PostScoreUpdateView(LoginRequiredMixin,UpdateView):
         super(PostScoreUpdateView, self).setup(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
+        redirect_to=reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
+        return f'{redirect_to}#{self.model_post.pk}'

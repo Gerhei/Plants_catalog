@@ -11,10 +11,11 @@
 
     <h2>{{topic}}</h2>
     {% for post in page_obj %}
-    <p><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></p>
+        <p><a name="{{post.pk}}"></a></p>
+        <p><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></p>
         <p>{{post.time_create}}</p>
-        {% if post.is_changed_text %}
-            <p>Изменено: {{post.time_update_text}}</p>
+        {% if post.is_changed %}
+            <p>Изменено: {{post.time_update}}</p>
         {% endif %}
         <p>Оценка: {{post.score}}</p>
         {% if user.is_authenticated %}

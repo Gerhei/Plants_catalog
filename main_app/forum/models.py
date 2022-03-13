@@ -1,11 +1,14 @@
+from django.shortcuts import reverse
 from django.db import models
+from django.db.models import Count, F, Value, Q
 from django.core.validators import MinValueValidator
-from  django.shortcuts import reverse
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from slugify import slugify
 from datetime import timedelta,datetime
 
-# Create your models here.
 class Sections(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name='Название')
     name_lower = models.CharField(max_length=255, editable=False)
@@ -58,7 +61,7 @@ class Topics(models.Model):
     name=models.CharField(max_length=255,verbose_name='Заголовок')
     name_lower = models.CharField(max_length=255, editable=False)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, editable=False, verbose_name='URL')
-    view_count=models.IntegerField(validators=[MinValueValidator(0)],editable=False,default=0)
+    view_count=models.IntegerField(validators=[MinValueValidator(0)],editable=False,default=0,verbose_name="Количество просмотров")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     author=models.ForeignKey(ForumUsers,on_delete=models.SET_NULL, null=True,verbose_name='Автор')
     sections=models.ForeignKey(Sections,on_delete=models.PROTECT,verbose_name='Раздел')
@@ -70,7 +73,12 @@ class Topics(models.Model):
         return reverse('topic', kwargs={'slug_topic':self.slug})
 
     def save(self, *args, **kwargs):
+        # The parent method is called twice,
+        # since it is necessary to get the pk to create the slug,
+        # and then save it
         super(Topics, self).save(*args, **kwargs)
+        # We use refresh_from_db because the controllers use the F class to increase the view_count.
+        # and due to a double call to the super().save method, a double change in the view_count is possible
         self.refresh_from_db()
         self.slug=slugify(f'{self.name}_{self.pk}')
         self.name_lower=self.name.lower()
@@ -85,6 +93,7 @@ class Posts(models.Model):
     author=models.ForeignKey(ForumUsers,on_delete=models.SET_NULL, null=True,verbose_name='Автор')
     topic=models.ForeignKey(Topics,on_delete=models.CASCADE,verbose_name='Тема')
     text=models.TextField(verbose_name='Сообщение')
+    # needed to find the topic author
     post_type=models.IntegerField(choices=((0,'question'),(1,'answer')))
     score=models.IntegerField(default=0,verbose_name='Рейтинг')
     #attached_files=
@@ -104,3 +113,53 @@ class Posts(models.Model):
         verbose_name="Сообщение"
         verbose_name_plural="Сообщения"
         ordering=['topic','time_create','author']
+
+# stores view statistics for topic, post user ratings
+# for educational purposes (using contenttypes)
+# these 2 types of statistics are combined in one model.
+class Statistics(models.Model):
+    user=models.ForeignKey(ForumUsers,on_delete=models.CASCADE,verbose_name="Пользователь")
+    value_type=models.IntegerField(choices=((0,"Оценка"),(1,"Просмотр")),editable=False,verbose_name="Тип статистики")
+    value=models.IntegerField(default=0,verbose_name="Значение статистики")
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,verbose_name="Модель")
+    object_id = models.PositiveIntegerField(verbose_name="ID записи")
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f'{self.user}-{self.content_type}-{self.object_id}'
+
+    def save(self,*args,**kwargs):
+        if self.content_object.__class__==Posts:
+            self.value_type=0
+            self.change_post_rate()
+        elif self.content_object.__class__==Topics:
+            self.value_type=1
+            self.change_view_count()
+        else:
+            raise ValidationError("%s does not support statistics for the %s model"
+                                  % (self.__class__.__name__,self.content_object.__class__.__name__))
+        super(Statistics, self).save(*args, **kwargs)    
+    
+    def delete(self,*args,**kwargs):
+        if self.value_type==0 and self.content_object.__class__==Posts:
+            self.change_post_rate(is_delete=True)
+        elif self.value_type==1 and self.content_object.__class__==Topics:
+            self.change_view_count(is_delete=True)
+        super(Statistics, self).delete(*args, **kwargs)
+
+    def change_view_count(self,is_delete=False):
+        direction_change = -1 if is_delete else 1
+        self.content_object.view_count=F('view_count')+self.value * direction_change
+        self.content_object.save()
+
+    def change_post_rate(self,is_delete=False):
+        direction_change = -1 if is_delete else 1
+        user=self.content_object.author
+        user.reputation=F('reputation') + self.value * direction_change
+        user.save()
+
+    class Meta:
+        verbose_name="Статистика"
+        verbose_name_plural="Статистика"
+        ordering=['value_type','user','object_id']
+        unique_together=[['user','value_type','object_id']]
