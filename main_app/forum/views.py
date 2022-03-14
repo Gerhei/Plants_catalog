@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, F, Value, Q
+from django.db.models import Count, F, Value, Q, ObjectDoesNotExist
 from .models import *
 from .forms import *
 
@@ -95,19 +95,23 @@ class PostsListView(ListView):
 
     def setup(self, request, *args, **kwargs):
         self.topic=Topics.objects.get(slug=kwargs['slug_topic'])
+        if request.user.is_authenticated:
+            self.forumuser=request.user.forumusers
         super(PostsListView, self).setup(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            self.topic.view_count = F('view_count') + 1
-            self.topic.save()
+            try:
+                view_statistics=Statistics.objects.get(user=self.forumuser,topics=self.topic)
+            except ObjectDoesNotExist:
+                view_statistics=Statistics(user=self.forumuser,value=1,content_object=self.topic)
+                view_statistics.save()
         return super(PostsListView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = CreatePostForm(self.request.POST)
         if form.is_valid():
-            author=ForumUsers.objects.get(user=self.request.user)
-            post = Posts.objects.create(text=form.cleaned_data['text'], topic=self.topic, post_type=1,author=author)
+            post = Posts.objects.create(text=form.cleaned_data['text'], topic=self.topic, post_type=1,author=self.forumuser)
             post.save()
         return redirect(f'{self.topic.get_absolute_url()}?page=last')
 
@@ -168,15 +172,25 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
 
-class PostScoreUpdateView(LoginRequiredMixin,UpdateView):
-    model = Posts
+class PostScoreChangeView(LoginRequiredMixin,FormView):
     form_class = UpdateScorePostForm
     http_method_names = ['post']
 
     def setup(self, request, *args, **kwargs):
         self.model_post=Posts.objects.get(pk=kwargs['pk'])
-        super(PostScoreUpdateView, self).setup(request, *args, **kwargs)
+        self.forumuser=request.user.forumusers
+        super(PostScoreChangeView, self).setup(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        return super(PostScoreChangeView, self).form_valid(form)
 
     def get_success_url(self):
         redirect_to=reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
         return f'{redirect_to}#{self.model_post.pk}'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'post': self.model_post,
+                       'forum_user':self.forumuser})
+        return kwargs

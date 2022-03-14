@@ -1,6 +1,6 @@
 from django import forms
 from .models import *
-from django.db.models import F, Value
+from django.db.models import F, Value, ObjectDoesNotExist
 from captcha.fields import CaptchaField
 
 order_choices = [('inc', 'По возрастанию'),
@@ -20,9 +20,9 @@ class CreateTopicForm(forms.ModelForm):
     captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот.")
     text=forms.CharField(label="Текст сообщения",widget=forms.Textarea())
 
-    def __init__(self,*args, **kwargs):
-        self.section=kwargs.pop('section')
-        self.user = kwargs.pop('author')
+    def __init__(self,section=None,author=None,*args, **kwargs):
+        self.section=section
+        self.user = author
         super(CreateTopicForm, self).__init__(*args, **kwargs)
 
     def save(self):
@@ -44,16 +44,36 @@ class CreatePostForm(forms.ModelForm):
 
 
 class UpdateScorePostForm(forms.ModelForm):
-    score=forms.IntegerField(min_value=-1,max_value=1,
-                             widget=forms.RadioSelect(choices=((-1,'-'),(1,'+'))),
+    value=forms.IntegerField(min_value=-1,max_value=1,
+                             widget=forms.RadioSelect(choices=((-1,'-'),(0,'0'),(1,'+'))),
                              label="Ваша оценка")
 
+    def __init__(self,post=None,forum_user=None,*args, **kwargs):
+        self.forum_user=forum_user
+        self.post=post
+        super(UpdateScorePostForm, self).__init__(*args, **kwargs)
+
     def save(self):
-        self.instance.score=F('score') + self.cleaned_data['score']
-        self.instance.save()
-        self.instance.refresh_from_db()
-        return self.instance
+        try:
+            self.instance = Statistics.objects.get(user=self.forum_user, posts=self.post)
+            new_value=self.cleaned_data['value']
+            old_value=self.instance.value
+            if old_value == new_value:
+                return
+            elif new_value==0:
+                self.instance.delete()
+                return
+            else:
+                self.instance.delete()
+                raise ObjectDoesNotExist
+
+        except ObjectDoesNotExist:
+            if self.cleaned_data['value']==0:
+                return
+            self.instance = Statistics(user=self.forum_user, value=self.cleaned_data['value'], content_object=self.post)
+
+        return super(UpdateScorePostForm, self).save()
 
     class Meta:
-        model = Posts
-        fields = ['score']
+        model = Statistics
+        fields = ['value']
