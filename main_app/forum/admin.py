@@ -19,7 +19,7 @@ class PostsAdmin(admin.ModelAdmin):
     search_fields = ('author','topic')
 
 class ForumUsersAdmin(admin.ModelAdmin):
-    list_display = ('id','user','reputation')
+    list_display = ('id','user','user_image','reputation')
     readonly_fields = ['slug']
     list_display_links = ('id', 'user')
     search_fields = ('username_lower','reputation')

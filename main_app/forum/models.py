@@ -8,6 +8,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from slugify import slugify
 from datetime import timedelta,datetime
+from main_app.settings import MEDIA_URL
 
 class Sections(models.Model):
     name = models.CharField(max_length=255, unique=True, verbose_name='Название')
@@ -35,7 +36,8 @@ class Sections(models.Model):
 
 class ForumUsers(models.Model):
     username_lower = models.CharField(max_length=255, editable=False)
-    user_image=models.ImageField(blank=True,verbose_name='Изображение профиля')
+    user_image=models.ImageField(blank=True,upload_to='forum/user_images', default='/forum/user_images/default_profile.jpg',
+                                 verbose_name='Изображение профиля')
     about_user=models.TextField(blank=True,verbose_name='О пользователе')
     reputation=models.IntegerField(default=0,verbose_name='Репутация')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, editable=False, verbose_name='URL')
