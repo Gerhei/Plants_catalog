@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, F, Value, Q, ObjectDoesNotExist
+from django.db.models import Count, F, Value, Q, ObjectDoesNotExist,Sum
 from .models import *
 from .forms import *
 
@@ -119,7 +119,23 @@ class PostsListView(ListView):
         context = super().get_context_data(**kwargs)
         context['topic'] = self.topic
         context['super_section']=self.topic.sections
-        context['rate_form']=UpdateScorePostForm()
+        context['rate_form']=UpdateScorePostForm
+
+        scores={}
+        for post in context['page_obj']:
+            post_info={}
+            score=Statistics.objects.filter(posts=post).aggregate(Sum('value'))
+            post_info['score'] = score['value__sum'] if score['value__sum'] else 0
+            try:
+                rate=Statistics.objects.get(user=self.forumuser,posts=post)
+                rate=rate.value
+            except ObjectDoesNotExist:
+                rate=0
+            post_info['rate']=rate
+            scores[post]=post_info
+
+        context['scores']=scores
+
         if self.request.method == 'GET':
             context['form']=CreatePostForm()
 
@@ -127,7 +143,8 @@ class PostsListView(ListView):
 
     def get_queryset(self):
         queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.topic.slug)
-        return queryset.order_by('post_type','time_create')
+        queryset=queryset.order_by('post_type','time_create')
+        return queryset
 
 
 class TopicCreateView(LoginRequiredMixin,CreateView):

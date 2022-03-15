@@ -14,3 +14,12 @@ def get_menu_forum(context):
     menu+=[{'title': 'Все темы', 'url_name': 'all_topics'},
         {'title': 'Случайная тема', 'url_name': 'random_topic'}]
     return {'menu':menu}
+
+@register.simple_tag()
+def get_post_score(post,scores):
+    return scores[post]['score']
+
+@register.simple_tag(takes_context=True)
+def get_rate_form_with_initial_data(context,post,scores):
+    form=context['rate_form'](initial={'value':scores[post]['rate']})
+    return form.as_p()

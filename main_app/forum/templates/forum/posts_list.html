@@ -1,4 +1,5 @@
 {% extends "forum/base.html" %}
+{% load forum_tags %}
 
 {% block title %}
     <title>{{topic.name}}</title>
@@ -17,13 +18,13 @@
         {% if post.is_changed %}
             <p>Изменено: {{post.time_update}}</p>
         {% endif %}
-        <p>Оценка: </p>
+        <p>Оценка: {% get_post_score post scores %} </p>
         {% if user.is_authenticated %}
         {% if rate_form %}
             <p>
                 <form action="{% url 'rate_post' post.pk %}" method="post">
                 {% csrf_token %}
-                {{ rate_form.as_p }}
+                {% get_rate_form_with_initial_data post scores %}
                 <input type="submit" value="Оценить">
                 </form>
             </p>
