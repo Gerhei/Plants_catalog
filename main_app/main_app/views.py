@@ -2,6 +2,7 @@ from django.shortcuts import render,reverse,redirect
 from django.http import HttpResponse, HttpResponseNotFound,HttpResponseRedirect
 from django.views.generic import CreateView,DetailView,UpdateView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .forms import *
 
@@ -14,23 +15,32 @@ def registration_done(request):
     return redirect(reverse('profile',kwargs={'slug':request.user.forumusers.slug}))
 
 
-@login_required()
-def update_email(request):
-    context={}
-    context['title']="Изменить почту"
-    if request.method=="POST":
-        form=EmailForm(request.POST)
-        if form.is_valid():
-            user=request.user
-            user.email=form.cleaned_data['email']
-            user.save()
-            return redirect(reverse('profile',kwargs={'slug':user.forumusers.slug}), request)
-        else:
-            context['form']=form
-    else:
-        context['form']=EmailForm()
+class UpdateProfile(LoginRequiredMixin,UpdateView):
+    model = User
+    form_class = ProfileForm
+    template_name = 'registration/profile_form.html'
 
-    return render(request,'registration/email_change.html',context=context)
+    def setup(self, request, *args, **kwargs):
+        self.user=request.user
+        super(UpdateProfile, self).setup(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title']='Редактирование профиля'
+
+        return context
+
+    def get_object(self):
+        return self.user
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['initial'].update({"about_user": self.object.forumusers.about_user,
+                                  'user_image':self.object.forumusers.user_image})
+        return kwargs
+
+    def get_success_url(self):
+        return self.user.forumusers.get_absolute_url()
 
 
 class UserDetailView(DetailView):

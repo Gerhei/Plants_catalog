@@ -13,7 +13,7 @@ urlpatterns = [
     path('forum/',include('forum.urls'),name="forum"),
     path('news/',include('news.urls'),name="news"),
     path('accounts/profile/<slug:slug>',UserDetailView.as_view(),name="profile"),
-    path('accounts/email_change',update_email,name='email_change'),
+    path('accounts/update-profile',UpdateProfile.as_view(),name='profile_update'),
     path('accounts/registration',CreateUserView.as_view(),name="registration"),
     path('accounts/registration/done',registration_done,name="registration_done"),
     path('accounts/', include('django.contrib.auth.urls')),

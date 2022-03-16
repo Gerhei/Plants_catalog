@@ -5,26 +5,22 @@
 {% endblock %}
 
 {% block content %}
+    {% if request.user == object %}
+        <h3><a href="{% url 'profile_update' %}">Редактировать профиль</a></h3>
+    {% endif %}
     <p>Изображение
         {% if object.forumusers.user_image %}
             <p>
                 <img src="{{object.forumusers.user_image.url}}" height="100px" width="100px">
             </p>
         {% endif %}
-        <form enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-           <p><input type="file" accept="image/*" name="f">
-           <input type="submit" value="Изменить"></p>
-        </form>
     </p>
     <p>Имя пользователя: {{object.username}}</p>
     <p>О пользователе: {{object.forumusers.about_user}}</p>
     <p>Репутация: {{object.forumusers.reputation}}</p>
 
     {% if request.user == object %}
-        <p>Почтовый адрес: {{object.email}}
-            <a href="{% url 'email_change' %}">Изменить почтовый адрес</a>
-        </p>
+        <p>Почтовый адрес: {{object.email}}</p>
         <p><a href="{% url 'password_change' %}">Изменить пароль</a></p>
     {% endif %}
 {% endblock %}

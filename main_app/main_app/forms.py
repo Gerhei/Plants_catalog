@@ -1,4 +1,4 @@
-from django.forms import forms, fields,models
+from django.forms import forms, models,fields
 from django.contrib.auth.forms import UserCreationForm,ValidationError
 from django.contrib.auth.models import User
 from captcha.fields import CaptchaField
@@ -25,11 +25,24 @@ class MyUserForm(UserCreationForm):
         fields = ("username","email")
 
 
-class EmailForm(forms.Form):
-    #captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот.")
-    email=fields.EmailField(label="Адрес почты")
+class ProfileForm(models.ModelForm):
+    user_image=fields.ImageField(required=False,label="Изображение пользователя")
+    about_user=fields.CharField(required=False,label="О пользователе",widget=fields.Textarea)
+
+    def save(self):
+        forum_user=self.instance.forumusers
+        forum_user.user_image=self.cleaned_data['user_image']
+        forum_user.about_user=self.cleaned_data['about_user']
+        forum_user.save()
+        return super(ProfileForm, self).save()
 
     def clean_email(self):
-        data = self.cleaned_data['email']
+        data=self.cleaned_data['email']
+        if self.instance.email==data:
+            return data
         data = clean_email(data)
         return data
+
+    class Meta():
+        model = User
+        fields = ("user_image","email","about_user")

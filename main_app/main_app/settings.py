@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'captcha',
     'plants.apps.PlantsConfig',
     'forum.apps.ForumConfig',
-    'news.apps.NewsConfig'
+    'news.apps.NewsConfig',
+    'django_cleanup.apps.CleanupConfig'
 ]
 
 MIDDLEWARE = [
