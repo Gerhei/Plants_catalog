@@ -1,7 +1,7 @@
 from django.shortcuts import reverse
 from django.db import models
 from django.db.models import Count, F, Value, Q
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, FileExtensionValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -34,14 +34,15 @@ class Sections(models.Model):
         verbose_name="Раздел"
         verbose_name_plural="Разделы"
 
-def content_file_name(instance, filename):
+
+def forumusers_file_name(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (instance.username_lower, ext)
     return os.path.join('forum/user_images', filename)
 
 class ForumUsers(models.Model):
     username_lower = models.CharField(max_length=255, editable=False)
-    user_image=models.ImageField(blank=True,upload_to=content_file_name, default='/forum/user_images/default_profile.jpg',
+    user_image=models.ImageField(blank=True,upload_to=forumusers_file_name, default='/forum/user_images/default_profile.jpg',
                                  verbose_name='Изображение профиля')
     about_user=models.TextField(blank=True,verbose_name='О пользователе')
     reputation=models.IntegerField(default=0,verbose_name='Репутация')
@@ -150,6 +151,7 @@ class Topics(models.Model):
         verbose_name_plural="Темы"
         ordering=['time_create', 'name']
 
+
 class Posts(models.Model):
     author=models.ForeignKey(ForumUsers,on_delete=models.SET_NULL, null=True,verbose_name='Автор')
     topic=models.ForeignKey(Topics,on_delete=models.CASCADE,verbose_name='Тема')
@@ -174,3 +176,26 @@ class Posts(models.Model):
         verbose_name="Сообщение"
         verbose_name_plural="Сообщения"
         ordering=['topic','time_create','author']
+
+
+def posts_file_name(instance, filename):
+    filename = "post_%s/%s" % (instance.post.pk,filename)
+    return os.path.join('forum/posts_attached_files', filename)
+
+class AttachedFiles(models.Model):
+    allowed_ext = ['jpeg', 'jpg', 'png', 'jfif', 'bmp', 'svg', 'tif',
+                   'txt', 'doc', 'docx', 'xlsx', 'pptx']
+
+    file = models.FileField(upload_to = posts_file_name,
+                          validators = [FileExtensionValidator(allowed_extensions = allowed_ext)],
+                          verbose_name = "Файл")
+    time_create = models.DateTimeField(auto_now_add = True, verbose_name = 'Дата создания')
+    post = models.ForeignKey(Posts,on_delete = models.CASCADE,verbose_name = "Сообщение")
+
+    def __str__(self):
+        return self.file.name
+
+    class Meta:
+        verbose_name = "Прикрепленный файл"
+        verbose_name_plural = "Прикрепленные файлы"
+        ordering = ['time_create']
