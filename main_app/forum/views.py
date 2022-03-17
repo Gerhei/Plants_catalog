@@ -108,13 +108,6 @@ class PostsListView(ListView):
                 view_statistics.save()
         return super(PostsListView, self).get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        form = CreatePostForm(self.request.POST)
-        if form.is_valid():
-            post = Posts.objects.create(text=form.cleaned_data['text'], topic=self.topic, post_type=1,author=self.forumuser)
-            post.save()
-        return redirect(f'{self.topic.get_absolute_url()}?page=last')
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['topic'] = self.topic
@@ -135,9 +128,7 @@ class PostsListView(ListView):
             scores[post]=post_info
 
         context['scores']=scores
-
-        if self.request.method == 'GET':
-            context['form']=CreatePostForm()
+        context['form']=CreatePostForm()
 
         return context
 
@@ -145,6 +136,28 @@ class PostsListView(ListView):
         queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.topic.slug)
         queryset=queryset.order_by('post_type','time_create')
         return queryset
+
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+    model=Posts
+    form_class = CreatePostForm
+    http_method_names = ['post']
+
+    def setup(self, request, *args, **kwargs):
+        self.topic=Topics.objects.get(pk=kwargs['pk'])
+        self.forumuser=request.user.forumusers
+        super(PostCreateView, self).setup(request, *args, **kwargs)
+
+    def get_success_url(self):
+        redirect_to=reverse('topic',kwargs={'slug_topic':self.topic.slug})
+        return f'{redirect_to}?page=last'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'topic': self.topic,
+                       'author':self.forumuser,
+                       'post_type':1})
+        return kwargs
 
 
 class TopicCreateView(LoginRequiredMixin,CreateView):
@@ -170,16 +183,14 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Posts
-    form_class = CreatePostForm
+    fields = ['text']
 
     def setup(self, request, *args, **kwargs):
         self.model_post=Posts.objects.get(pk=kwargs['pk'])
         super(PostUpdateView, self).setup(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        if request.user.pk!=self.model_post.author.pk:
-            return HttpResponseForbidden()
-        return super(PostUpdateView, self).get(self,request, *args, **kwargs)
+    def get_object(self):
+        return self.model_post
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -187,7 +198,9 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
+        redirect_to=reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
+        return f'{redirect_to}?page=last#{self.model_post.pk}'
+
 
 class PostScoreChangeView(LoginRequiredMixin,FormView):
     form_class = UpdateScorePostForm

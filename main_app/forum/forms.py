@@ -38,6 +38,19 @@ class CreateTopicForm(forms.ModelForm):
         fields = ['name','text']
 
 class CreatePostForm(forms.ModelForm):
+
+    def __init__(self,topic=None,author=None,post_type=1,*args,**kwargs):
+        self.topic=topic
+        self.author=author
+        self.post_type=post_type
+        super(CreatePostForm, self).__init__(*args,**kwargs)
+        
+    def save(self):
+        self.instance.topic=self.topic
+        self.instance.author=self.author
+        self.instance.post_type=self.post_type
+        return super(CreatePostForm, self).save()
+
     class Meta:
         model = Posts
         fields = ['text']
