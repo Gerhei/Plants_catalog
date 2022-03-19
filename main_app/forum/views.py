@@ -148,9 +148,10 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         self.forumuser=request.user.forumusers
         super(PostCreateView, self).setup(request, *args, **kwargs)
 
+
     def get_success_url(self):
         redirect_to=reverse('topic',kwargs={'slug_topic':self.topic.slug})
-        return f'{redirect_to}?page=last'
+        return f'{redirect_to}?page=last#{self.object.pk}'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -183,11 +184,17 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Posts
-    fields = ['text']
+    form_class = CreatePostForm
 
     def setup(self, request, *args, **kwargs):
         self.model_post=Posts.objects.get(pk=kwargs['pk'])
+        self.forumuser=request.user.forumusers
         super(PostUpdateView, self).setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if self.forumuser!=self.model_post.author or not self.model_post.is_editable():
+            return HttpResponseForbidden()
+        return super(PostUpdateView, self).get(request, *args, **kwargs)
 
     def get_object(self):
         return self.model_post
@@ -200,6 +207,13 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         redirect_to=reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
         return f'{redirect_to}?page=last#{self.model_post.pk}'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'topic': self.model_post.topic,
+                       'author': self.model_post.author,
+                       'post_type': 1})
+        return kwargs
 
 
 class PostScoreChangeView(LoginRequiredMixin,FormView):

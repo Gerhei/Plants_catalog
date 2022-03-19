@@ -43,7 +43,7 @@
         {{block.super}}
     {% endblock pagination %}
     {% if user.is_authenticated %}
-        <form action="{% url 'create_post' topic.pk %}" method="post">
+        <form action="{% url 'create_post' topic.pk %}" enctype="multipart/form-data" method="post">
             {% csrf_token %}
             <ul>
                 {{form.as_ul}}

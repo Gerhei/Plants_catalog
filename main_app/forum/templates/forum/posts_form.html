@@ -5,9 +5,9 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Изменить">
+       {{form.as_p}}
+       <p><input type="submit" value="Изменить"></p>
     </form>
 {% endblock content %}

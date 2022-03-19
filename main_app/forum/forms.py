@@ -38,7 +38,6 @@ class CreateTopicForm(forms.ModelForm):
         fields = ['name','text']
 
 class CreatePostForm(forms.ModelForm):
-
     def __init__(self,topic=None,author=None,post_type=1,*args,**kwargs):
         self.topic=topic
         self.author=author
@@ -54,6 +53,14 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Posts
         fields = ['text']
+
+
+class CreateAttachedFileForm(forms.ModelForm):
+    post=forms.ModelChoiceField(queryset=Posts.objects.all(),widget=forms.HiddenInput())
+
+    class Meta:
+        model = AttachedFiles
+        fields = ['file', 'post']
 
 
 class UpdateScorePostForm(forms.ModelForm):
