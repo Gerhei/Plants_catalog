@@ -34,6 +34,12 @@
         {% endif %}
         {% endif %}
         <p>{{post.text}}</p>
+        <p>
+            {% for file in post.attachedfiles_set.all %}
+            <a href="{{file.get_absolute_url}}">
+                <img src="{{file.get_absolute_url}}" alt="{% get_filename_from_path file %}"
+                height="100px" width="100px"></a>
+            {% endfor %}
         {% if user.id == post.author.id and post.post_type != 0 and post.is_editable %}
             <p><a href="{% url 'update_post' post.pk %}">Редактировать сообщение</a></p>
         {% endif %}

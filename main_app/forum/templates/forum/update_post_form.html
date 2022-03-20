@@ -1,4 +1,5 @@
 {% extends "forum/base.html" %}
+{% load forum_tags %}
 
 {% block content %}
     {% block menu_forum %}
@@ -12,7 +13,7 @@
         {% if initial_files %}
         <p>К сообщению уже прикреплены файлы:
             {% for file in initial_files %}
-            <span><a href="{{ file.get_absolute_url }}">№{{forloop.counter}} </a></span>
+            <span><a href="{{ file.get_absolute_url }}">{% get_filename_from_path file %} </a></span>
             {% endfor %}
         </p>
         <p>Удалить все уже прикрепленные файлы <input type="checkbox" name="del_initial"></p>

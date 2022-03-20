@@ -23,3 +23,8 @@ def get_post_score(post,scores):
 def get_rate_form_with_initial_data(context,post,scores):
     form=context['rate_form'](initial={'value':scores[post]['rate']})
     return form.as_p()
+
+@register.simple_tag()
+def get_filename_from_path(path):
+    path=path.__str__()
+    return path.split('/')[-1]
