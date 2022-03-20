@@ -42,6 +42,7 @@
             {% endfor %}
         {% if user.id == post.author.id and post.post_type != 0 and post.is_editable %}
             <p><a href="{% url 'update_post' post.pk %}">Редактировать сообщение</a></p>
+            <p><a href="{% url 'update_post' post.pk %}">Добавить вложения</a></p>
         {% endif %}
         <br>
     {% endfor %}
