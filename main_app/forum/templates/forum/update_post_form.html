@@ -1,0 +1,44 @@
+{% extends "forum/base.html" %}
+
+{% block content %}
+    {% block menu_forum %}
+        {{block.super}}
+    {% endblock menu_forum %}
+
+    <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+       {{form.as_p}}
+        <p><input type="file" multiple name="file_field"></p>
+        {% if initial_files %}
+        <p>К сообщению уже прикреплены файлы:
+            {% for file in initial_files %}
+            <span><a href="{{ file.get_absolute_url }}">№{{forloop.counter}} </a></span>
+            {% endfor %}
+        </p>
+        <p>Удалить все уже прикрепленные файлы <input type="checkbox" name="del_initial"></p>
+        {% endif %}
+        {% if attached_files_errors %}
+            <p>Сообщение изменено, но файл {{attached_files_errors.1}} не добавлен по причине:
+                <ul>
+                    {% for error in attached_files_errors.0 %}
+                        <li>
+                            {{error}}
+                        </li>
+                    {% endfor %}
+                    {% if attached_files_errors.2 %}
+                        <li>
+                            Из-за данного файла также не добавлены все последующие за ним файлы.
+                        </li>
+                        <li>
+                            Список файлов, которые также не удалось добавить:
+                            {% for file in attached_files_errors.2 %}
+                                <span>{{file}} </span>
+                            {% endfor %}
+                        </li>
+                    {% endif %}
+                </ul>
+            </p>
+        {% endif %}
+       <p><input type="submit" value="Изменить"></p>
+    </form>
+{% endblock content %}

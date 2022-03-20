@@ -55,14 +55,6 @@ class CreatePostForm(forms.ModelForm):
         fields = ['text']
 
 
-class CreateAttachedFileForm(forms.ModelForm):
-    post=forms.ModelChoiceField(queryset=Posts.objects.all(),widget=forms.HiddenInput())
-
-    class Meta:
-        model = AttachedFiles
-        fields = ['file', 'post']
-
-
 class UpdateScorePostForm(forms.ModelForm):
     value=forms.IntegerField(min_value=-1,max_value=1,
                              widget=forms.RadioSelect(choices=((-1,'-'),(0,'0'),(1,'+'))),

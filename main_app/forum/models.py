@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from main_app.settings import MEDIA_URL
 from slugify import slugify
 from datetime import timedelta,datetime
 import os
@@ -158,7 +159,6 @@ class Posts(models.Model):
     text=models.TextField(verbose_name='Сообщение')
     # needed to find the topic author
     post_type=models.IntegerField(choices=((0,'question'),(1,'answer')))
-    #attached_files=
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     statistics = GenericRelation(Statistics, related_query_name='posts')
@@ -186,6 +186,8 @@ class AttachedFiles(models.Model):
     allowed_ext = ['jpeg', 'jpg', 'png', 'jfif', 'bmp', 'svg', 'tif',
                    'txt', 'doc', 'docx', 'xlsx', 'pptx']
 
+    max_files_per_post = 10
+
     file = models.FileField(upload_to = posts_file_name,
                           validators = [FileExtensionValidator(allowed_extensions = allowed_ext)],
                           verbose_name = "Файл")
@@ -194,6 +196,15 @@ class AttachedFiles(models.Model):
 
     def __str__(self):
         return self.file.name
+
+    def get_absolute_url(self):
+        return self.file.url
+
+    def clean(self):
+        count_files=AttachedFiles.objects.filter(post=self.post).count()
+        if count_files>=self.max_files_per_post:
+            raise ValidationError({'file': ('Для данного сообщения превышено допустимое '
+                                            'количество прикрепленных файлов = %s') % self.max_files_per_post})
 
     class Meta:
         verbose_name = "Прикрепленный файл"

@@ -148,7 +148,6 @@ class PostCreateView(LoginRequiredMixin,CreateView):
         self.forumuser=request.user.forumusers
         super(PostCreateView, self).setup(request, *args, **kwargs)
 
-
     def get_success_url(self):
         redirect_to=reverse('topic',kwargs={'slug_topic':self.topic.slug})
         return f'{redirect_to}?page=last#{self.object.pk}'
@@ -185,9 +184,11 @@ class TopicCreateView(LoginRequiredMixin,CreateView):
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Posts
     form_class = CreatePostForm
+    template_name = 'forum/update_post_form.html'
 
     def setup(self, request, *args, **kwargs):
         self.model_post=Posts.objects.get(pk=kwargs['pk'])
+        self.initial_files=AttachedFiles.objects.filter(post=self.model_post)
         self.forumuser=request.user.forumusers
         super(PostUpdateView, self).setup(request, *args, **kwargs)
 
@@ -196,12 +197,44 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
             return HttpResponseForbidden()
         return super(PostUpdateView, self).get(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        response = super(PostUpdateView, self).post(request, *args, **kwargs)
+        files = request.FILES.getlist('file_field')
+        if 'del_initial' in request.POST:
+            self.initial_files.delete()
+        if files:
+            not_attached_files=[]
+            is_valid=True
+            files_error=[]
+            for file in files:
+                if is_valid:
+                    try:
+                        attached_file = AttachedFiles(file=file, post=self.model_post)
+                        attached_file.full_clean()
+                        attached_file.save()
+                    except ValidationError as e:
+                        is_valid=False
+                        files_error.append(e.message_dict['file'])
+                        files_error.append(file.name)
+                else:
+                    not_attached_files.append(file.name)
+            if not is_valid:
+                files_error.append(not_attached_files)
+                return self.render_to_response(self.get_context_data(attached_files_errors=files_error))
+
+        return response
+
     def get_object(self):
         return self.model_post
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['attached_files_errors'] = None
+        if 'attached_files_errors' in kwargs:
+            context['attached_files_errors'] = kwargs['attached_files_errors']
+        context['initial_files']=self.initial_files
         context['title']='Редактирование сообщения'
+
         return context
 
     def get_success_url(self):
