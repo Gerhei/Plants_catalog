@@ -45,8 +45,8 @@
                             {% endfor %}
                         </td>
                         <td>
-                            {% if plant.image_url %}
-                                <img src="{{plant.image_url }}" class="plant-image">
+                            {% if plant.image %}
+                                <img src="{{plant.image.url }}" class="plant-image">
                             {% endif %}
                         </td>
                     </tr>

@@ -37,12 +37,13 @@
 {% endblock %}
 
 {% block aside %}
-    {% if object.image_url %}
+    {% if object.image %}
         <div class="image">
-            <img src="{{object.image_url }}">
+            <img src="{{object.image.url }}">
             <p>{{object.name}}, внешний вид</p>
         </div>
     {% endif %}
+
     <table class="taxons">
         <tr class="taxons-title">
             <th>Таксономическая классификация</th>

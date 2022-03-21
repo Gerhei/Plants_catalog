@@ -1,6 +1,7 @@
 from django.db import models
 from  django.shortcuts import reverse
 from slugify import slugify
+import os
 
 PRIORITIES = (
     (0, 'Домен'), (1, 'Надцарство'), (2, 'Царство'), (3, 'Подцарство'), (4, 'Клада'),
@@ -66,12 +67,17 @@ class Taxons(models.Model):
         ordering=['name']
         unique_together=['order','name']
 
+
+def content_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (instance.name, ext)
+    return os.path.join('plants/plants_image', filename)
+
 class Plants(models.Model):
     name=models.CharField(max_length=255,unique=True,verbose_name='Название')
     name_lower=models.CharField(max_length=255,unique=True,null=True,editable=False)
     slug=models.SlugField(max_length=255,unique=True,db_index=True,editable=False,verbose_name='URL')
-    image=models.ImageField(upload_to="./static",blank=True)
-    image_url=models.CharField(max_length=1024,blank=True)
+    image=models.ImageField(upload_to=content_file_name,blank=True)
     time_create=models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     time_update=models.DateTimeField(auto_now=True,verbose_name='Дата изменения')
     categories=models.ManyToManyField(Categories,blank=True,verbose_name='Категории')
