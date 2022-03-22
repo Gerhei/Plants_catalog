@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic.detail import DetailView,SingleObjectMixin
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Count, F, Value, Q, ObjectDoesNotExist,Sum
 from .models import *
 from .forms import *
@@ -271,3 +271,51 @@ class PostScoreChangeView(LoginRequiredMixin,FormView):
         kwargs.update({'post': self.model_post,
                        'forum_user':self.forumuser})
         return kwargs
+
+
+class TopicDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Topics
+    permission_required = ('topics.delete',)
+
+    def setup(self, request, *args, **kwargs):
+        super(TopicDeleteView, self).setup(request, *args, **kwargs)
+        self.sections=Topics.objects.get(pk=kwargs['pk']).sections
+
+    def get_success_url(self):
+        return reverse('topics',kwargs={'slug':self.sections.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super(TopicDeleteView, self).get_context_data(**kwargs)
+        context['title'] = "Удалить тему"
+        return context
+
+
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Posts
+    permission_required = ('posts.delete',)
+
+    def setup(self, request, *args, **kwargs):
+        super(PostDeleteView, self).setup(request, *args, **kwargs)
+        self.topic=Posts.objects.get(pk=kwargs['pk']).topic
+
+    def get_success_url(self):
+        return reverse('topic',kwargs={'slug_topic':self.topic.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDeleteView, self).get_context_data(**kwargs)
+        context['title'] = "Удалить сообщение"
+        return context
+
+
+class TopicUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Topics
+    permission_required = ('topics.change',)
+    fields = ('name','sections')
+
+    def get_success_url(self):
+        return reverse('topic',kwargs={'slug_topic':self.object.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super(TopicUpdateView, self).get_context_data(**kwargs)
+        context['title'] = "Изменить тему"
+        return context
