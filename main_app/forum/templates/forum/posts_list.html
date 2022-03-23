@@ -11,6 +11,12 @@
     {% endblock menu_forum %}
 
     <h2>{{topic}}</h2>
+    {% if can_delete_topic %}
+        <p>
+            <a href="{% url 'delete_topic' topic.pk %}">Удалить тему</a>
+            <a href="{% url 'change_topic' topic.pk %}">Изменить тему</a>
+        </p>
+    {% endif %}
     {% for post in page_obj %}
         <p><a name="{{post.pk}}"></a></p>
         {% if post.author.user_image %}
@@ -23,15 +29,15 @@
         {% endif %}
         <p>Оценка: {% get_post_score post scores %} </p>
         {% if user.is_authenticated %}
-        {% if rate_form %}
-            <p>
-                <form action="{% url 'rate_post' post.pk %}" method="post">
-                {% csrf_token %}
-                {% get_rate_form_with_initial_data post scores %}
-                <input type="submit" value="Оценить">
-                </form>
-            </p>
-        {% endif %}
+            {% if rate_form %}
+                <p>
+                    <form action="{% url 'rate_post' post.pk %}" method="post">
+                    {% csrf_token %}
+                    {% get_rate_form_with_initial_data post scores %}
+                    <input type="submit" value="Оценить">
+                    </form>
+                </p>
+            {% endif %}
         {% endif %}
         <p>{{post.text}}</p>
         <p>
@@ -40,9 +46,12 @@
                 <img src="{{file.get_absolute_url}}" alt="{% get_filename_from_path file %}"
                 height="100px" width="100px"></a>
             {% endfor %}
-        {% if user.id == post.author.id and post.post_type != 0 and post.is_editable %}
+        {% if user.id == post.author.id and post.is_editable %}
             <p><a href="{% url 'update_post' post.pk %}">Редактировать сообщение</a></p>
             <p><a href="{% url 'update_post' post.pk %}">Добавить вложения</a></p>
+        {% endif %}
+        {% if can_delete_post %}
+            <p><a href="{% url 'delete_post' post.pk %}">Удалить сообщение</a></p>
         {% endif %}
         <br>
     {% endfor %}

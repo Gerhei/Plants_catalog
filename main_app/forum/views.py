@@ -120,6 +120,8 @@ class PostsListView(ListView):
             score=Statistics.objects.filter(posts=post).aggregate(Sum('value'))
             post_info['score'] = score['value__sum'] if score['value__sum'] else 0
             try:
+                if not self.request.user.is_authenticated:
+                    raise ObjectDoesNotExist
                 rate=Statistics.objects.get(user=self.forumuser,posts=post)
                 rate=rate.value
             except ObjectDoesNotExist:
@@ -129,6 +131,8 @@ class PostsListView(ListView):
 
         context['scores']=scores
         context['form']=CreatePostForm()
+        context['can_delete_post'] = self.request.user.has_perm('posts.delete', Posts)
+        context['can_delete_topic'] = self.request.user.has_perms(['topic.delete','topic.change'],Topics)
 
         return context
 
@@ -311,6 +315,7 @@ class TopicUpdateView(PermissionRequiredMixin, UpdateView):
     model = Topics
     permission_required = ('topics.change',)
     fields = ('name','sections')
+    # change default template
 
     def get_success_url(self):
         return reverse('topic',kwargs={'slug_topic':self.object.slug})
