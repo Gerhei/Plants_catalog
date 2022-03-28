@@ -1,51 +1,7 @@
-ul.menu_plant{
-    font-size:20px;
-    list-style-type:none;
-    margin:20px;
-    position: fixed;
-}
-
-ul.menu_plant li{
-    margin-top:20px;
-}
-
-ul.menu_plant li a.topbutton{
-    text-decoration:none;
-    color:blue;
-}
-
-.super-title{
-    text-decoration:none;
-    color:black;
-}
-
-.super-title h2{
-    font-size:34px;
-    text-align:center;
-}
-
-.title{
-    font-size:24px;
-}
-
-table.list{
-    border: black 2px solid;
-    border-collapse: collapse;
-}
-
-table.list td{
-    border: 2px solid black;
-}
-
-td.number{
-    font-size:18px;
-}
-
 td a.name{
     font-size:14px;
     color:blue;
     text-decoration:none;
-
 }
 
 .plant-image{
@@ -65,25 +21,6 @@ td a.name{
 
 .description-block h3 {
     font-size:22px;
-}
-
-ul.menu_detail_plant
-{
-    margin-top: 20px;;
-    padding: 4px;
-    text-align:center;
-}
-
-ul.menu_detail_plant li {
-    display: inline;
-    margin-right: 5px;
-    padding: 3px;
-   }
-
-.menu_plant_link{
-    color: green;
-    text-decoration: none;
-    font-size: 20px;
 }
 
 .image{

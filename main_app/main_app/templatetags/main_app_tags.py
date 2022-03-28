@@ -32,6 +32,11 @@ def get_navigation(context):
     return {'request':context['request'],'menu':menu}
 
 
+@register.simple_tag(takes_context=True)
+def get_number(context,count):
+    return count+(context['page_obj'].number-1)*context['page_obj'].paginator.per_page
+
+
 @register.inclusion_tag('main_app/footer.html',takes_context=True)
 def get_footer(context):
     return {'request':context['request']}

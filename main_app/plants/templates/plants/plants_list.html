@@ -25,8 +25,8 @@
 
 {% block content %}
     {% block titles %}
-        <a href="{% url super_url %}" class="super-title"><h2>{{super_title}}</h2></a>
-        <h3 class="title">{{title}}</h3>
+        <a href="{% url super_url %}" class="super-title"><p>{{super_title}}</p></a>
+        <p class="title">{{title}}</p>
     {% endblock titles %}
     {% if object_list.count != 0 %}
         {% get_pagination %}
@@ -61,7 +61,7 @@
 {% endblock content%}
 
 {% block aside %}
-    <ul class="menu_plant">
+    <ul class="vertical_menu">
         <li>
             <h2 class="menu-title">Разделы</h2>
         </li>

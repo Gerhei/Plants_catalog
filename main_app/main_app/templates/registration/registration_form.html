@@ -5,10 +5,30 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Регистрация">
-    </form>
+    <div class="table-text">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field-grid">
+                    <div class="field-label">
+                        {{field.label}}:
+                    </div>
+
+                    <div class="field-input">
+                        {{field}}
+                    </div>
+
+                    {% if field.help_text %}
+                        <div class="field-help-text">{{field.help_text}}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="field-errors">{{field.errors}}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="field-input"><input type="submit" value="Регистрация"></div>
+        </form>
+    </div>
 
 {% endblock content %}

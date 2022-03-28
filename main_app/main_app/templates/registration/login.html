@@ -5,42 +5,58 @@
 {% endblock title%}
 
 {% block content %}
-
-    {% if form.errors %}
-        <p>Неверный пароль или имя пользователя.</p>
-    {% endif %}
-
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>
-                У вашего аккаунта нет доступа к этой странице. Чтобы продолжить,
-            пожалуйста, войдите с учетной записи, которая имеет доступ.
-            </p>
-        {% else %}
-            <p>Пожалуйста, войдите, чтобы увидеть эту страницу.</p>
+    <div class="table-text">
+        {% if form.errors %}
+            <ul class="errorlist">
+                <li>Неверный пароль или имя пользователя.</li>
+            </ul>
         {% endif %}
-    {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-        <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-        </tr>
-        </table>
+        {% if next %}
+            <ul class="errorlist">
+                 {% if user.is_authenticated %}
+                    <li>
+                        У вашего аккаунта нет доступа к этой странице. Чтобы продолжить,
+                    пожалуйста, войдите с учетной записи, которая имеет доступ.
+                    </li>
+                {% else %}
+                    <li>Пожалуйста, войдите, чтобы увидеть эту страницу.</li>
+                {% endif %}
+            </ul>
+        {% endif %}
 
-        <input type="submit" value="Войти">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field-grid">
+                    <div class="field-label">
+                        {{field.label}}:
+                    </div>
 
-    <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
-    <p>
-        <span>Еще нет аккаунта?</span>
-        <a href="{% url 'registration' %}">Регистрация</a>
-    </p>
+                    <div class="field-input">
+                        {{field}}
+                    </div>
+
+                    {% if field.help_text %}
+                        <div class="field-help-text">{{field.help_text}}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="field-errors">{{field.errors}}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="field-input">
+                <input type="submit" value="Войти">
+                <input type="hidden" name="next" value="{{ next }}">
+            </div>
+        </form>
+
+        <div class="text-padding"><a href="{% url 'password_reset' %}" class="app_link">Забыли пароль?</a></div>
+        <div class="text-padding">
+            <span>Еще нет аккаунта?</span>
+            <a href="{% url 'registration' %}" class="app_link">Регистрация</a>
+        </div>
+    </div>
 {% endblock content %}

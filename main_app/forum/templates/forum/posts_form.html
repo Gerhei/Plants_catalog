@@ -1,13 +1,20 @@
-{% extends "forum/base.html" %}
-
-{% block content %}
-    {% block menu_forum %}
-        {{block.super}}
-    {% endblock menu_forum %}
-
-    <form enctype="multipart/form-data" method="post">
+<div class="table-text post-create-form">
+    <form action="{% url 'create_post' topic.pk %}" enctype="multipart/form-data" method="post">
         {% csrf_token %}
-       {{form.as_p}}
-       <p><input type="submit" value="Изменить"></p>
+        {% for field in form %}
+                <div class="field-grid">
+                    <div class="field-label">
+                        {{field.label}}:
+                    </div>
+
+                    <div class="field-input">
+                        {{field}}
+                    </div>
+                    {% if field.errors %}
+                        <div class="field-errors">{{field.errors}}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="field-input"><input type="submit" value="Создать сообщение"></div>
     </form>
-{% endblock content %}
+</div>

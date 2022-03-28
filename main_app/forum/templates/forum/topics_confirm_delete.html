@@ -4,11 +4,13 @@
     {% block menu_forum %}
         {{block.super}}
     {% endblock menu_forum %}
+    <div class="table-text">
+        <form method="post">
+            {% csrf_token %}
+            <p>Вы уверены, что хотите удалить тему "{{ object }}"?</p>
+           {{form.as_p}}
+           <input type="submit" value="Удалить">
+        </form>
+    </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <p>Вы уверены, что хотите удалить тему "{{ object }}"?</p>
-       {{form.as_p}}
-       <p><input type="submit" value="Удалить"></p>
-    </form>
 {% endblock content %}

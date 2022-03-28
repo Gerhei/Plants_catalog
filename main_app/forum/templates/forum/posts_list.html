@@ -1,6 +1,6 @@
 {% extends "forum/base.html" %}
 {% load forum_tags %}
-
+{% load main_app_tags %}
 {% block title %}
     <title>{{topic.name}}</title>
 {% endblock %}
@@ -10,64 +10,109 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <h2>{{topic}}</h2>
+    <h2 class="super-title">{{topic}}</h2>
     {% if can_delete_topic %}
-        <p>
-            <a href="{% url 'delete_topic' topic.pk %}">Удалить тему</a>
-            <a href="{% url 'change_topic' topic.pk %}">Изменить тему</a>
-        </p>
+        <div class="topic-deleting">
+            <a href="{% url 'delete_topic' topic.pk %}" class="app_link">Удалить тему</a>
+            <a href="{% url 'change_topic' topic.pk %}" class="app_link">Изменить тему</a>
+        </div>
     {% endif %}
-    {% for post in page_obj %}
-        <p><a name="{{post.pk}}"></a></p>
-        {% if post.author.user_image %}
-            <p><img src="{{post.author.user_image.url}}" height="80px" width="80px"></p>
-        {% endif %}
-        <p><a href="{{post.author.get_absolute_url}}">{{post.author}}</a></p>
-        <p>{{post.time_create}}</p>
-        {% if post.is_changed %}
-            <p>Изменено: {{post.time_update}}</p>
-        {% endif %}
-        <p>Оценка: {% get_post_score post scores %} </p>
-        {% if user.is_authenticated %}
-            {% if rate_form %}
-                <p>
-                    <form action="{% url 'rate_post' post.pk %}" method="post">
-                    {% csrf_token %}
-                    {% get_rate_form_with_initial_data post scores %}
-                    <input type="submit" value="Оценить">
-                    </form>
-                </p>
-            {% endif %}
-        {% endif %}
-        <p>{{post.text}}</p>
-        <p>
-            {% for file in post.attachedfiles_set.all %}
-            <a href="{{file.get_absolute_url}}">
-                <img src="{{file.get_absolute_url}}" alt="{% get_filename_from_path file %}"
-                height="100px" width="100px"></a>
-            {% endfor %}
-        {% if user.id == post.author.id and post.is_editable %}
-            <p><a href="{% url 'update_post' post.pk %}">Редактировать сообщение</a></p>
-            <p><a href="{% url 'update_post' post.pk %}">Добавить вложения</a></p>
-        {% endif %}
-        {% if can_delete_post %}
-            <p><a href="{% url 'delete_post' post.pk %}">Удалить сообщение</a></p>
-        {% endif %}
-        <br>
-    {% endfor %}
+
+    {% get_pagination %}
+
+    <table class="forum-posts">
+        {% for post in page_obj %}
+        <tr>
+            <td>
+                <a name="{{post.pk}}"></a>
+                <div class="post-grid">
+                    <div class="user-info">
+                        <div class="user-block">
+                            {% if post.author.user_image %}
+                                <div class="user-image">
+                                    <a href="{{post.author.user_image.url}}">
+                                        <img src="{{post.author.user_image.url}}"></a>
+                                </div>
+                            {% endif %}
+
+                            <div class="author">
+                                <a href="{{post.author.get_absolute_url}}" class="app_link">{{post.author}}</a>
+                                <p>Репутация: {{post.author.reputation}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-info">
+                        <div class="time-info">
+                            <p class="time-create">{{post.time_create}}</p>
+                            {% if post.is_changed %}
+                                <p class="time-update">Изменено: {{post.time_update}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="score-block">
+                        <p class="post-score">Оценка: {% get_post_score post scores %} </p>
+                        {% if user.is_authenticated %}
+                            {% if rate_form %}
+                                <div class="form-score">
+                                    <form action="{% url 'rate_post' post.pk %}" method="post">
+                                    {% csrf_token %}
+                                    {% get_rate_form_with_initial_data post scores %}
+                                    <input type="submit" value="Оценить">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div class="post-text">
+                        <p>{{post.text}}</p>
+                    </div>
+
+                    {% if post.attachedfiles_set.all %}
+                        <div class="attached-files">
+                            <p>Прикрепленные файлы</p>
+                            {% for file in post.attachedfiles_set.all %}
+                                <a href="{{file.get_absolute_url}}">
+                                    <img src="{{file.get_absolute_url}}" alt="{% get_filename_from_path file %}"
+                                    height="100px" width="100px">
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="post-editing">
+                        {% if user.id == post.author.id and post.is_editable %}
+                            <div class="edit text-padding" align="left">
+                                <p><a href="{% url 'update_post' post.pk %}" class="app_link">
+                                    Редактировать сообщение</a></p>
+                                <p><a href="{% url 'update_post' post.pk %}" class="app_link">
+                                    Добавить вложения</a></p>
+                            </div>
+                        {% endif %}
+
+                        {% if can_delete_post %}
+                            <div class="delete text-padding">
+                                <p><a href="{% url 'delete_post' post.pk %}" class="app_link">
+                                    Удалить сообщение</a></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                </td>
+        </tr>
+        <tr class="indent"></tr>
+        {% endfor %}
+    </table>
+
     {% block pagination %}
         {{block.super}}
     {% endblock pagination %}
+
     {% if user.is_authenticated %}
-        <form action="{% url 'create_post' topic.pk %}" enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            <ul>
-                {{form.as_ul}}
-                <li>
-                    <button type="submit">Создать сообщение</button>
-                </li>
-            </ul>
-        </form>
+        {% get_create_post_form topic %}
     {% else %}
         <h3>Только зарегестрированные пользователи могут оставлять сообщения.</h3>
     {% endif %}

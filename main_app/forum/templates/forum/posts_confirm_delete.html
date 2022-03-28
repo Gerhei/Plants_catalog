@@ -5,10 +5,13 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        <p>Вы уверены, что хотите удалить сообщение "{{ object }}"?</p>
-       {{form.as_p}}
-       <p><input type="submit" value="Удалить"></p>
-    </form>
+    <div class="table-text">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <p>Вы уверены, что хотите удалить сообщение "{{ object }}"?</p>
+           {{form.as_p}}
+           <input type="submit" value="Удалить">
+        </form>
+    </div>
+
 {% endblock content %}

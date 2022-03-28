@@ -17,7 +17,7 @@ class FilterForm(forms.Form):
 
 
 class CreateTopicForm(forms.ModelForm):
-    captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот.")
+    captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот")
     text=forms.CharField(label="Текст сообщения",widget=forms.Textarea())
 
     def __init__(self,section=None,author=None,*args, **kwargs):
@@ -35,7 +35,7 @@ class CreateTopicForm(forms.ModelForm):
 
     class Meta:
         model = Topics
-        fields = ['name','text']
+        fields = ['name','captcha','text']
 
 class CreatePostForm(forms.ModelForm):
     def __init__(self,topic=None,author=None,post_type=1,*args,**kwargs):

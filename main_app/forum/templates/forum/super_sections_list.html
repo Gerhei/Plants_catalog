@@ -1,5 +1,5 @@
 {% extends "forum/base.html" %}
-
+{% load main_app_tags %}
 {% block title %}
     <title>{{title}}</title>
 {% endblock %}
@@ -9,8 +9,15 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <h2>Список разделов</h2>
-    {% for super_section in object_list %}
-        <p><a href="{{super_section.get_absolute_url}}">{{super_section.name}}</a></p>
-    {% endfor %}
+    <a href="" class="super-title"><p>Список разделов</p></a>
+    <table>
+        {% for super_section in object_list %}
+        <tr><td>
+            <p class="title">
+                <span class="number">{{ forloop.counter }}</span>
+                <a href="{{super_section.get_absolute_url}}" class="menu_link">{{super_section.name}}</a>
+            </p>
+        </td></tr>
+        {% endfor %}
+    </table>
 {% endblock content %}

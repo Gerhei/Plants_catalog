@@ -1,4 +1,5 @@
 {% extends "forum/base.html" %}
+{% load main_app_tags %}
 {% load static %}
 {% block title %}
     <title>{{title}}</title>
@@ -22,13 +23,25 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <h2>{{title}}</h2>
-    {% for topic in page_obj %}
-        <a href="{{ topic.get_absolute_url }}">{{topic.name}}</a>
-        <p>{{topic.time_create}}</p>
-        <p>{{topic.author}}</p>
-        <br>
-    {% endfor %}
+    <a href="" class="super-title"><p>{{title}}</p></a>
+    <table class="list">
+            <tr>
+                <td><h3>№</h3></td>
+                <td><h3>Тема</h3></td>
+                <td><h3>Автор</h3></td>
+                <td><h3>Время создания</h3></td>
+                <td><h3>Просмотры</h3></td>
+            </tr>
+            {% for topic in page_obj %}
+                <tr>
+                    <td class="number">{% get_number forloop.counter %}</td>
+                    <td><a href="{{ topic.get_absolute_url }}" class="app_link">{{topic.name}}</a></td>
+                    <td><a href="{{ topic.author.get_absolute_url }}" class="app_link">{{topic.author}}</a></td>
+                    <td class="number">{{topic.time_create}}</td>
+                    <td class="number">{{topic.view_count}}</td>
+                </tr>
+            {% endfor %}
+    </table>
     {% block pagination %}
         {{block.super}}
     {% endblock pagination %}

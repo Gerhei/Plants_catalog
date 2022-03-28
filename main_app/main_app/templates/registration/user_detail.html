@@ -1,26 +1,54 @@
 {% extends 'main_app/base.html' %}
-
+{% load static %}
 {% block title %}
     <title>{{object.username}}</title>
 {% endblock %}
 
+{% block extrastyles %}
+    <link type="text/css" href="{% static 'main_app/css/registration.css'%}" rel="stylesheet"/>
+{% endblock extrastyles %}
+
 {% block content %}
     {% if request.user == object %}
-        <h3><a href="{% url 'profile_update' %}">Редактировать профиль</a></h3>
+        <p class="super-title">Ваш профиль</p>
+    {% else %}
+        <p class="super-title">Профиль пользователя {{object.username}}</p>
     {% endif %}
-    <p>Изображение
-        {% if object.forumusers.user_image %}
-            <p>
-                <img src="{{object.forumusers.user_image.url}}" height="100px" width="100px">
-            </p>
-        {% endif %}
-    </p>
-    <p>Имя пользователя: {{object.username}}</p>
-    <p>О пользователе: {{object.forumusers.about_user}}</p>
-    <p>Репутация: {{object.forumusers.reputation}}</p>
 
-    {% if request.user == object %}
-        <p>Почтовый адрес: {{object.email}}</p>
-        <p><a href="{% url 'password_change' %}">Изменить пароль</a></p>
-    {% endif %}
+    <div class="profile-grid">
+        <div class="profile-general-info">
+            {% if object.forumusers.user_image %}
+                <div class="profile-image">
+                    <a href="{{object.forumusers.user_image.url}}">
+                        <img src="{{object.forumusers.user_image.url}}">
+                    </a>
+                </div>
+            {% endif %}
+            <div class="general-info">
+                <p>Имя пользователя: {{object.username}}</p>
+                <p>Репутация: {{object.forumusers.reputation}}</p>
+                {% if request.user == object %}
+                    <p>Почтовый адрес: {{object.email}}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if request.user == object %}
+            <div class="profile-editing">
+                    <p class="profile-edit"><a href="{% url 'profile_update' %}" class="app_link">
+                        Редактировать профиль</a></p>
+            </div>
+        {% endif %}
+
+        <div class="profile-detail-info">
+            <p class="title">О пользователе</p>
+            <p>{{object.forumusers.about_user}}</p>
+        </div>
+
+        {% if request.user == object %}
+            <div class="profile-settings">
+                    <p><a href="{% url 'password_change' %}" class="app_link">Изменить пароль</a></p>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

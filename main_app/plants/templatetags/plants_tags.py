@@ -6,10 +6,6 @@ register=template.Library()
 def sort_taxons(list):
     return list.order_by('order')
 
-@register.simple_tag(takes_context=True)
-def get_number(context,count):
-    return count+(context['page_obj'].number-1)*context['page_obj'].paginator.per_page
-
 @register.inclusion_tag('plants/menu_plant.html')
 def get_menu_plant():
     menu = [

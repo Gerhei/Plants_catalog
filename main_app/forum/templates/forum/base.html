@@ -1,15 +1,19 @@
 {% extends "main_app/base.html" %}
-{%load static%}
+{% load static %}
 {% load forum_tags %}
 {% load main_app_tags %}
 
 {% block icon %}
-<link rel="shortcut icon" href="/static/forum/images/forum_icon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/forum/images/forum_icon.svg" type="image/x-icon">
 {% endblock icon %}
+
+{% block extrastyles %}
+    <link type="text/css" href="{% static 'forum/css/forum.css'%}" rel="stylesheet"/>
+{% endblock extrastyles %}
 
 {% block content %}
     {% block menu_forum %}
-        <ul class="menu_forum">
+        <ul class="horizontal_menu">
             {% get_menu_forum %}
         </ul>
     {% endblock menu_forum %}
