@@ -12,16 +12,17 @@ def index(request):
 
 @login_required()
 def registration_done(request):
-    return redirect(reverse('profile',kwargs={'slug':request.user.forumusers.slug}))
+    return redirect(reverse('profile',kwargs={'slug':request.forumuser.slug}))
 
 
-class UpdateProfile(LoginRequiredMixin,UpdateView):
+class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
     form_class = ProfileForm
     template_name = 'registration/profile_form.html'
 
     def setup(self, request, *args, **kwargs):
-        self.user=request.user
+        self.user = request.user
+        self.forumuser = request.forumuser
         super(UpdateProfile, self).setup(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -35,18 +36,22 @@ class UpdateProfile(LoginRequiredMixin,UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['initial'].update({"about_user": self.object.forumusers.about_user,
-                                  'user_image':self.object.forumusers.user_image})
+        kwargs['initial'].update({"about_user": self.forumuser.about_user,
+                                  'user_image':self.forumuser.user_image})
         return kwargs
 
     def get_success_url(self):
-        return self.user.forumusers.get_absolute_url()
+        return self.forumuser.get_absolute_url()
 
 
 class UserDetailView(DetailView):
     model = User
     slug_field = 'forumusers__slug'
     template_name = 'registration/user_detail.html'
+
+    def get_object(self):
+        obj = User.objects.select_related('forumusers').get(forumusers__slug=self.kwargs.get(self.slug_url_kwarg))
+        return obj
 
 
 class CreateUserView(CreateView):

@@ -44,7 +44,7 @@ class SectionDetailView(SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
-        queryset = self.object.topics_set.all()
+        queryset = self.object.topics_set.all().select_related('author__user')
         queries = Q()
         filter = self.request.GET
         if ('name' in filter):
@@ -72,7 +72,7 @@ class TopicsListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset=Topics.objects.prefetch_related('author')
+        queryset=Topics.objects.select_related('author__user')
         queries = Q()
         filter = self.request.GET
         if ('name' in filter):
@@ -94,9 +94,9 @@ class PostsListView(ListView):
     paginate_by = 10
 
     def setup(self, request, *args, **kwargs):
-        self.topic=Topics.objects.get(slug=kwargs['slug_topic'])
+        self.topic=Topics.objects.select_related('sections').get(slug=kwargs['slug_topic'])
         if request.user.is_authenticated:
-            self.forumuser=request.user.forumusers
+            self.forumuser=request.forumuser
         super(PostsListView, self).setup(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -114,22 +114,24 @@ class PostsListView(ListView):
         context['super_section']=self.topic.sections
         context['rate_form']=UpdateScorePostForm
 
-        scores={}
-        for post in context['page_obj']:
-            post_info={}
-            score=Statistics.objects.filter(posts=post).aggregate(Sum('value'))
-            post_info['score'] = score['value__sum'] if score['value__sum'] else 0
-            try:
-                if not self.request.user.is_authenticated:
-                    raise ObjectDoesNotExist
-                rate=Statistics.objects.get(user=self.forumuser,posts=post)
-                rate=rate.value
-            except ObjectDoesNotExist:
-                rate=0
-            post_info['rate']=rate
-            scores[post]=post_info
+        if self.request.user.is_authenticated:
+            queryset_user_rate = Statistics.objects.filter(user=self.forumuser, posts__in=context['page_obj'])\
+                .values('posts','value')
+            post_rate_by_user={}
+            for entry in queryset_user_rate:
+                post_rate_by_user[entry['posts']]=entry['value']
+            context['post_rate_by_user'] = post_rate_by_user
 
-        context['scores']=scores
+        queryset_total_rate = Statistics.objects.filter(posts__in=context['page_obj'])\
+            .values('posts','value')
+        total_post_rate = {}
+        for entry in queryset_total_rate:
+            if entry['posts'] in total_post_rate:
+                total_post_rate[entry['posts']] += entry['value']
+            else:
+                total_post_rate[entry['posts']] = entry['value']
+        context['total_post_rate'] = total_post_rate
+
         context['form']=CreatePostForm()
         context['can_delete_post'] = self.request.user.has_perm('posts.delete', Posts)
         context['can_delete_topic'] = self.request.user.has_perms(['topic.delete','topic.change'],Topics)
@@ -137,7 +139,8 @@ class PostsListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset=Posts.objects.prefetch_related('author').filter(topic__slug=self.topic.slug)
+        queryset=Posts.objects.select_related('author__user').\
+            prefetch_related('attachedfiles_set').filter(topic__slug=self.topic.slug)
         queryset=queryset.order_by('post_type','time_create')
         return queryset
 
@@ -149,7 +152,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
     def setup(self, request, *args, **kwargs):
         self.topic=Topics.objects.get(pk=kwargs['pk'])
-        self.forumuser=request.user.forumusers
+        self.forumuser=request.forumuser
         super(PostCreateView, self).setup(request, *args, **kwargs)
 
     def get_success_url(self):
@@ -191,9 +194,10 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'forum/update_post_form.html'
 
     def setup(self, request, *args, **kwargs):
-        self.model_post=Posts.objects.get(pk=kwargs['pk'])
-        self.initial_files=AttachedFiles.objects.filter(post=self.model_post)
-        self.forumuser=request.user.forumusers
+        self.model_post=Posts.objects.select_related('topic','author').\
+            prefetch_related('attachedfiles_set').get(pk=kwargs['pk'])
+        self.initial_files=self.model_post.attachedfiles_set.all()
+        self.forumuser=request.forumuser
         super(PostUpdateView, self).setup(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -258,8 +262,8 @@ class PostScoreChangeView(LoginRequiredMixin,FormView):
     http_method_names = ['post']
 
     def setup(self, request, *args, **kwargs):
-        self.model_post=Posts.objects.get(pk=kwargs['pk'])
-        self.forumuser=request.user.forumusers
+        self.model_post=Posts.objects.select_related('topic').get(pk=kwargs['pk'])
+        self.forumuser=request.forumuser
         super(PostScoreChangeView, self).setup(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -281,12 +285,12 @@ class TopicDeleteView(PermissionRequiredMixin, DeleteView):
     model = Topics
     permission_required = ('topics.delete',)
 
-    def setup(self, request, *args, **kwargs):
-        super(TopicDeleteView, self).setup(request, *args, **kwargs)
-        self.sections=Topics.objects.get(pk=kwargs['pk']).sections
+    def get_object(self):
+        obj = Topics.objects.select_related('sections').get(pk=self.kwargs.get(self.pk_url_kwarg))
+        return obj
 
     def get_success_url(self):
-        return reverse('topics',kwargs={'slug':self.sections.slug})
+        return reverse('topics',kwargs={'slug':self.object.sections.slug})
 
     def get_context_data(self, **kwargs):
         context = super(TopicDeleteView, self).get_context_data(**kwargs)
@@ -298,12 +302,12 @@ class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Posts
     permission_required = ('posts.delete',)
 
-    def setup(self, request, *args, **kwargs):
-        super(PostDeleteView, self).setup(request, *args, **kwargs)
-        self.topic=Posts.objects.get(pk=kwargs['pk']).topic
+    def get_object(self):
+        obj = Posts.objects.select_related('topic','author__user').get(pk=self.kwargs.get(self.pk_url_kwarg))
+        return obj
 
     def get_success_url(self):
-        return reverse('topic',kwargs={'slug_topic':self.topic.slug})
+        return reverse('topic',kwargs={'slug_topic':self.object.topic.slug})
 
     def get_context_data(self, **kwargs):
         context = super(PostDeleteView, self).get_context_data(**kwargs)

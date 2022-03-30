@@ -22,13 +22,22 @@ def get_create_post_form(context, topic):
 
 
 @register.simple_tag()
-def get_post_score(post,scores):
-    return scores[post]['score']
+def get_total_post_rate(dict, post_id):
+    try:
+        value = dict[post_id]
+    except KeyError:
+        value = 0
+    return value
 
 
 @register.simple_tag(takes_context=True)
-def get_rate_form_with_initial_data(context,post,scores):
-    form=context['rate_form'](initial={'value':scores[post]['rate']})
+def get_rate_form_with_initial_data(context, post_id, post_rate_by_user):
+    try:
+        value = post_rate_by_user[post_id]
+    #пост не имеет еще оценки
+    except KeyError:
+        value = 0
+    form=context['rate_form'](initial={'value': value})
     return form.as_p()
 
 

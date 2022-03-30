@@ -52,13 +52,13 @@
                     </div>
 
                     <div class="score-block">
-                        <p class="post-score">Оценка: {% get_post_score post scores %} </p>
+                        <p class="post-score">Оценка: {% get_total_post_rate total_post_rate post.pk %} </p>
                         {% if user.is_authenticated %}
                             {% if rate_form %}
                                 <div class="form-score">
                                     <form action="{% url 'rate_post' post.pk %}" method="post">
                                     {% csrf_token %}
-                                    {% get_rate_form_with_initial_data post scores %}
+                                    {% get_rate_form_with_initial_data post.pk post_rate_by_user %}
                                     <input type="submit" value="Оценить">
                                     </form>
                                 </div>
