@@ -51,7 +51,7 @@ class ForumUsers(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.username_lower
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'slug':self.slug})
@@ -80,7 +80,7 @@ class Statistics(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
-        return f'{self.user}-{self.content_type}-{self.object_id}'
+        return f'{self.user} {self.content_type}-{self.object_id}'
 
     def save(self, *args, **kwargs):
         if self.content_object.__class__ == Posts:
@@ -130,7 +130,7 @@ class Topics(models.Model):
     statistics = GenericRelation(Statistics,related_query_name='topics')
 
     def __str__(self):
-        return self.name
+        return f'{self.name}-{self.pk}'
 
     def get_absolute_url(self):
         return reverse('topic', kwargs={'slug_topic':self.slug})
@@ -164,7 +164,7 @@ class Posts(models.Model):
     statistics = GenericRelation(Statistics, related_query_name='posts')
 
     def __str__(self):
-        return f'{self.author}:{self.topic}'
+        return f'Сообщение-{self.pk}'
 
     def is_changed(self):
         return self.time_update-self.time_create > timedelta(seconds=1)
