@@ -19,7 +19,7 @@
         {% if description.text != '' %}
             <div class="description-block">
                 <h3>{{description.category}}</h3>
-                <p>{{description.text}}</p>
+                <p class="text-with-wrap">{{description.text}}</p>
             </div>
         {% endif %}
     {% endfor %}
@@ -39,7 +39,7 @@
 {% block aside %}
     {% if object.image %}
         <div class="image">
-            <img src="{{object.image.url }}">
+            <a href="{{object.image.url }}"><img src="{{object.image.url }}"></a>
             <p>{{object.name}}, внешний вид</p>
         </div>
     {% endif %}

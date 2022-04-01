@@ -10,7 +10,7 @@
         {{block.super}}
     {% endblock menu_forum %}
 
-    <h2 class="super-title">{{topic}}</h2>
+    <h2 class="super-title">{{topic.name}}</h2>
     {% if can_delete_topic %}
         <div class="topic-deleting">
             <a href="{% url 'delete_topic' topic.pk %}" class="app_link">Удалить тему</a>
@@ -36,7 +36,7 @@
                             {% endif %}
 
                             <div class="author">
-                                <a href="{{post.author.get_absolute_url}}" class="app_link">{{post.author}}</a>
+                                <a href="{{post.author.get_absolute_url}}" class="app_link">{{post.author.user.username}}</a>
                                 <p>Репутация: {{post.author.reputation}}</p>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                         {% if user.is_authenticated %}
                             {% if rate_form %}
                                 <div class="form-score">
-                                    <form action="{% url 'rate_post' post.pk %}" method="post">
+                                    <form action="{% url 'rate_post' post.pk %}?next={{topic.get_absolute_url}}?page={{page_obj.number}}" method="post">
                                     {% csrf_token %}
                                     {% get_rate_form_with_initial_data post.pk post_rate_by_user %}
                                     <input type="submit" value="Оценить">
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="post-text">
-                        <p>{{post.text}}</p>
+                        {{post.text}}
                     </div>
 
                     {% if post.attachedfiles_set.all %}

@@ -220,3 +220,8 @@ ul.errorlist li {
     text-align: left;
     padding: 5px;
 }
+
+.text-with-wrap {
+    word-wrap: break-word;
+    white-space:pre-line;
+}

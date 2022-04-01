@@ -4,6 +4,8 @@
     <div class="table-text table-form">
         <form enctype="multipart/form-data" method="post">
             {% csrf_token %}
+            <div class="text-padding">Текущее изображение пользователя:
+                <a href="{{current_image}}">{{current_image}}</a></div>
             {% for field in form %}
                 <div class="field-grid">
                     <div class="field-label">

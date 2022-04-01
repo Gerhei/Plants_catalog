@@ -26,7 +26,8 @@ class MyUserForm(UserCreationForm):
 
 
 class ProfileForm(models.ModelForm):
-    user_image=fields.ImageField(required=False,label="Изображение пользователя")
+    user_image=fields.ImageField(required=False,label="Изображение пользователя",
+                                 widget=fields.FileInput())
     about_user=fields.CharField(required=False,label="О пользователе",widget=fields.Textarea)
 
     def save(self):

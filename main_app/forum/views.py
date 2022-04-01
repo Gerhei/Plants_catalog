@@ -264,6 +264,7 @@ class PostScoreChangeView(LoginRequiredMixin,FormView):
     def setup(self, request, *args, **kwargs):
         self.model_post=Posts.objects.select_related('topic').get(pk=kwargs['pk'])
         self.forumuser=request.forumuser
+        self.next = request.GET['next']
         super(PostScoreChangeView, self).setup(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -271,8 +272,7 @@ class PostScoreChangeView(LoginRequiredMixin,FormView):
         return super(PostScoreChangeView, self).form_valid(form)
 
     def get_success_url(self):
-        redirect_to=reverse('topic',kwargs={'slug_topic':self.model_post.topic.slug})
-        return f'{redirect_to}#{self.model_post.pk}'
+        return f'{self.next}#{self.model_post.pk}'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

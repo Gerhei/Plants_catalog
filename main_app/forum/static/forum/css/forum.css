@@ -55,6 +55,8 @@
     grid-row-end: 4;
     grid-column-end: 3;
     overflow:auto;
+    word-wrap: break-word;
+    white-space:pre-line;
     max-height: 120vh;
     text-align: left;
     border: solid 2px;
