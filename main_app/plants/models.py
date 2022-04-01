@@ -26,7 +26,7 @@ class NaturalKeyTaxonsManager(models.Manager):
 class Categories(models.Model):
     name = models.CharField(max_length=255, unique=True,verbose_name='Наименование')
     name_lower = models.CharField(max_length=255, unique=True, null=True, editable=False)
-    slug=models.SlugField(max_length=255,unique=True,db_index=True,verbose_name='URL')
+    slug=models.SlugField(max_length=255,unique=True,db_index=True, editable=False, verbose_name='URL')
     time_create = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True,verbose_name='Дата изменения')
 
@@ -47,7 +47,7 @@ class Categories(models.Model):
 
 class Taxons(models.Model):
     name = models.CharField(max_length=255,verbose_name='Наименование')
-    slug=models.SlugField(max_length=255,unique=True,db_index=True,verbose_name='URL')
+    slug=models.SlugField(max_length=255,unique=True,db_index=True, editable=False, verbose_name='URL')
     order=models.IntegerField(default=0, choices=PRIORITIES, verbose_name='Ранг')
     time_create = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True,verbose_name='Дата изменения')
@@ -55,7 +55,7 @@ class Taxons(models.Model):
     objects = NaturalKeyTaxonsManager()
 
     def __str__(self):
-        return self.name
+        return f'{self.get_order_display()}-{self.name}'
 
     def save(self, *args, **kwargs):
         self.slug=slugify(self.name+'-'+self.get_order_display())
@@ -110,9 +110,10 @@ class Descriptions(models.Model):
     plant=models.ForeignKey(Plants,on_delete=models.CASCADE,verbose_name='Растение')
 
     def __str__(self):
-        return self.plant.name+' '+self.category
+        return f'{self.plant.name} {self.category}'
 
     class Meta:
         verbose_name="Описание"
         verbose_name_plural="Описания"
         ordering=['category']
+        unique_together = (('plant','category'),)
