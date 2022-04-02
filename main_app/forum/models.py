@@ -186,6 +186,8 @@ class AttachedFiles(models.Model):
     allowed_ext = ['jpeg', 'jpg', 'png', 'jfif', 'bmp', 'svg', 'tif',
                    'txt', 'doc', 'docx', 'xlsx', 'pptx']
 
+    text_ext = ['txt', 'doc', 'docx', 'xlsx', 'pptx']
+
     max_files_per_post = 10
 
     file = models.FileField(upload_to = posts_file_name,

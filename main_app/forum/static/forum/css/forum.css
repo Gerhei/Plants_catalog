@@ -21,7 +21,7 @@
     border-left: 0px;
     border-top: 0px;
     width: 50%;
-    min-width: 140px;
+    min-width: 200px;
 }
 
 .post-info {
@@ -96,7 +96,7 @@ div.delete {
 
 table.forum-posts {
     border-collapse: collapse;
-    width: 80%;
+    width: 90%;
     position: relative;
     left: 15%;
 }

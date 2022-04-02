@@ -74,10 +74,16 @@
                         <div class="attached-files">
                             <p>Прикрепленные файлы</p>
                             {% for file in post.attachedfiles_set.all %}
-                                <a href="{{file.get_absolute_url}}">
-                                    <img src="{{file.get_absolute_url}}" alt="{% get_filename_from_path file %}"
-                                    height="100px" width="100px">
-                                </a>
+                                {% get_file_extension file as ext %}
+                                {% if ext in file.text_ext %}
+                                    <a href="{{file.get_absolute_url}}" download="" title="Скачать">
+                                        {% get_filename_from_url file.file.name %}</a>
+                                {% else %}
+                                    <a href="{{file.get_absolute_url}}">
+                                        <img src="{{file.get_absolute_url}}"
+                                             height="100px" width="100px">
+                                    </a>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}

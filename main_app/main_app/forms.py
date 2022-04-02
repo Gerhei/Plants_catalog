@@ -21,6 +21,12 @@ class MyUserForm(UserCreationForm):
         data=clean_email(data)
         return data
 
+    def clean_username(self):
+        data=self.cleaned_data['username']
+        if len(data)>20:
+            raise ValidationError('Длина имени пользователя не может превышать 20 символов.')
+        return data
+
     class Meta(UserCreationForm.Meta):
         fields = ("username","email")
 

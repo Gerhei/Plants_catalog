@@ -49,3 +49,13 @@ def get_random_background_image():
         for name_file in files:
             images.append(name_file)
     return '/static/main_app/images/header_backgrounds/'+random.choice(images)
+
+
+@register.simple_tag()
+def get_file_extension(file):
+    return str(file).split('.')[-1]
+
+
+@register.simple_tag()
+def get_filename_from_url(url):
+    return url.split('/')[-1]

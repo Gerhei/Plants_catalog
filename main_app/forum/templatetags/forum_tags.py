@@ -39,9 +39,3 @@ def get_rate_form_with_initial_data(context, post_id, post_rate_by_user):
         value = 0
     form=context['rate_form'](initial={'value': value})
     return form.as_p()
-
-
-@register.simple_tag()
-def get_filename_from_path(path):
-    path=path.__str__()
-    return path.split('/')[-1]
