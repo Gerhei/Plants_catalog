@@ -1,7 +1,8 @@
 {% extends "plants/plants_list.html" %}
-{%load static%}
+{% load static %}
 {% load plants_tags %}
 {% load main_app_tags %}
+
 {% block filters %}
     <div class="filters">
         <form action="{% url 'categories' %}" method="get">
@@ -18,20 +19,21 @@
 
     {% if object_list.count != 0 %}
         {% get_pagination %}
-       {% for category in page_obj %}
+        {% for category in page_obj %}
             <table class="categories">
-                    <tr>
-                        <td class="number">{% get_number forloop.counter%}</td>
-                        <td>
-                            <a href="{% url 'plants' %}?cat={{category.slug}}" class="name"><h2 class="category-name">{{category.name}}</h2></a>
-                        </td>
-                    </tr>
-                </table>
+                <tr>
+                    <td class="number">{% get_number forloop.counter%}</td>
+                    <td>
+                        <a href="{% url 'plants' %}?cat={{category.slug}}" class="name"><h2 class="category-name">{{category.name}}</h2></a>
+                    </td>
+                </tr>
+            </table>
         {% endfor %}
+
         {% block pagination %}
             {{block.super}}
         {% endblock pagination%}
-   {% else %}
+    {% else %}
         <h3 class="search-result">Результаты отсутствуют</h3>
     {% endif %}
 

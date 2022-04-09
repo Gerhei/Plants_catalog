@@ -18,9 +18,13 @@
         </ul>
     {% endblock menu_forum %}
 
+    {# Actually, the main content of the page #}
+    {% block sections %}
+    {% endblock sections %}
+
     {% block pagination %}
         {% get_pagination %}
     {% endblock pagination %}
 
-{% endblock %}
+{% endblock content %}
 

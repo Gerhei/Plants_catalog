@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 
-# Register your models here.
+
 class PlantsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'time_create', 'time_update')
     list_display_links = ('name',)
@@ -12,7 +12,7 @@ class PlantsAdmin(admin.ModelAdmin):
 
 class DescriptionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'plant', 'category', 'time_create', 'time_update')
-    list_display_links = ('plant','category',)
+    list_display_links = ('plant', 'category',)
     search_fields = ('category', 'plant__name', 'plant__name_lower', 'id')
     list_select_related = ('plant',)
 

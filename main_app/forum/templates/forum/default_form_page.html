@@ -1,0 +1,9 @@
+{% extends 'main_app/default_form_page.html' %}
+{% load forum_tags %}
+{% load main_app_tags %}
+
+{% block menu_app %}
+    <ul class="horizontal_menu">
+        {% get_menu_forum %}
+    </ul>
+{% endblock menu_app %}

@@ -1,18 +1,22 @@
 from django.shortcuts import render,reverse,redirect
-from django.http import HttpResponse, HttpResponseNotFound,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+
 from django.views.generic import CreateView,DetailView,UpdateView
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+
 from .forms import *
 
-# Create your views here.
+
 def index(request):
     return render(request,'main_app/index.html',context={'title':'Главная страница'})
 
+
 @login_required()
 def registration_done(request):
-    return redirect(reverse('profile',kwargs={'slug':request.forumuser.slug}))
+    return redirect(reverse('profile', kwargs={'slug':request.forumuser.slug}))
 
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
@@ -20,29 +24,26 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
     template_name = 'registration/profile_form.html'
 
-    def setup(self, request, *args, **kwargs):
-        self.user = request.user
-        self.forumuser = request.forumuser
-        super(UpdateProfile, self).setup(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title']='Редактирование профиля'
-        context['current_image'] = self.forumuser.user_image.url
+        context['title'] = "Редактирование профиля"
+        context['current_image'] = self.request.forumuser.user_image.url
+        context['enctype'] = "multipart/form-data"
+        context['submit_value'] = "Изменить"
 
         return context
 
     def get_object(self):
-        return self.user
+        return self.request.user
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['initial'].update({"about_user": self.forumuser.about_user,
-                                  'user_image':self.forumuser.user_image})
+        kwargs['initial'].update({'about_user': self.request.forumuser.about_user,
+                                  'user_image': self.request.forumuser.user_image})
         return kwargs
 
     def get_success_url(self):
-        return self.forumuser.get_absolute_url()
+        return self.request.forumuser.get_absolute_url()
 
 
 class UserDetailView(DetailView):
@@ -51,12 +52,19 @@ class UserDetailView(DetailView):
     template_name = 'registration/user_detail.html'
 
     def get_object(self):
-        obj = User.objects.select_related('forumusers').get(forumusers__slug=self.kwargs.get(self.slug_url_kwarg))
+        obj = User.objects.select_related('forumusers')\
+            .get(forumusers__slug=self.kwargs.get(self.slug_url_kwarg))
         return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data()
+        context['title'] = self.object.username
+        context['can_edit'] = self.object == self.request.user
+        return context
 
 
 class CreateUserView(CreateView):
-    template_name = 'registration/registration_form.html'
+    template_name = 'main_app/default_form_page.html'
     form_class = MyUserForm
     success_url = 'registration/done'
 
@@ -77,10 +85,11 @@ class CreateUserView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title']='Регистрация'
+        context['title'] = "Регистрация"
+        context['submit_value'] = "Регистрация"
 
         return context
 
 
-def pageNotFound(request,exception):
+def pageNotFound(request, exception):
     return HttpResponseNotFound("Страница не найдена")

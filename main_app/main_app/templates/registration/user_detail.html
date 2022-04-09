@@ -1,15 +1,13 @@
 {% extends 'main_app/base.html' %}
 {% load static %}
-{% block title %}
-    <title>{{object.username}}</title>
-{% endblock %}
+
 
 {% block extrastyles %}
-    <link type="text/css" href="{% static 'main_app/css/registration.css'%}" rel="stylesheet"/>
+    <link type="text/css" href="{% static 'main_app/css/profile_detail.css'%}" rel="stylesheet"/>
 {% endblock extrastyles %}
 
 {% block content %}
-    {% if request.user == object %}
+    {% if can_edit %}
         <p class="super-title">Ваш профиль</p>
     {% else %}
         <p class="super-title">Профиль пользователя {{object.username}}</p>
@@ -27,13 +25,13 @@
             <div class="general-info">
                 <p>Имя пользователя: {{object.username}}</p>
                 <p>Репутация: {{object.forumusers.reputation}}</p>
-                {% if request.user == object %}
+                {% if can_edit %}
                     <p>Почтовый адрес: {{object.email}}</p>
                 {% endif %}
             </div>
         </div>
 
-        {% if request.user == object %}
+        {% if can_edit %}
             <div class="profile-editing">
                     <p class="profile-edit"><a href="{% url 'profile_update' %}" class="app_link">
                         Редактировать профиль</a></p>
@@ -45,9 +43,9 @@
             <p class="text-with-wrap">{{object.forumusers.about_user}}</p>
         </div>
 
-        {% if request.user == object %}
+        {% if can_edit %}
             <div class="profile-settings">
-                    <p><a href="{% url 'password_change' %}" class="app_link">Изменить пароль</a></p>
+                <p><a href="{% url 'password_change' %}" class="app_link">Изменить пароль</a></p>
             </div>
         {% endif %}
     </div>

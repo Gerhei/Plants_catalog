@@ -4,29 +4,30 @@
 <html lang="en">
 <head>
     {% block head %}
-    <meta charset="UTF-8">
-    <meta name="keywords" content="растения, справочник, энциклопедия, каталог, новости">
-    <meta name="rights" content="Павлов Андрей">
-    <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
-    {% block title %}
-    <title>{{title}}</title>
-    {% endblock title%}
-    {% block styles %}
-        <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
-    {% endblock styles %}
+        <meta charset="UTF-8">
+        <meta name="keywords" content="растения, справочник, энциклопедия, каталог, новости">
+        <meta name="rights" content="Павлов Андрей">
+        <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
 
-    {% block extrastyles %}
-    {% endblock extrastyles %}
+        {% block title %}
+            <title>{{title}}</title>
+        {% endblock title%}
 
-    {% block icon %}
-    <link rel="shortcut icon" href="/static/main_app/images/site_icon.ico" type="image/x-icon">
-    {% endblock icon %}
+        {% block styles %}
+            <link type="text/css" href="{% static 'main_app/css/styles.css'%}" rel="stylesheet"/>
+        {% endblock styles %}
+
+        {% block extrastyles %}
+        {% endblock extrastyles %}
+
+        {% block icon %}
+            <link rel="shortcut icon" href="/static/main_app/images/site_icon.ico" type="image/x-icon">
+        {% endblock icon %}
     {% endblock head%}
 </head>
 
 <body>
     <div class="wrapper">
-
         {% get_header %}
         {% get_navigation %}
 
@@ -51,9 +52,7 @@
                 {% endblock aside%}
             </aside>
         </div>
-
         {% get_footer %}
     </div>
-
 </body>
 </html>

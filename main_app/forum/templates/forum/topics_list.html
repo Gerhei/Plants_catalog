@@ -1,30 +1,41 @@
 {% extends "forum/base.html" %}
 {% load main_app_tags %}
-{% load static %}
-{% block title %}
-    <title>{{title}}</title>
-{% endblock %}
 
 {% block filters %}
     <div class="filters">
-                <form action="{% url 'all_topics' %}" method="get">
-                    <ul class="filters">
-                        {{filter_form.as_ul}}
-                        <li>
-                            <input type="submit" value="Применить"/>
-                        </li>
-                    </ul>
-                </form>
+        {% if object %}
+            <form action="{% url 'topics' object.slug %}" method="get">
+        {% else %}
+            <form action="{% url 'all_topics' %}" method="get">
+        {% endif %}
+            <ul class="filters">
+                {{filter_form.as_ul}}
+                <li>
+                    <input type="submit" value="Применить"/>
+                </li>
+            </ul>
+        </form>
     </div>
 {% endblock filters %}
 
-{% block content %}
-    {% block menu_forum %}
-        {{block.super}}
-    {% endblock menu_forum %}
-
+{% block sections %}
     <a href="" class="super-title"><p>{{title}}</p></a>
-    <table class="list">
+    {% if object %}
+        <a href="{% url 'create_topic' object.slug %}" class="app_link">Создать тему</a>
+    {% endif %}
+    {% if sections %}
+        <p class="title">Разделы</p>
+        {% for section in sections %}
+            <p>
+                <span class="number">{{ forloop.counter }}</span>
+                <a href="{{ section.get_absolute_url }}" class="menu_link title">{{section.name}}</a>
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    {% if page_obj %}
+        <p class="title">Темы</p>
+        <table class="list">
             <tr>
                 <td><h3>№</h3></td>
                 <td><h3>Тема</h3></td>
@@ -41,8 +52,6 @@
                     <td class="number">{{topic.view_count}}</td>
                 </tr>
             {% endfor %}
-    </table>
-    {% block pagination %}
-        {{block.super}}
-    {% endblock pagination %}
-{% endblock content %}
+        </table>
+    {% endif %}
+{% endblock sections %}

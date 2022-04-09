@@ -64,9 +64,9 @@ class AttachedFilesAdmin(admin.ModelAdmin):
     readonly_fields = ('post',)
 
 
-admin.site.register(Sections,SectionsAdmin)
-admin.site.register(Topics,TopicsAdmin)
-admin.site.register(Posts,PostsAdmin)
-admin.site.register(ForumUsers,ForumUsersAdmin)
-admin.site.register(Statistics,StatisticsAdmin)
-admin.site.register(AttachedFiles,AttachedFilesAdmin)
+admin.site.register(Sections, SectionsAdmin)
+admin.site.register(Topics, TopicsAdmin)
+admin.site.register(Posts, PostsAdmin)
+admin.site.register(ForumUsers, ForumUsersAdmin)
+admin.site.register(Statistics, StatisticsAdmin)
+admin.site.register(AttachedFiles, AttachedFilesAdmin)

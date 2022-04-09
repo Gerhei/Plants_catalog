@@ -1,69 +1,40 @@
-{% extends "forum/base.html" %}
+{% extends "forum/default_form_page.html" %}
 {% load forum_tags %}
+{% load main_app_tags %}
 
-{% block content %}
-    {% block menu_forum %}
-        {{block.super}}
-    {% endblock menu_forum %}
-<div class="table-text">
-    <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
+{% block form %}
+
+    {% if initial_files %}
         <div class="field-grid">
-            <div class="field-label">Прикрепленные файлы:</div>
-            <div class="field-input"><input type="file" multiple name="file_field"></div>
+            <div class="field-label">Удалить все уже прикрепленные файлы <input type="checkbox" name="delete_initial"></div>
         </div>
 
-        {% if initial_files %}
-            <div class="field-grid">
-                <div class="field-label">Удалить все уже прикрепленные файлы <input type="checkbox" name="del_initial"></div>
-            </div>
-
-            <div class="field-label">К сообщению уже прикреплены файлы:
-                {% for file in initial_files %}
-                <span><a href="{{ file.get_absolute_url }}">{% get_filename_from_path file %} </a></span>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% for field in form %}
-                <div class="field-grid">
-                    <div class="field-label">
-                        {{field.label}}:
-                    </div>
-
-                    <div class="field-input">
-                        {{field}}
-                    </div>
-                    {% if field.errors %}
-                        <div class="field-errors">{{field.errors}}</div>
-                    {% endif %}
-                </div>
+        <div class="field-label">К сообщению уже прикреплены файлы:
+            {% for file in initial_files %}
+            <span><a href="{{ file.get_absolute_url }}">
+                {% get_filename_from_url file.file.name %} </a></span>
             {% endfor %}
+        </div>
+    {% endif %}
 
-        {% if attached_files_errors %}
-            <div class="text-padding">Сообщение изменено, но файл {{attached_files_errors.1}} не добавлен по причине:
-                <ul class="errorlist">
-                    {% for error in attached_files_errors.0 %}
-                        <li>
-                            {{error}}
-                        </li>
+    {% if attached_files_errors %}
+        <div class="text-padding">Сообщение изменено, но некоторые файлы не добавлены по причине:
+            <ul class="errorlist">
+                {% for errors in attached_files_errors %}
+                    {% for error in errors %}
+                        <li>{{error}}</li>
                     {% endfor %}
-                    {% if attached_files_errors.2 %}
-                        <li>
-                            Из-за данного файла также не добавлены все последующие за ним файлы.
-                        </li>
-                        <li>
-                            Список файлов, которые также не удалось добавить:
-                            {% for file in attached_files_errors.2 %}
-                                <span>{{file}} </span>
-                            {% endfor %}
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endif %}
-
-       <div class="field-input"><p><input type="submit" value="Изменить"></p></div>
-    </form>
-</div>
-{% endblock content %}
+                {% endfor %}
+                {% if not_attached_files %}
+                    <li>
+                        Список файлов, которые не удалось добавить:
+                        {% for file in not_attached_files %}
+                            <li>{{file}} </li>
+                        {% endfor %}
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+    {{block.super}}
+{% endblock form %}

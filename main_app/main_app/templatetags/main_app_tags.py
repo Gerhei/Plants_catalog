@@ -13,12 +13,16 @@ def url_replace(context, **kwargs):
 
 @register.inclusion_tag('main_app/pagination.html',takes_context=True)
 def get_pagination(context):
-    return {'page_obj':context['page_obj'],'request':context['request']}
+    try:
+        page_obj = context['page_obj']
+    except KeyError:
+        page_obj = None
+    return {'page_obj': page_obj, 'request': context['request']}
 
 
 @register.inclusion_tag('main_app/header.html',takes_context=True)
 def get_header(context):
-    return {'request':context['request']}
+    return {'request': context['request']}
 
 
 @register.inclusion_tag('main_app/navigation.html',takes_context=True)
@@ -29,17 +33,23 @@ def get_navigation(context):
         {'title': 'Форум', 'url_name': 'forum'},
         {'title': 'Новости', 'url_name': 'news'}
     ]
-    return {'request':context['request'],'menu':menu}
+    return {'request': context['request'],'menu': menu}
 
 
 @register.simple_tag(takes_context=True)
 def get_number(context,count):
-    return count+(context['page_obj'].number-1)*context['page_obj'].paginator.per_page
+    return count + (context['page_obj'].number-1) * context['page_obj'].paginator.per_page
 
 
 @register.inclusion_tag('main_app/footer.html',takes_context=True)
 def get_footer(context):
-    return {'request':context['request']}
+    return {'request': context['request']}
+
+
+@register.inclusion_tag('main_app/default_post_form.html', takes_context=True)
+def get_default_form(context):
+    new_context = {'form': context['form']}
+    return new_context
 
 
 @register.simple_tag()

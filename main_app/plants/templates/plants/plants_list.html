@@ -1,25 +1,22 @@
 {% extends "main_app/base.html" %}
-{%load static%}
+{% load static %}
 {% load plants_tags %}
 {% load main_app_tags %}
-{% block title %}
-    <title>{{title}}</title>
-{% endblock %}
+
 {% block extrastyles %}
     <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
 {% endblock extrastyles %}
 
-
 {% block filters %}
     <div class="filters">
-                <form action="{% url 'plants' %}" method="get">
-                    <ul class="filters">
-                        {{filter_form.as_ul}}
-                        <li>
-                            <input type="submit" value="Применить"/>
-                        </li>
-                    </ul>
-                </form>
+        <form action="{% url 'plants' %}" method="get">
+            <ul class="filters">
+                {{filter_form.as_ul}}
+                <li>
+                    <input type="submit" value="Применить"/>
+                </li>
+            </ul>
+        </form>
     </div>
 {% endblock filters %}
 
@@ -28,30 +25,32 @@
         <a href="{% url super_url %}" class="super-title"><p>{{super_title}}</p></a>
         <p class="title">{{title}}</p>
     {% endblock titles %}
+
     {% if object_list.count != 0 %}
         {% get_pagination %}
         <table class="list">
-        {% for plant in page_obj %}
-                    <tr>
-                        <td class="number">{% get_number forloop.counter%}</td>
-                        <td><a href="{{ plant.get_absolute_url }}" class="name"><h2>{{plant.name}}</h2></a></td>
-                        <td>
-                            {% for description in plant.descriptions_set.all %}
-                                {% if description.category == '' %}
-                                    <div class="description-block">
-                                        <p>{{description.text}}</p>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% if plant.image %}
-                                <img src="{{plant.image.url }}" class="plant-image">
+            {% for plant in page_obj %}
+                <tr>
+                    <td class="number">{% get_number forloop.counter%}</td>
+                    <td><a href="{{ plant.get_absolute_url }}" class="name"><h2>{{plant.name}}</h2></a></td>
+                    <td>
+                        {# TODO Show the first description of the plant #}
+                        {% for description in plant.descriptions_set.all %}
+                            {% if description.category == '' %}
+                                <div class="description-block">
+                                    <p>{{description.text}}</p>
+                                </div>
                             {% endif %}
-                        </td>
-                    </tr>
-        {% endfor %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if plant.image %}
+                            <img src="{{plant.image.url }}" class="plant-image">
+                        {% endif %}
+                    </td></tr>
+            {% endfor %}
         </table>
+
         {% block pagination %}
             {% get_pagination %}
         {% endblock pagination %}

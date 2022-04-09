@@ -10,7 +10,7 @@ header {
 
 #header_title{
     text-align: center;
-    background-color:PaleGreen;
+    background-color: PaleGreen;
 }
 
 #header_title a.header_link{
@@ -43,23 +43,23 @@ nav {
 }
 
 .super-title{
-    text-decoration:none;
-    color:black;
-    font-size:32px;
-    text-align:center;
-    font-weight:bold;
+    text-decoration: none;
+    color: black;
+    font-size: 32px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .title{
-    font-size:24px;
-    font-weight:bold;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 table.list{
     border: black 2px solid;
     border-collapse: collapse;
-    width:100%;
-    text-align:center;
+    width: 100%;
+    text-align: center;
 }
 
 table.list td{
@@ -67,7 +67,7 @@ table.list td{
 }
 
 .number{
-    font-size:18px;
+    font-size: 18px;
 }
 
 a.menu_link{
@@ -91,7 +91,7 @@ ul.menu li {
 {
     margin-top: 20px;;
     padding: 4px;
-    text-align:center;
+    text-align: center;
 }
 
 .horizontal_menu li {
@@ -101,19 +101,19 @@ ul.menu li {
    }
 
 .vertical_menu{
-    font-size:20px;
-    list-style-type:none;
-    margin:20px;
+    font-size: 20px;
+    list-style-type: none;
+    margin: 20px;
     position: fixed;
 }
 
 .vertical_menu li{
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 .vertical_menu li a.topbutton{
-    text-decoration:none;
-    color:blue;
+    text-decoration: none;
+    color: blue;
 }
 
 .app_menu_link{
@@ -132,17 +132,13 @@ ul.menu li {
     background-color: yellow;
 }
 
-.content {
-
-}
-
 .filters{
   grid-column-start: 1;
   grid-column-end: 3;
 }
 
 ul.filters{
-    list-style-type:none;
+    list-style-type: none;
 }
 
 ul.filters li{
@@ -152,7 +148,7 @@ ul.filters li{
 }
 
 .pagination{
-    text-align:center;
+    text-align: center;
 }
 
 .pagination span.step-links a{
@@ -173,7 +169,7 @@ ul.filters li{
 }
 
 .table-form {
-    min-width:500px;
+    min-width: 500px;
 }
 
 .field-grid {
@@ -181,15 +177,15 @@ ul.filters li{
 }
 
 .field-label {
-    text-align:left;
-    padding:10px;
+    text-align: left;
+    padding: 10px;
     grid-column-start: 1;
     grid-column-end: 2;
 }
 
 .field-input {
-    text-align:left;
-    padding:10px;
+    text-align: left;
+    padding: 10px;
     grid-column-start: 2;
     grid-column-end: 3;
 }
@@ -198,6 +194,7 @@ ul.filters li{
     grid-column-start: 3;
     grid-column-end: 4;
     text-align: left;
+    border: 1px solid blue;
 }
 
 .field-errors {
@@ -217,7 +214,7 @@ ul.errorlist {
 }
 
 ul.errorlist li {
-    color:red;
+    color: red;
 }
 
 .text-padding {
@@ -227,5 +224,5 @@ ul.errorlist li {
 
 .text-with-wrap {
     word-wrap: break-word;
-    white-space:pre-line;
+    white-space: pre-line;
 }

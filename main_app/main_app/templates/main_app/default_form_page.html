@@ -1,0 +1,42 @@
+{% extends 'main_app/base.html' %}
+{% load main_app_tags %}
+
+{% block content %}
+    {% block menu_app %}
+    {% endblock menu_app %}
+
+    {% block action-info %}
+        {% if change_text %}
+            <h2 class="super-title">{{change_text}}</h2>
+        {% endif %}
+    {% endblock action-info %}
+
+    <div class="table-text table-form">
+        {% block form-wrapper %}
+
+        {% block form_message %}
+            {% if form_message %}
+                <p>{{form_message}}</p>
+            {% endif %}
+        {% endblock form_message %}
+
+            {% block non_field_errors %}
+            {% endblock non_field_errors %}
+
+            <form action="{{action}}" enctype="{{enctype}}" method="post">
+
+                {% block form %}
+                    {% get_default_form %}
+
+                    {% block submit %}
+                        <div class="field-input"><input type="submit" value="{{submit_value}}"></div>
+                    {% endblock submit %}
+                {% endblock form %}
+            </form>
+        {% endblock form-wrapper %}
+
+        {% block extra_info %}
+        {% endblock extra_info %}
+
+    </div>
+{% endblock content %}

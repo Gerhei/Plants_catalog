@@ -1,25 +1,22 @@
 {% extends "main_app/base.html" %}
-{%load static%}
+{% load static %}
 {% load plants_tags %}
 
-{% block head %}
-        {% block title %}
-    <title>{{object.name}}</title>
-        {% endblock %}
-    {{block.super}}
+{% block extrastyles %}
     <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
-{% endblock %}
+{% endblock extrastyles%}
 
 {% block content %}
     <ul class="horizontal_menu">
         {% get_menu_plant %}
     </ul>
+
     <h2 class="detail-title">{{object.name}}</h2>
     {% for description in object.descriptions_set.all %}
         {% if description.text != '' %}
             <div class="description-block">
-                <h3>{{description.category}}</h3>
-                <p class="text-with-wrap">{{description.text}}</p>
+                <h3 class="text-padding">{{description.category}}</h3>
+                <p class="text-with-wrap text-padding">{{description.text}}</p>
             </div>
         {% endif %}
     {% endfor %}
@@ -34,7 +31,7 @@
         </li>
     {% endfor %}
     </ul>
-{% endblock %}
+{% endblock content %}
 
 {% block aside %}
     {% if object.image %}

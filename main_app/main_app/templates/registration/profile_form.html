@@ -1,27 +1,6 @@
-{% extends 'main_app/base.html' %}
+{% extends 'main_app/default_form_page.html' %}
 
-{% block content %}
-    <div class="table-text table-form">
-        <form enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            <div class="text-padding">Текущее изображение пользователя:
+{% block form_message %}
+    <div class="text-padding">Текущее изображение пользователя:
                 <a href="{{current_image}}">{{current_image}}</a></div>
-            {% for field in form %}
-                <div class="field-grid">
-                    <div class="field-label">
-                        {{field.label}}:
-                    </div>
-
-                    <div class="field-input">
-                        {{field}}
-                    </div>
-                    {% if field.errors %}
-                        <div class="field-errors">{{field.errors}}</div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            <div class="field-input"><input type="submit" value="Изменить"></div>
-        </form>
-    </div>
-
-{% endblock content %}
+{% endblock %}

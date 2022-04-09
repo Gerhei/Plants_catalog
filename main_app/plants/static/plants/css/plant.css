@@ -1,34 +1,34 @@
 td a.name{
-    font-size:14px;
-    color:blue;
-    text-decoration:none;
+    font-size: 14px;
+    color: blue;
+    text-decoration: none;
 }
 
 .plant-image{
-    width:200px;
-    height:200px;
+    width: 200px;
+    height: 200px;
 }
 
 .detail-title
 {
-    text-align:center;
+    text-align: center;
 }
 
 .description-block p {
     text-indent: 1.5em;
-    font-size:18px;
+    font-size: 18px;
 }
 
 .description-block h3 {
-    font-size:22px;
+    font-size: 22px;
 }
 
 .image{
-    margin-top:30px;
+    margin-top: 30px;
 }
 
 .image p{
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 .taxons{
@@ -37,18 +37,18 @@ td a.name{
 }
 
 .taxons-title {
-    text-align:center;
+    text-align: center;
 }
 
 .taxon-column{
     border-bottom: 1px solid black;
     border: black 1px solid;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .taxon-column a{
-    text-decoration:none;
-    color:blue;
+    text-decoration: none;
+    color: blue;
 }
 
 ul.categories {
@@ -60,10 +60,10 @@ ul.categories li {
     display: inline;
     margin-right: 5px;
     padding: 3px;
-    font-size:18px;
+    font-size: 18px;
    }
 
 ul.categories li a {
-    color:blue;
+    color: blue;
     text-decoration: none;
    }

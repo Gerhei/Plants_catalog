@@ -1,23 +1,14 @@
 {% extends "forum/base.html" %}
 {% load main_app_tags %}
-{% block title %}
-    <title>{{title}}</title>
-{% endblock %}
 
-{% block content %}
-    {% block menu_forum %}
-        {{block.super}}
-    {% endblock menu_forum %}
-
-    <a href="" class="super-title"><p>Список разделов</p></a>
+{% block sections %}
+    <a href="" class="super-title"><p>{{super_title}}</p></a>
     <table>
         {% for super_section in object_list %}
-        <tr><td>
-            <p class="title">
+            <tr><td><p class="title">
                 <span class="number">{{ forloop.counter }}</span>
                 <a href="{{super_section.get_absolute_url}}" class="menu_link">{{super_section.name}}</a>
-            </p>
-        </td></tr>
+            </p></td></tr>
         {% endfor %}
     </table>
-{% endblock content %}
+{% endblock sections%}
