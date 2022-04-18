@@ -106,8 +106,8 @@ class TopicDetailView(SingleObjectMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.name
         context['super_section'] = self.object.sections
-        context['can_delete_post'] = self.request.user.has_perm('posts.delete', Posts)
-        context['can_delete_topic'] = self.request.user.has_perms(['topic.delete', 'topic.change'], Topics)
+        context['can_delete_post'] = self.request.user.has_perm('forum.delete_posts')
+        context['can_delete_topic'] = self.request.user.has_perms(['forum.delete_topics', 'forum.change_topics'])
         context['rate_form'] = UpdateScorePostForm
         context['form'] = CreatePostForm()
         context['submit_value'] = 'Создать сообщение'
@@ -233,6 +233,8 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
     def post(self, request, *args, **kwargs):
         response = super(PostUpdateView, self).post(request, *args, **kwargs)
+        if not self.object.is_user_can_edit(self.request.forumuser):
+            return HttpResponseForbidden()
         files = request.FILES.getlist('attached_files')
         if 'delete_initial' in request.POST:
             self.object.attachedfiles_set.all().delete()
@@ -299,8 +301,12 @@ class PostScoreChangeView(LoginRequiredMixin, FormView):
         return super(PostScoreChangeView, self).form_valid(form)
 
     def get_success_url(self):
-        # take redirect url from next parameter, since it is necessary to store the page number
-        return f'{self.request.GET["next"]}#{self.model_post.pk}'
+        try:
+            # take redirect url from next parameter, since it is necessary to store the page number
+            success_url= f'{self.request.GET["next"]}#{self.model_post.pk}'
+        except KeyError:
+            success_url = f'{self.model_post.topic.get_absolute_url()}#{self.model_post.pk}'
+        return success_url
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -311,7 +317,7 @@ class PostScoreChangeView(LoginRequiredMixin, FormView):
 
 class TopicDeleteView(PermissionRequiredMixin, DeleteView):
     model = Topics
-    permission_required = ('topics.delete',)
+    permission_required = ('forum.delete_topics',)
     template_name = 'forum/default_form_page.html'
 
     def get_object(self):
@@ -332,7 +338,7 @@ class TopicDeleteView(PermissionRequiredMixin, DeleteView):
 
 class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Posts
-    permission_required = ('posts.delete',)
+    permission_required = ('forum.delete_posts',)
     template_name = 'forum/default_form_page.html'
 
     def get_object(self):
@@ -354,7 +360,7 @@ class PostDeleteView(PermissionRequiredMixin, DeleteView):
 
 class TopicUpdateView(PermissionRequiredMixin, UpdateView):
     model = Topics
-    permission_required = ('topics.change',)
+    permission_required = ('forum.change_topics',)
     fields = ('name', 'sections')
     template_name = 'forum/default_form_page.html'
 

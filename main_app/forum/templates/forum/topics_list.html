@@ -24,7 +24,7 @@
         <a href="{% url 'create_topic' object.slug %}" class="app_link">Создать тему</a>
     {% endif %}
     {% if sections %}
-        <p class="title">Разделы</p>
+        <p class="title sections-list">Разделы</p>
         {% for section in sections %}
             <p>
                 <span class="number">{{ forloop.counter }}</span>
@@ -34,7 +34,7 @@
     {% endif %}
 
     {% if page_obj %}
-        <p class="title">Темы</p>
+        <p class="title topics-list">Темы</p>
         <table class="list">
             <tr>
                 <td><h3>№</h3></td>

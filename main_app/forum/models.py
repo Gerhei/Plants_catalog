@@ -160,7 +160,7 @@ class Statistics(models.Model):
 
         # this condition contains the whole meaning of the model.
         # each user can view a concrete topic only once and have only one rating for a concrete post
-        unique_together = (('user', 'value_type', 'object_id'))
+        unique_together = (('user', 'value_type', 'object_id'),)
 
 
 class Topics(models.Model):
@@ -242,7 +242,7 @@ class AttachedFiles(models.Model):
     file = models.FileField(validators=(FileExtensionValidator(allowed_extensions=allowed_ext),),
                             upload_to=posts_file_name, verbose_name="Файл")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    post = models.ForeignKey(Posts,on_delete=models.CASCADE,verbose_name="Сообщение")
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, verbose_name="Сообщение")
 
     def __str__(self):
         return self.file.name

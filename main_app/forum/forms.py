@@ -6,10 +6,10 @@ from .models import *
 from captcha.fields import CaptchaField
 
 
-order_choices = (('inc', 'По возрастанию'),
-                 ('desc', 'По убыванию'))
-order_by = (('name', 'По алфавиту'), ('time_create', 'По дате создания'),
-            ('view_count', 'По просмотрам'))
+order_choices = [('inc', 'По возрастанию'),
+                 ('desc', 'По убыванию')]
+order_by = [('name', 'По алфавиту'), ('time_create', 'По дате создания'),
+            ('view_count', 'По просмотрам')]
 
 
 class FilterForm(forms.Form):
@@ -24,15 +24,16 @@ class CreateTopicForm(forms.ModelForm):
     captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот")
     text = forms.CharField(label="Текст сообщения", widget=forms.Textarea())
     attached_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
-                                     required=False, allow_empty_file=True, label='Прикрепленные файлы',
-                                     help_text=('Не более 10 файлов, допустимые форматы файлов: '
-                                                'изображения, текстовые, таблицы, презентации.')
-                                     )
+                                     required=False, allow_empty_file=True,
+                                     label='Прикрепленные файлы',
+                                     help_text=('Не более 10 файлов, допустимые форматы '
+                                                'файлов: изображения, текстовые, '
+                                                'таблицы, презентации.'))
 
     def __init__(self, section=None, author=None, *args, **kwargs):
+        super(CreateTopicForm, self).__init__(*args, **kwargs)
         self.section = section
         self.forumuser = author
-        super(CreateTopicForm, self).__init__(*args, **kwargs)
 
     def save(self):
         topic = super(CreateTopicForm, self).save(commit=False)
@@ -92,11 +93,11 @@ class UpdateScorePostForm(forms.ModelForm):
 
             # if the values match, no sense to save the model instance
             if old_value == new_value:
-                return
+                return self.instance
             # if the new value = 0 , there is no sense in storing the model instance
             elif new_value == 0:
                 self.instance.delete()
-                return
+                return None
             # if new value not equal old_value or zero
             else:
                 # instead of changing the value of a statistics it easier to create a new one
@@ -105,7 +106,7 @@ class UpdateScorePostForm(forms.ModelForm):
 
         except ObjectDoesNotExist:
             if self.cleaned_data['value'] == 0:
-                return
+                return None
             self.instance = Statistics(user=self.forum_user, value=self.cleaned_data['value'],
                                        content_object=self.post)
 
