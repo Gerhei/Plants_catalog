@@ -1,0 +1,13 @@
+{% extends "news/base.html" %}
+
+{% block sections %}
+    <a href="" class="super-title"><p>{{title}}</p></a>
+    <table class="list">
+        {% for news in page_obj %}
+            <tr>
+                <td><a href="{{ news.get_absolute_url }}">{{news.title}}</a></td>
+                <td>{{news.publication_date}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock sections %}

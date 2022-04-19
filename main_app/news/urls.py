@@ -3,5 +3,6 @@ from django.urls import path, include
 from news.views import *
 
 urlpatterns = [
-    path('', index,name="news"),
+    path('', NewsListView.as_view(), name="news"),
+    path('detailed/<slug:slug>', NewsDetailView.as_view(), name="detailed_news")
 ]
