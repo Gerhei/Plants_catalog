@@ -1,0 +1,16 @@
+.article-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+img {
+    display: block;
+    position: relative;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+li {
+    list-style-type: none;
+}

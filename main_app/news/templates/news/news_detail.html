@@ -1,5 +1,9 @@
 {% extends "news/base.html" %}
 
+{% block extrastyles %}
+    {{ block.super }}
+{% endblock extrastyles %}
+
 {% block content %}
-    <div>{{object.content}}</div>
+    <div class="article-wrapper">{{ object.content|safe }}</div>
 {% endblock content %}
