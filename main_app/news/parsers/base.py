@@ -1,47 +1,84 @@
 import requests
-from time import sleep
+from time import time
+from datetime import datetime
+
+import bs4
+import asyncio
+import aiohttp
+
+
+# https://github.com/aio-libs/aiohttp/issues/6635
+from functools import wraps
+from asyncio.proactor_events import _ProactorBasePipeTransport
+
+
+def silence_event_loop_closed(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return func(self, *args, **kwargs)
+        except RuntimeError as e:
+            if str(e) != 'Event loop is closed':
+                raise
+    return wrapper
+
+
+_ProactorBasePipeTransport.__del__ = silence_event_loop_closed(_ProactorBasePipeTransport.__del__)
+
 
 class BaseParser():
     url_page_with_list_articles = None
     headers = None
+    logging_file = None
+    _list_pages = None
 
-    def __init__(self, headers):
+    def __init__(self, headers, logging_file):
         self.headers = headers
+        self.logging_file = logging_file
 
-    def parse_list_pages(self):
-        html_list = self._get_page(self.url_page_with_list_articles)
-        # parse recent
+    async def _parse_list_pages(self):
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            html_list = await self._get_page(self.url_page_with_list_articles, session)
+            links_to_articles = self._process_parse_list_pages(html_list)
+            json_page_data_list = await asyncio.gather(*[self._parse_page(links, session)
+                                                         for links in links_to_articles])
+
         json_data = {}
-        links_to_articles = self._parse_list_pages(html_list)
-        for links in links_to_articles:
-            json_page_data = self.parse_page(links)
+        for (links, json_page_data) in zip(links_to_articles, json_page_data_list):
             json_data[links] = json_page_data
+        self._list_pages = json_data
+
+    async def _parse_page(self, url, session):
+        start_time = time()
+        html_data = await self._get_page(url, session)
+        json_data = self._process_parse_page(html_data)
         return json_data
 
-    def parse_page(self, url):
-        html_data = self._get_page(url)
-        json_data = self._parse_page(html_data)
-        return json_data
+    @property
+    def list_pages(self):
+        if not self._list_pages:
+            asyncio.run(self._parse_list_pages())
+        return self._list_pages
 
-    def _parse_list_pages(self, html_data):
+    def _process_parse_list_pages(self, html_data):
         raise NotImplementedError('Subclasses must implement this method')
 
-    def _parse_page(self, html_data):
+    def _process_parse_page(self, html_data):
         raise NotImplementedError('Subclasses must implement this method')
 
-    def _get_page(self, url, retry=5):
+    async def _get_page(self, url, session, retry=5):
         try:
-            response = requests.get(url, headers=self.headers)
+            # don't work with ssl=True
+            async with session.get(url=url, headers=self.headers, ssl=False) as response:
+                response_text = await response.text()
         except Exception as ex:
             if retry:
-                sleep(5)
+                await asyncio.sleep(5)
                 print(f"Retry №{retry}=>{url}")
-                self._get_page(url, retry=retry - 1)
+                await self._get_page(url, session, retry=retry - 1)
         else:
-            return response.text
+            return response_text
 
-    def get_text_from_children(self, parent):
-        text = ""
-        for string in parent.strings:
-            text += string
-        return text
+    def add_logs(self, message, **extrainfo):
+        with open(self.logging_file, 'a') as logs:
+            logs.write(f'[{datetime.now()}] {message} {extrainfo}\n')
