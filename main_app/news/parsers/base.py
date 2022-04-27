@@ -22,7 +22,6 @@ def silence_event_loop_closed(func):
                 raise
     return wrapper
 
-
 _ProactorBasePipeTransport.__del__ = silence_event_loop_closed(_ProactorBasePipeTransport.__del__)
 
 
@@ -36,29 +35,30 @@ class BaseParser():
         self.headers = headers
         self.logging_file = logging_file
 
-    async def _parse_list_pages(self):
+    async def _parse_list_pages(self, list_urls):
         async with aiohttp.ClientSession(headers=self.headers) as session:
-            html_list = await self._get_page(self.url_page_with_list_articles, session)
-            links_to_articles = self._process_parse_list_pages(html_list)
             json_page_data_list = await asyncio.gather(*[self._parse_page(links, session)
-                                                         for links in links_to_articles])
+                                                         for links in list_urls])
 
         json_data = {}
-        for (links, json_page_data) in zip(links_to_articles, json_page_data_list):
+        for (links, json_page_data) in zip(list_urls, json_page_data_list):
             json_data[links] = json_page_data
         self._list_pages = json_data
 
     async def _parse_page(self, url, session):
-        start_time = time()
         html_data = await self._get_page(url, session)
         json_data = self._process_parse_page(html_data)
         return json_data
 
-    @property
-    def list_pages(self):
+    def get_json_list_pages(self, list_urls):
         if not self._list_pages:
-            asyncio.run(self._parse_list_pages())
+            asyncio.run(self._parse_list_pages(list_urls))
         return self._list_pages
+
+    def get_list_urls_pages(self):
+        html_data = requests.get(self.url_page_with_list_articles, headers=self.headers).text
+        links_to_articles = self._process_parse_list_pages(html_data)
+        return links_to_articles
 
     def _process_parse_list_pages(self, html_data):
         raise NotImplementedError('Subclasses must implement this method')

@@ -1,8 +1,10 @@
 import requests
 import json
 from time import sleep
+from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db.models import ObjectDoesNotExist
 
 from main_app.settings import HEADERS
 from news.parsers.RIA_parser import RIA_Parser
@@ -19,46 +21,60 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--pause', type=int, default=30,
                             help='Frequency in minutes with which the parser checks sites for new news')
-        # TODO add normal help_text
-        parser.add_argument('--parse_for', type=int, default=-1,
-                            help='For what period of time (or how many latest news) '
-                                      'the parser collects information. -1 means parse all news from site.')
+        parser.add_argument('--parse_for_days', type=int, default=-1,
+                            help='For what period (in days) '
+                                      'the parser collects information. -1 means parse all news.')
 
     def handle(self, *args, **options):
-        if options['pause']:
-            pass
-
+        self.parse_for_days = options['parse_for_days']
 
         news_parser = RIA_Parser(HEADERS, 'Parse_logs.txt')
-        self.page_list_processing(news_parser)
-        # json_data = news_parser.list_pages
         # with open('news.json', 'w', encoding='utf-8') as file:
         #     json.dump(json_data, file, indent=4, ensure_ascii=False)
-        # with open('news.json', 'r', encoding='utf-8') as file:
-        #     json_data = json.load(file)
-        #     self.save_to_model(json_data, url)
         while True:
+            self.current_date = datetime.now()
+            self.page_list_processing(news_parser)
+            break
             # parse data from all sites
-            sleep(options['pause']*60)
+            #sleep(options['pause']*60)
 
 
     def page_list_processing(self, news_parser):
         self.stdout.write(f'Start parsing {news_parser.url_page_with_list_articles}')
-        json_data = news_parser.list_pages
+        list_links = news_parser.get_list_urls_pages()
+        list_links = self.get_links_for_non_exist_data_in_db(list_links)
+        json_data = news_parser.get_json_list_pages(list_links)
         for key, item in json_data.items():
             self.save_to_model(item, key)
 
     def save_to_model(self, json_data, source_url=None):
-        # TODO добавить здесь запись в лог
+        # For some reason the page was not parsed
         if not json_data:
             return
 
+        # TODO Check date condition before page parsing
+        publication_date = date_parser.parse(json_data['publication_date'], dayfirst=True)
+        if self.parse_for_days != -1:
+            # skip news if it is old
+            if (self.current_date - publication_date) >= timedelta(days=self.parse_for_days):
+                return
+        #if timedelta(days=self.options[''])
         news = News()
         news.title = json_data['title']
-        news.publication_date = date_parser.parse(json_data['publication_date'], dayfirst=True)
+        news.publication_date = publication_date
         news.source_url = source_url
         news.content = self.convert_to_html(json_data['content'])
         news.save()
+
+    # TODO normal name
+    def get_links_for_non_exist_data_in_db(self, list_links):
+        new_list_links = []
+        for link in list_links:
+            try:
+                news = News.objects.get(source_url=link)
+            except ObjectDoesNotExist:
+                new_list_links.append(link)
+        return new_list_links
 
     def convert_to_html(self, json_data):
         """

@@ -5,6 +5,9 @@ __pycache__/
 /__pycache__/
 main_app/db.sqlite3
 main_app/media
+
 Database structure requirements.docx
 Infological and datalogical models of the Plants database.drawio
+
 Parse_logs.txt
+news.json

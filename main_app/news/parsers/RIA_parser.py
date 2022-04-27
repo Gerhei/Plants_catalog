@@ -20,6 +20,18 @@ class RIA_Parser(BaseParser):
         article_header = soup.find('div', {'class': 'article__header'})
         article_body = soup.find('div', {'class': 'article__body'})
 
+        announce = article_header.find('div', {'class': 'article__announce'})
+        # Skip news with podcast
+        if announce.find('div', {'class': 'audioplayer'}):
+            return None
+
+        announce_image = announce.find('img')
+        if announce_image:
+            announce_image = {'image':
+                                  {'source': announce_image.attrs['src'],
+                                   'title': announce_image.attrs['title']}}
+            json_data['content'].append(announce_image)
+
         publication_date = article_header.find('div', {'class': 'article__info-date'}).find('a')
         publication_date = publication_date.get_text()
         json_data['publication_date'] = publication_date
@@ -27,13 +39,6 @@ class RIA_Parser(BaseParser):
         title = article_header.find(re.compile("\w"), {'class': 'article__title'})
         title = title.get_text()
         json_data['title'] = title
-
-        announce_image = article_header.find('div', {'class': 'article__announce'}).find('img')
-        if announce_image:
-            announce_image = {'image':
-                                  {'source': announce_image.attrs['src'],
-                                   'title': announce_image.attrs['title']}}
-            json_data['content'].append(announce_image)
 
         ignored_types = ['article', 'banner']
         header_tags = ['h1', 'h2', 'h3', 'h4', 'h5']
