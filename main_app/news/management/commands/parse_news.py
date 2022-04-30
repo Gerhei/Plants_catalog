@@ -1,4 +1,3 @@
-import requests
 import json
 from time import sleep
 from datetime import datetime, timedelta
@@ -9,8 +8,6 @@ from django.db.models import ObjectDoesNotExist
 from main_app.settings import HEADERS
 from news.parsers.RIA_parser import RIA_Parser
 from news.models import News
-
-from dateutil import parser as date_parser
 
 
 url = 'https://ria.ru/20220407/malina-1782398350.html'
@@ -28,46 +25,66 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.parse_for_days = options['parse_for_days']
 
-        news_parser = RIA_Parser(HEADERS, 'Parse_logs.txt')
+        news_parser = RIA_Parser(headers=HEADERS, logging_file='Parse_logs.txt')
+
+
         # with open('news.json', 'w', encoding='utf-8') as file:
         #     json.dump(json_data, file, indent=4, ensure_ascii=False)
+
+
         while True:
-            self.current_date = datetime.now()
-            self.page_list_processing(news_parser)
+            # self.current_date = datetime.now()
+            self.parse_to_database(news_parser)
             break
             # parse data from all sites
-            #sleep(options['pause']*60)
+            # sleep(options['pause']*60)
 
 
-    def page_list_processing(self, news_parser):
-        self.stdout.write(f'Start parsing {news_parser.url_page_with_list_articles}')
-        list_links = news_parser.get_list_urls_pages()
-        list_links = self.get_links_for_non_exist_data_in_db(list_links)
-        json_data = news_parser.get_json_list_pages(list_links)
+    def parse_to_database(self, news_parser):
+        """
+         For a given site (which is represented by a separate parser class)
+         collects all articles and saves them to the model.
+        """
+
+        self.stdout.write(f'Start parsing {news_parser.site}')
+        # get links on all articles
+        list_links = news_parser.get_list_urls()
+        # parse only not stored data
+        list_links = self.remove_stored_links(list_links)
+        # parse pages
+        json_data = news_parser.parse(list_links)
+
         for key, item in json_data.items():
             self.save_to_model(item, key)
 
-    def save_to_model(self, json_data, source_url=None):
+    def save_to_model(self, json_data, source_url):
+        """
+         Save given json data to model.
+        """
+
         # For some reason the page was not parsed
         if not json_data:
+            self.stdout.write('For some reason empty json was received to save to the model(url: %s)' % source_url)
             return
 
         # TODO Check date condition before page parsing
-        publication_date = date_parser.parse(json_data['publication_date'], dayfirst=True)
-        if self.parse_for_days != -1:
-            # skip news if it is old
-            if (self.current_date - publication_date) >= timedelta(days=self.parse_for_days):
-                return
-        #if timedelta(days=self.options[''])
+        # if self.parse_for_days != -1:
+        #     # skip news if it is old
+        #     if (self.current_date - publication_date) >= timedelta(days=self.parse_for_days):
+        #         return
+
         news = News()
         news.title = json_data['title']
-        news.publication_date = publication_date
+        news.publication_date = json_data['publication_date']
         news.source_url = source_url
         news.content = self.convert_to_html(json_data['content'])
         news.save()
 
-    # TODO normal name
-    def get_links_for_non_exist_data_in_db(self, list_links):
+    def remove_stored_links(self, list_links):
+        """
+         For a given a list of article links, checks if these articles are stored in the database.
+         Returns links to articles that are not yet stored in the database
+        """
         new_list_links = []
         for link in list_links:
             try:
@@ -78,7 +95,7 @@ class Command(BaseCommand):
 
     def convert_to_html(self, json_data):
         """
-         Convert json to html doc and add own css styles
+         Convert json data to html and adds own css styles
         """
         content = ""
         header_tags = ['h1', 'h2', 'h3', 'h4', 'h5']

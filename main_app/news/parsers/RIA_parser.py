@@ -1,20 +1,58 @@
 import re
+from datetime import date, timedelta
 
 from bs4 import BeautifulSoup
+import dateparser
 
 from news.parsers.base import BaseParser
 
-class RIA_Parser(BaseParser):
-    url_page_with_list_articles = 'https://ria.ru/tag_rastenija/'
 
-    def _process_parse_list_pages(self, html_data):
+class RIA_Parser(BaseParser):
+    site = 'ria.ru'
+    # TODO Possible problem: if all the news on the page is dated one day, can't get pages for previous dates
+    url_list_articles = 'https://ria.ru/services/tag_rastenija/more.html?date='
+
+    #  Getting all links to articles works in sync mode, which slows down the parsing speed,
+    #  but on the other hand, does not load the site with requests, which reduces the likelihood of blocking
+    def get_list_urls(self, parse_for_days=-1):
+        list_urls = []
+        current_date = date.today()
+        if parse_for_days<0:
+            parse_to_date = None
+        else:
+            parse_to_date = current_date - timedelta(parse_for_days)
+        # remove '-' between date element
+        parse_to_date = str(parse_to_date).replace('-', '')
+
+        last_article_date = str(current_date).replace('-', '')
+        penult_article_date = last_article_date + 'not equal'
+        while last_article_date != penult_article_date:
+            penult_article_date = last_article_date
+            # FIXME Extra page parse, since with this approach
+            #       the first and last articles on adjacent iterations equal
+            html_data = self.get_page(self.url_list_articles+last_article_date)
+            links_to_articles, last_article_date = self.process_parse_list_articles(html_data)
+            list_urls.extend(links_to_articles)
+
+            last_article_date = dateparser.parse(last_article_date,
+                                                 settings={'PREFER_DATES_FROM': 'past'})
+            last_article_date = last_article_date.date()
+            last_article_date = str(last_article_date).replace('-', '')
+
+        return list_urls
+
+    def process_parse_list_articles(self, html_data):
         soup = BeautifulSoup(html_data, 'lxml')
         links_to_articles = []
-        for article in soup.find('div', {'class': 'list'}).find_all('div', {'class': 'list-item'}):
-            links_to_articles.append(article.find('a', {'class': 'list-item__title'}).attrs['href'])
-        return links_to_articles
+        last_date = None
 
-    def _process_parse_page(self, html_data):
+        for article in soup.find_all('div', {'class': 'list-item'}):
+            link = article.find('a', {'class': 'list-item__title'}).attrs['href']
+            last_date = article.find('div', {'class': 'list-item__date'}).text
+            links_to_articles.append(link)
+        return links_to_articles, last_date
+
+    def process_parse_page(self, html_data, source_url=None):
         soup = BeautifulSoup(html_data, 'lxml')
         json_data = {'content': []}
         article_header = soup.find('div', {'class': 'article__header'})
@@ -34,7 +72,7 @@ class RIA_Parser(BaseParser):
 
         publication_date = article_header.find('div', {'class': 'article__info-date'}).find('a')
         publication_date = publication_date.get_text()
-        json_data['publication_date'] = publication_date
+        json_data['publication_date'] = dateparser.parse(publication_date, date_formats=['%H %M %d %m %Y'])
 
         title = article_header.find(re.compile("\w"), {'class': 'article__title'})
         title = title.get_text()
@@ -107,6 +145,7 @@ class RIA_Parser(BaseParser):
 
             else:
                 # logging something strange
+                print('Unknown data type (%s): %s' % (data_type, source_url))
                 self.add_logs('Unknown data type', data_type=data_type, title=json_data['title'])
                 continue
 
