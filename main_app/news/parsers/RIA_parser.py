@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from bs4 import BeautifulSoup
 import dateparser
 
-from news.parsers.base import BaseParser
+from news.parsers.base import BaseParser, module_logger
 
 
 class RIA_Parser(BaseParser):
@@ -14,34 +14,36 @@ class RIA_Parser(BaseParser):
 
     #  Getting all links to articles works in sync mode, which slows down the parsing speed,
     #  but on the other hand, does not load the site with requests, which reduces the likelihood of blocking
-    def get_list_urls(self, parse_for_days=-1):
+    def collect_list_urls(self, parse_for_days=-1):
         list_urls = []
         current_date = date.today()
-        if parse_for_days<0:
-            parse_to_date = None
-        else:
+        if parse_for_days>=0:
             parse_to_date = current_date - timedelta(parse_for_days)
-        # remove '-' between date element
-        parse_to_date = str(parse_to_date).replace('-', '')
+            message = ' for last %s days' % parse_for_days
+        else:
+            parse_to_date = None
+            message = ''
 
-        last_article_date = str(current_date).replace('-', '')
-        penult_article_date = last_article_date + 'not equal'
+        last_article_date = current_date
+        penult_article_date = last_article_date + timedelta(days=1)
         while last_article_date != penult_article_date:
+            if parse_to_date:
+                if last_article_date<parse_to_date:
+                    break
             penult_article_date = last_article_date
-            # FIXME Extra page parse, since with this approach
-            #       the first and last articles on adjacent iterations equal
-            html_data = self.get_page(self.url_list_articles+last_article_date)
-            links_to_articles, last_article_date = self.process_parse_list_articles(html_data)
+
+            get_query = str(last_article_date).replace('-', '')
+            html_data = self.get_page(self.url_list_articles+get_query)
+            links_to_articles, last_article_date = self.process_parse_list_articles(html_data, parse_to_date)
             list_urls.extend(links_to_articles)
 
-            last_article_date = dateparser.parse(last_article_date,
-                                                 settings={'PREFER_DATES_FROM': 'past'})
-            last_article_date = last_article_date.date()
-            last_article_date = str(last_article_date).replace('-', '')
-
+        # return unique values
+        list_urls = list(set(list_urls))
+        module_logger.info('On the site %s found %s links to articles%s.'
+                           % (self.site, len(list_urls), message))
         return list_urls
 
-    def process_parse_list_articles(self, html_data):
+    def process_parse_list_articles(self, html_data, parse_to_date=None, *args, **kwargs):
         soup = BeautifulSoup(html_data, 'lxml')
         links_to_articles = []
         last_date = None
@@ -49,7 +51,15 @@ class RIA_Parser(BaseParser):
         for article in soup.find_all('div', {'class': 'list-item'}):
             link = article.find('a', {'class': 'list-item__title'}).attrs['href']
             last_date = article.find('div', {'class': 'list-item__date'}).text
+            last_date = dateparser.parse(last_date,
+                                         settings={'PREFER_DATES_FROM': 'past'})
+            last_date = last_date.date()
+
+            if parse_to_date:
+                if last_date<parse_to_date:
+                    break
             links_to_articles.append(link)
+
         return links_to_articles, last_date
 
     def process_parse_page(self, html_data, source_url=None):
@@ -59,16 +69,19 @@ class RIA_Parser(BaseParser):
         article_body = soup.find('div', {'class': 'article__body'})
 
         announce = article_header.find('div', {'class': 'article__announce'})
-        # Skip news with podcast
-        if announce.find('div', {'class': 'audioplayer'}):
-            return None
+        if announce:
+            # Skip news with podcast
+            if announce.find('div', {'class': 'audioplayer'}):
+                module_logger.info('Skip articles with podcast %s' % source_url)
+                return None
 
-        announce_image = announce.find('img')
-        if announce_image:
-            announce_image = {'image':
-                                  {'source': announce_image.attrs['src'],
-                                   'title': announce_image.attrs['title']}}
-            json_data['content'].append(announce_image)
+            announce_image = announce.find('img')
+            if announce_image:
+                announce_image = {'image':
+                                      {'source': announce_image.attrs['src'],
+                                       'title': announce_image.attrs['title']}}
+                json_data['content'].append(announce_image)
+
 
         publication_date = article_header.find('div', {'class': 'article__info-date'}).find('a')
         publication_date = publication_date.get_text()
@@ -78,7 +91,7 @@ class RIA_Parser(BaseParser):
         title = title.get_text()
         json_data['title'] = title
 
-        ignored_types = ['article', 'banner']
+        ignored_types = ['article', 'banner', 'social', 'audio']
         header_tags = ['h1', 'h2', 'h3', 'h4', 'h5']
         for block in article_body.find_all('div', {'class': 'article__block'}):
             data_type = block['data-type']
@@ -145,8 +158,7 @@ class RIA_Parser(BaseParser):
 
             else:
                 # logging something strange
-                print('Unknown data type (%s): %s' % (data_type, source_url))
-                self.add_logs('Unknown data type', data_type=data_type, title=json_data['title'])
+                module_logger.warning('Find unknown data type %s for %s' % (data_type, source_url))
                 continue
 
             json_data['content'].append({data_type: content})

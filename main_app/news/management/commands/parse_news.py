@@ -1,6 +1,4 @@
 import json
-from time import sleep
-from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import ObjectDoesNotExist
@@ -9,8 +7,6 @@ from main_app.settings import HEADERS
 from news.parsers.RIA_parser import RIA_Parser
 from news.models import News
 
-
-url = 'https://ria.ru/20220407/malina-1782398350.html'
 
 class Command(BaseCommand):
     help = 'Starts the process of collecting new news from predefined pages'
@@ -25,15 +21,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.parse_for_days = options['parse_for_days']
 
-        news_parser = RIA_Parser(headers=HEADERS, logging_file='Parse_logs.txt')
-
-
-        # with open('news.json', 'w', encoding='utf-8') as file:
-        #     json.dump(json_data, file, indent=4, ensure_ascii=False)
-
+        news_parser = RIA_Parser(headers=HEADERS, verbosity='debug', timeout=5, pause_between_requests=0.5)
 
         while True:
-            # self.current_date = datetime.now()
             self.parse_to_database(news_parser)
             break
             # parse data from all sites
@@ -45,10 +35,8 @@ class Command(BaseCommand):
          For a given site (which is represented by a separate parser class)
          collects all articles and saves them to the model.
         """
-
-        self.stdout.write(f'Start parsing {news_parser.site}')
         # get links on all articles
-        list_links = news_parser.get_list_urls()
+        list_links = news_parser.collect_list_urls(self.parse_for_days)
         # parse only not stored data
         list_links = self.remove_stored_links(list_links)
         # parse pages
@@ -58,21 +46,7 @@ class Command(BaseCommand):
             self.save_to_model(item, key)
 
     def save_to_model(self, json_data, source_url):
-        """
-         Save given json data to model.
-        """
-
-        # For some reason the page was not parsed
-        if not json_data:
-            self.stdout.write('For some reason empty json was received to save to the model(url: %s)' % source_url)
-            return
-
-        # TODO Check date condition before page parsing
-        # if self.parse_for_days != -1:
-        #     # skip news if it is old
-        #     if (self.current_date - publication_date) >= timedelta(days=self.parse_for_days):
-        #         return
-
+        """ Save given json data to News model. """
         news = News()
         news.title = json_data['title']
         news.publication_date = json_data['publication_date']

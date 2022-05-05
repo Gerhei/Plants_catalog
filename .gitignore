@@ -7,5 +7,5 @@ main_app/db.sqlite3
 main_app/media
 
 
-Parse_logs.txt
+webparser.log
 news.json
