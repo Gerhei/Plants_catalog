@@ -105,7 +105,7 @@ class RIA_Parser(BaseParser):
                 content = header_content
 
             elif data_type == 'text':
-                text_content = block.get_text()#
+                text_content = block.get_text()
                 content = text_content
 
             elif data_type == 'list':
@@ -155,6 +155,51 @@ class RIA_Parser(BaseParser):
                     continue
                 data_type = 'image'
                 content = {'source': image.attrs['src'], 'title': image.attrs['title']}
+
+            elif data_type == 'photolenta':
+                for item in block.find_all('div', {'class': 'article__photo-item'}):
+                    image = item.find('div', {'class': 'article__photo-item-image'}).find('img')
+                    content = {'source': image.attrs['src'], 'title': image.attrs['title']}
+                    json_data['content'].append({'image': content})
+
+                    text_content = item.find('div', {'class': 'article__photo-inner-desc'})\
+                        .find('div', {'class': 'article__photo-item-text'}).get_text()
+                    json_data['content'].append({'text': text_content})
+
+                continue
+
+            elif data_type == 'recipe':
+                title = block.find('div', {'class': 'article__recipe-title'})
+                if title:
+                    json_data['content'].append({'h3': title.get_text()})
+
+                text_content = block.find('div', {'class': 'article__recipe-desc'})
+                if text_content:
+                    text_content = text_content.get_text()
+                else:
+                    text_content = ''
+
+                text_details = block.find('div', {'class': 'article__recipe-details'})
+                if text_details:
+                    for item in text_details.find_all('div', {'class': 'article__recipe-details-item'}):
+                        detail_title = item.find('div', {'class': 'article__recipe-details-title'}).get_text()
+                        detail_value = item.find('div', {'class': 'article__recipe-details-value'}).get_text()
+                        text_content += f'\n{detail_title}: {detail_value}'
+                if text_content:
+                    json_data['content'].append({'text': text_content})
+
+                subtitle = block.find('div', {'class': 'article__recipe-subtitle'})
+                if subtitle:
+                    json_data['content'].append({'h3': subtitle.get_text()})
+
+                instructions = block.find('div', {'class': 'article__recipe-instruction'})
+                if instructions:
+                    content = []
+                    for elem in instructions.find_all('div', {'class': 'article__recipe-instruction-text'}):
+                        content.append(elem.get_text())
+                    json_data['content'].append({'list': content})
+
+                continue
 
             else:
                 # logging something strange

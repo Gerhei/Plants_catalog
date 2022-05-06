@@ -125,7 +125,8 @@ class BaseParser():
             return json_data
         finally:
             self.parse_info['processed'] += 1
-            module_logger.debug('Processed pages: %s/%s' % (self.parse_info['processed'], self.parse_info['num_pages']))
+            module_logger.debug('[%s] Processed pages: %s/%s'
+                                % (self.__class__.__name__, self.parse_info['processed'], self.parse_info['num_pages']))
 
     def parse(self, list_urls):
         """ For a given urls return parsed data in format: {url: page_content} """
