@@ -1,10 +1,9 @@
 plants_env/
 .idea/
-migrations/
 __pycache__/
-/__pycache__/
 main_app/db.sqlite3
 main_app/media
+migrations/
 
 
 webparser.log
