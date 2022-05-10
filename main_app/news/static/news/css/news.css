@@ -3,10 +3,34 @@
     margin: 0 auto;
 }
 
+.news-image{
+    margin: 20px 0px 10px 0px;
+}
+
 img {
     display: block;
     position: relative;
     max-width: 100%;
     height: auto;
     margin: 0 auto;
+}
+
+.news-header {
+    margin: 10px 0px 0px 0px;
+}
+
+.news-text {
+    margin: 10px 0px 20px 0px;
+}
+
+.news-list {
+
+}
+
+.news-quote {
+    margin: 10px 0px 20px 0px;
+}
+
+.news-table {
+
 }

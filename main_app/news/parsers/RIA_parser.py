@@ -70,9 +70,10 @@ class RIA_Parser(BaseParser):
 
         announce = article_header.find('div', {'class': 'article__announce'})
         if announce:
-            # Skip news with podcast
-            if announce.find('div', {'class': 'audioplayer'}):
-                module_logger.info('Skip articles with podcast %s' % source_url)
+            # Skip news with video, because in most cases they do not carry useful information
+            if announce.find('div', {'class': 'audioplayer'})\
+                    or announce.find('video'):
+                module_logger.info('Skip articles with video %s' % source_url)
                 return None
 
             announce_image = announce.find('img')
@@ -106,6 +107,9 @@ class RIA_Parser(BaseParser):
 
             elif data_type == 'text':
                 text_content = block.get_text()
+                # skip ads telegram channel
+                if 'нашем Телеграм-канале'.lower() in text_content.lower():
+                    continue
                 content = text_content
 
             elif data_type == 'list':
