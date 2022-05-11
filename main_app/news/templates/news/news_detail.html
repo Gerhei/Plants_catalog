@@ -5,5 +5,13 @@
 {% endblock extrastyles %}
 
 {% block content %}
+    <ul class="horizontal_menu">
+        <li>
+            <a href="{% url 'news' %}" class="app_menu_link">Список новостей</a>
+        </li>
+        <li>
+            <a href="{% url 'random_news' %}" class="app_menu_link">Случайная новость</a>
+        </li>
+    </ul>
     <div class="article-wrapper">{{ object.content|safe }}</div>
 {% endblock content %}

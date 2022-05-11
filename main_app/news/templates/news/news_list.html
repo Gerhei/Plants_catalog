@@ -1,13 +1,40 @@
 {% extends "news/base.html" %}
 
+{% block filters %}
+    <div class="filters">
+        <form action="{% url 'news' %}" method="get">
+            <ul class="filters">
+                {% for field in filter_form %}
+                    {{ field.label }}
+                    {{ field }}
+                {% endfor %}
+                <li>
+                    <input type="submit" value="Применить"/>
+                </li>
+            </ul>
+        </form>
+    </div>
+{% endblock filters %}
+
 {% block sections %}
-    <a href="" class="super-title"><p>{{title}}</p></a>
+    <a href="" class="super-title"><p>{{ title }}</p></a>
     <table class="list">
         {% for news in page_obj %}
             <tr>
-                <td><a href="{{ news.get_absolute_url }}">{{news.title}}</a></td>
-                <td>{{news.publication_date}}</td>
+                <td><a href="{{ news.get_absolute_url }}" class="app_link">{{ news.title }}</a></td>
+                <td>{{ news.publication_date }}</td>
             </tr>
         {% endfor %}
     </table>
 {% endblock sections %}
+
+{% block aside %}
+    <ul class="vertical_menu">
+        <li>
+            <a href="{% url 'random_news' %}" class="app_link">Случайная новость</a>
+        </li>
+        <li>
+            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
+        </li>
+    </ul>
+{% endblock aside %}

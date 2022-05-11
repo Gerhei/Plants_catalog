@@ -166,9 +166,12 @@ class RIA_Parser(BaseParser):
                     content = {'source': image.attrs['src'], 'title': image.attrs['title']}
                     json_data['content'].append({'image': content})
 
-                    text_content = item.find('div', {'class': 'article__photo-inner-desc'})\
-                        .find('div', {'class': 'article__photo-item-text'}).get_text()
-                    json_data['content'].append({'text': text_content})
+                    item = item.find('div', {'class': 'article__photo-inner-desc'})\
+                        .find('div', {'class': 'article__photo-item-text'})
+
+                    for paragraph in item.find_all('p'):
+                        text_content = paragraph.get_text()
+                        json_data['content'].append({'text': text_content})
 
                 continue
 
