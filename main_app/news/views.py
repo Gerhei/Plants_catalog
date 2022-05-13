@@ -75,7 +75,8 @@ class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Comments.objects.filter(news=self.object)
+        queryset = Comments.objects.filter(news=self.object).select_related('user', 'user__forumusers')
+        return queryset
 
     def get_success_url(self):
         return f'{self.object.get_absolute_url()}?page=last#comments'
