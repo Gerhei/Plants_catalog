@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load main_app_tags %}
 
 {% block extrastyles %}
     {{ block.super }}
@@ -14,4 +15,38 @@
         </li>
     </ul>
     <div class="article-wrapper">{{ object.content|safe }}</div>
+    <div class="comments-wrapper" id="comments">
+        <h2>Комментарии</h2>
+        {% for comment in page_obj %}
+            <div class="comment-block">
+                <div>
+                    {% if comment.user %}
+                        <a href="{{ comment.user.forumusers.get_absolute_url }}">{{ comment.user }}</a>
+                    {% else %}
+                        Anonymous
+                    {% endif %}
+                </div>
+                <div>{{ comment.time_create }}</div>
+                <div>{{ comment.text }}</div>
+            </div>
+        {% endfor %}
+        {% get_pagination %}
+        <div class="table-text table-form" id="comment-form">
+            <form action="{{action}}" enctype="{{enctype}}" method="post">
+                {% get_default_form %}
+                <div class="field-input"><input type="submit" value="{{submit_value}}"></div>
+            </form>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block aside %}
+    <ul class="vertical_menu">
+        <li>
+            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
+        </li>
+        <li>
+            <a href="#comments" class="topbutton">К комментариям</a>
+        </li>
+    </ul>
+{% endblock aside %}

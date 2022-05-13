@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.edit import FormMixin, ModelFormMixin
+from django.views.generic.detail import SingleObjectMixin
 from django.db.models import Q
 
 from .models import *
@@ -10,6 +12,7 @@ from .forms import *
 
 def random_news(request):
     return redirect(News.objects.order_by('?').first().get_absolute_url())
+
 
 class NewsListView(ListView):
     model = News
@@ -45,16 +48,44 @@ class NewsListView(ListView):
         return queryset
 
 
-class NewsDetailView(DetailView):
-    model = News
+class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
+    paginate_by = 10
+    template_name = "news/news_detail.html"
+    form_class = CreateCommentForm
 
     def get(self, request, *args, **kwargs):
-        response = super(NewsDetailView, self).get(request, *args, **kwargs)
-        if not self.object.is_published:
-            return HttpResponseForbidden()
-        return response
+        self.object = self.get_object(queryset=News.objects.filter(is_published=True))
+        self.object_list = self.get_queryset()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=News.objects.filter(is_published=True))
+        self.object_list = self.get_queryset()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['object'].title
+        context['action'] = reverse('detailed_news', kwargs={'slug': self.object.slug})
+        context['submit_value'] = 'Создать комментарий'
         return context
+
+    def get_queryset(self):
+        return Comments.objects.filter(news=self.object)
+
+    def get_success_url(self):
+        return f'{self.object.get_absolute_url()}?page=last#comments'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'news': self.object,
+                       'user': self.request.user})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

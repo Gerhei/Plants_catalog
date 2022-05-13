@@ -17,7 +17,7 @@ class NewsAdmin(admin.ModelAdmin):
 class CommentsAdmin(admin.ModelAdmin):
     list_display = ('id', 'news', 'user', 'time_create')
     list_display_links = ('news', 'user')
-    search_fields = ('id', 'news__title', 'user')
+    search_fields = ('id', 'news__title', 'user__username')
     list_select_related = ('news', 'user')
 
     fields = ('user', 'news', 'time_create', 'text')

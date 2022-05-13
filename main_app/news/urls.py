@@ -6,4 +6,5 @@ urlpatterns = [
     path('', NewsListView.as_view(), name="news"),
     path('detailed/<slug:slug>', NewsDetailView.as_view(), name="detailed_news"),
     path('random', random_news, name='random_news'),
+    path('captcha/', include('captcha.urls'), name='captcha')
 ]
