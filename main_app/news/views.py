@@ -16,7 +16,7 @@ def random_news(request):
 
 class NewsListView(ListView):
     model = News
-    paginate_by =  10
+    paginate_by =  20
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

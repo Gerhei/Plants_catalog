@@ -36,7 +36,7 @@ class Command(BaseCommand):
          collects all articles and saves them to the model.
         """
         # get links on all articles
-        list_links = news_parser.collect_list_urls(self.parse_for_days)
+        list_links = news_parser.collect_list_urls(parse_for_days=self.parse_for_days)
         # parse only not stored data
         list_links = self.remove_stored_links(list_links)
         # parse pages
@@ -96,7 +96,7 @@ class Command(BaseCommand):
 
                 elif key == 'quote':
                     style = 'news-quote'
-                    content += '<q class="%s">%s</q>' % (style, item)
+                    content += '<blockquote class="%s">%s</blockquote>' % (style, item)
 
                 elif key == 'table':
                     style = 'news-table'
