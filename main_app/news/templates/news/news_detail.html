@@ -14,20 +14,32 @@
             <a href="{% url 'random_news' %}" class="app_menu_link">Случайная новость</a>
         </li>
     </ul>
-    <div class="article-wrapper">{{ object.content|safe }}</div>
+    <div class="article-wrapper">
+        <div class="article-info">
+            <h2 class="super-title">{{ object.title }}</h2>
+            <div class="article-source">
+                <span>Статья взята из данного источника: </span>
+                <a class="app_link" href="{{ object.source_url }}">{{ object.source_url }}</a>
+            </div>
+        </div>
+        <article>
+            {{ object.content|safe }}
+        </article>
+    </div>
     <div class="comments-wrapper" id="comments">
         <h2>Комментарии</h2>
         {% for comment in page_obj %}
             <div class="comment-block">
-                <div>
+                <div class="comment-user">
                     {% if comment.user %}
-                        <a href="{{ comment.user.forumusers.get_absolute_url }}">{{ comment.user }}</a>
+                        <a href="{{ comment.user.forumusers.get_absolute_url }}" class="app_link">
+                            {{ comment.user }}</a>
                     {% else %}
                         Anonymous
                     {% endif %}
                 </div>
-                <div>{{ comment.time_create }}</div>
-                <div>{{ comment.text }}</div>
+                <div class="comment-date">{{ comment.time_create }}</div>
+                <div class="comment-text">{{ comment.text }}</div>
             </div>
         {% endfor %}
         {% get_pagination %}

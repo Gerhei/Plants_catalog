@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load main_app_tags %}
 
 {% block filters %}
     <div class="filters">
@@ -19,9 +20,19 @@
 {% block sections %}
     <a href="" class="super-title"><p>{{ title }}</p></a>
     <table class="list">
+        <tr>
+            <td><h3>№</h3></td>
+            <td><h3>Новость</h3></td>
+            <td><h3>Дата публикации</h3></td>
+        </tr>
         {% for news in page_obj %}
             <tr>
-                <td><a href="{{ news.get_absolute_url }}" class="app_link">{{ news.title }}</a></td>
+                <td class="number">{% get_number forloop.counter %}</td>
+                <td>
+                    <div class="news-title">
+                        <a href="{{ news.get_absolute_url }}" class="app_link">{{ news.title }}</a>
+                    </div>
+                </td>
                 <td>{{ news.publication_date }}</td>
             </tr>
         {% endfor %}
