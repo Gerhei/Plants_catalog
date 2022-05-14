@@ -201,7 +201,7 @@ class Topics(models.Model):
 
 
 class Posts(models.Model):
-    text = models.TextField(verbose_name='Сообщение')
+    text = models.TextField(max_length=15000, verbose_name='Сообщение')
     post_type = models.IntegerField(choices=((0,'question'), (1,'answer')))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')

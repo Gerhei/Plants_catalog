@@ -22,7 +22,7 @@ class FilterForm(forms.Form):
 
 class CreateTopicForm(forms.ModelForm):
     captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот")
-    text = forms.CharField(label="Текст сообщения", widget=forms.Textarea())
+    text = forms.CharField(max_length=15000, label="Текст сообщения", widget=forms.Textarea())
     attached_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
                                      required=False, allow_empty_file=True,
                                      label='Прикрепленные файлы',
