@@ -22,7 +22,7 @@ class FilterForm(forms.Form):
 
 
 class CreateCommentForm(forms.ModelForm):
-    text = forms.CharField(max_length=255,
+    text = forms.CharField(max_length=1000,
                            widget = forms.Textarea,
                            label='Комментарий')
 

@@ -51,7 +51,8 @@ class News(models.Model):
 
 
 class Comments(models.Model):
-    text = models.CharField(max_length=255, verbose_name='Комментарий')
+    # TODO convert to text field
+    text = models.CharField(max_length=1000, verbose_name='Комментарий')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Пользователь')
     news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name='Новость')
