@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
-
-from django.views.generic import ListView, DetailView, CreateView
-from django.views.generic.edit import FormMixin, ModelFormMixin
+from django.shortcuts import redirect
+from django.views.generic import ListView
+from django.views.generic.edit import FormMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.db.models import Q
 
@@ -53,14 +51,12 @@ class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
     template_name = "news/news_detail.html"
     form_class = CreateCommentForm
 
-    def get(self, request, *args, **kwargs):
+    def setup(self, request, *args, **kwargs):
+        super(NewsDetailView, self).setup(request, *args, **kwargs)
         self.object = self.get_object(queryset=News.objects.filter(is_published=True))
         self.object_list = self.get_queryset()
-        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=News.objects.filter(is_published=True))
-        self.object_list = self.get_queryset()
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)

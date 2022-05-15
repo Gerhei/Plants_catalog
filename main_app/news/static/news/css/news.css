@@ -71,7 +71,7 @@ table.news-table td{
     border: 4px solid black;
     border-collapse: collapse;
     margin: 40px auto 40px auto;
-    display:grid;
+    display: grid;
     grid-template-columns: 1fr 3fr;
     min-height: 100px;
 }
@@ -91,9 +91,9 @@ table.news-table td{
     grid-column-start: 1;
     grid-column-end: 3;
     border: 0px;
-    overflow:auto;
+    overflow: auto;
     word-wrap: break-word;
-    white-space:pre-line;
+    white-space: pre-line;
     max-height: 120vh;
     text-align: left;
 }

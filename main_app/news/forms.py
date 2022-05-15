@@ -11,6 +11,7 @@ order_by = [('publication_date', 'По дате публикации'), ('title'
 
 YEARS = [year for year in range(2000, 2030)]
 
+
 class FilterForm(forms.Form):
     title = forms.CharField(max_length=255, required=False, label="Название")
     publication_date = forms.DateField(required=False,

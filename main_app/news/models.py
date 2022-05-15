@@ -1,12 +1,10 @@
+import re
+
 from django.db import models
-
 from django.contrib.auth.models import User
-
 from django.shortcuts import reverse
 
 from slugify import slugify
-
-import re
 from tldextract import extract
 
 
