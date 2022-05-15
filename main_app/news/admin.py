@@ -8,10 +8,8 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ('is_published',)
     search_fields = ('id', 'title', 'title_lower')
 
-    #fields = ('title', 'publication_date', 'time_create', 'slug', 'is_published', 'source_url')
-    #readonly_fields = ('publication_date', 'time_create', 'slug', 'source_url')
     fields = ('title', 'publication_date', 'time_create', 'slug', 'is_published', 'source_url', 'content')
-    readonly_fields = ('time_create', 'slug')
+    readonly_fields = ('publication_date', 'time_create', 'slug', 'source_url')
 
 
 class CommentsAdmin(admin.ModelAdmin):
@@ -21,8 +19,7 @@ class CommentsAdmin(admin.ModelAdmin):
     list_select_related = ('news', 'user')
 
     fields = ('user', 'news', 'time_create', 'text')
-    #readonly_fields = ('user', 'news', 'publication_date', 'time_create', 'slug', 'source_url')
-    readonly_fields = ('time_create',)
+    readonly_fields = ('user', 'news', 'time_create', 'text')
 
 
 admin.site.register(News, NewsAdmin)
