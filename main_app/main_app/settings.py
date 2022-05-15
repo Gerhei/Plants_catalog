@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
+    'main_app.apps.MainAppConfig',
     'plants.apps.PlantsConfig',
     'forum.apps.ForumConfig',
     'news.apps.NewsConfig',
