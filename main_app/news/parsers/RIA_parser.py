@@ -72,7 +72,7 @@ class RIA_Parser(BaseParser):
         if announce:
             # Skip news with video, because in most cases they do not carry useful information
             if announce.find('div', {'class': 'audioplayer'})\
-                    or announce.find('video'):
+                    or announce.find('video') or announce.find('iframe'):
                 module_logger.info('Skip articles with video %s' % source_url)
                 return None
 
@@ -86,7 +86,13 @@ class RIA_Parser(BaseParser):
 
         publication_date = article_header.find('div', {'class': 'article__info-date'}).find('a')
         publication_date = publication_date.get_text()
-        json_data['publication_date'] = dateparser.parse(publication_date, date_formats=['%H %M %d %m %Y'])
+        publication_date = dateparser.parse(publication_date, date_formats=['%H:%M %d.%m.%Y'])
+
+        json_data['publication_date'] = {'year': publication_date.year,
+                                         'month': publication_date.month,
+                                         'day': publication_date.day,
+                                         'hour': publication_date.hour,
+                                         'minute': publication_date.minute}
 
         title = article_header.find(re.compile("\w"), {'class': 'article__title'})
         title = title.get_text()
@@ -131,7 +137,16 @@ class RIA_Parser(BaseParser):
                 if not image:
                     continue
                 data_type = 'image'
-                content = {'source': image.attrs['src'], 'title': image.attrs['title']}
+
+                src = image.attrs['src']
+                if not src.startswith('http'):
+                    if image.attrs['data-src']:
+                        src = image.attrs['data-src']
+                    else:
+                        module_logger.warning('Don\'t find src attr for image "%s" for %s'
+                                              % (image.attrs['title'], source_url))
+
+                content = {'source': src, 'title': image.attrs['title']}
 
             elif data_type == 'quote':
                 content = block.get_text()

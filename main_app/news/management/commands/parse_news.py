@@ -7,6 +7,8 @@ from main_app.settings import HEADERS
 from news.parsers.RIA_parser import RIA_Parser
 from news.models import News
 
+import dateparser
+
 
 class Command(BaseCommand):
     help = 'Starts the process of collecting new news from predefined pages'
@@ -49,7 +51,7 @@ class Command(BaseCommand):
         """ Save given json data to News model. """
         news = News()
         news.title = json_data['title']
-        news.publication_date = json_data['publication_date']
+        news.publication_date = self.convert_to_datetime(json_data['publication_date'])
         news.source_url = source_url
         news.content = self.convert_to_html(json_data['content'])
         news.save()
@@ -131,3 +133,9 @@ class Command(BaseCommand):
                                '</table>' % (style, head_data, body_data)
 
         return content
+
+    def convert_to_datetime(self, json_data):
+        date_string = str(json_data['year']) + '-' + str(json_data['month']) + '-' + str(json_data['day']) \
+                      + ' ' +  str(json_data['hour']) + ':' + str(json_data['minute'])
+        publication_date = dateparser.parse(date_string, date_formats=['%Y %m %d %H %M'])
+        return publication_date
