@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 import dateparser
 
-from .base import BaseParser, module_logger
+from news.parsers.base import BaseParser, module_logger
 
 
 class ProfileParser(BaseParser):
@@ -17,6 +17,8 @@ class ProfileParser(BaseParser):
                         '&query_type=standard'
 
     def collect_list_urls(self, parse_for_days=-1):
+        module_logger.info('Start collecting all articles urls from %s.'
+                           % (self.site))
         list_urls = []
         current_date = date.today()
         if parse_for_days>=0:

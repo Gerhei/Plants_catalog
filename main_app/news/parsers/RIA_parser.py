@@ -15,6 +15,8 @@ class RIA_Parser(BaseParser):
     #  Getting all links to articles works in sync mode, which slows down the parsing speed,
     #  but on the other hand, does not load the site with requests, which reduces the likelihood of blocking
     def collect_list_urls(self, parse_for_days=-1):
+        module_logger.info('Start collecting all articles urls from %s.'
+                           % (self.site))
         list_urls = []
         current_date = date.today()
         if parse_for_days>=0:
