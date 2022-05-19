@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 import dateparser
 
-from news.parsers.base import BaseParser, module_logger
+from news.parsers.base import BaseParser
 
 
 class ProfileParser(BaseParser):
@@ -17,7 +17,7 @@ class ProfileParser(BaseParser):
                         '&query_type=standard'
 
     def collect_list_urls(self, parse_for_days=-1):
-        module_logger.info('Start collecting all articles urls from %s.'
+        self.module_logger.info('Start collecting all articles urls from %s.'
                            % (self.site))
         list_urls = []
         current_date = date.today()
@@ -57,11 +57,11 @@ class ProfileParser(BaseParser):
         # return unique values
         list_urls = list(set(list_urls))
         if len(list_urls)!=total_post and not parse_to_date:
-            module_logger.warning('[%s] The number of collected articles (%s) '
+            self.module_logger.warning('[%s] The number of collected articles (%s) '
                                   'does not correspond to the expected (%s).'
                            % (self.site, len(list_urls), total_post))
         else:
-            module_logger.info('On the site %s found %s links to articles%s.'
+            self.module_logger.info('On the site %s found %s links to articles%s.'
                            % (self.site, len(list_urls), message))
         return list_urls
 
@@ -95,7 +95,7 @@ class ProfileParser(BaseParser):
             # logg news with video
             if announce.find('div', {'class': 'audioplayer'})\
                     or announce.find('video') or announce.find('iframe'):
-                module_logger.info('Found articles with video %s' % source_url)
+                self.module_logger.info('Found articles with video %s' % source_url)
 
             announce_image = announce.find('img', {'class': 'wp-post-image'})
             if announce_image:
@@ -161,12 +161,12 @@ class ProfileParser(BaseParser):
                     # skip video
                     continue
                 else:
-                    module_logger.warning('Find unknown div block for %s' % (source_url))
+                    self.module_logger.warning('Find unknown div block for %s' % (source_url))
                 continue
 
             else:
                 # logging something strange
-                module_logger.warning('Find unknown data type %s for %s' % (block.name, source_url))
+                self.module_logger.warning('Find unknown data type %s for %s' % (block.name, source_url))
                 continue
 
             json_data['content'].append({data_type: content})
