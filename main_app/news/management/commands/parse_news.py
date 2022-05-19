@@ -4,11 +4,13 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db.models import ObjectDoesNotExist
 
 from main_app.settings import HEADERS
-from news.parsers.RIA_parser import RIA_Parser
+from news.parsers import *
 from news.models import News
 
 import dateparser
 
+
+LIST_PARSERS = [RIA_Parser, ProfileParser]
 
 class Command(BaseCommand):
     help = 'Starts the process of collecting new news from predefined pages'
@@ -23,10 +25,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.parse_for_days = options['parse_for_days']
 
-        news_parser = RIA_Parser(headers=HEADERS, verbosity='debug', timeout=5, pause_between_requests=0.5)
+        parameters = {'headers': HEADERS, 'verbosity': 'debug',
+                      'timeout': 5, 'pause_between_requests': 0.5}
+
+        # create instance of news parser for all sites
+        list_parsers = [news_parser(**parameters) for news_parser in LIST_PARSERS]
 
         while True:
-            self.parse_to_database(news_parser)
+            # Parsing data from each site specified LIST_PARSERS
+            for news_parser in list_parsers:
+                self.parse_to_database(news_parser)
             break
             # parse data from all sites
             # sleep(options['pause']*60)
