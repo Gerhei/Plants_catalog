@@ -1,6 +1,6 @@
 from time import sleep
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.db.models import ObjectDoesNotExist
 
 from main_app.settings import HEADERS
@@ -43,7 +43,6 @@ class Command(BaseCommand):
                 self.parse_to_database(news_parser)
             sleep(options['pause']*60)
 
-
     def parse_to_database(self, news_parser):
         """
          For a given site (which is represented by a separate parser class)
@@ -82,9 +81,7 @@ class Command(BaseCommand):
         return new_list_links
 
     def convert_to_html(self, json_data):
-        """
-         Convert json data to html and adds own css styles
-        """
+        """ Convert json data to html and adds own css styles """
         content = ""
         header_tags = ['h1', 'h2', 'h3', 'h4', 'h5']
         for block in json_data:
@@ -143,7 +140,7 @@ class Command(BaseCommand):
                                    '<thead>%s</thead>' \
                                    '<tbody>%s</tbody>' \
                                '</table>' % (style, head_data, body_data)
-
+        
         return content
 
     def convert_to_datetime(self, json_data):
