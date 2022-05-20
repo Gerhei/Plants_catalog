@@ -11,7 +11,7 @@ from .forms import *
 
 
 def index(request):
-    return render(request,'main_app/index.html',context={'title':'Главная страница'})
+    return render(request,'main_app/index.html',context={'title':'О сайте'})
 
 
 @login_required()

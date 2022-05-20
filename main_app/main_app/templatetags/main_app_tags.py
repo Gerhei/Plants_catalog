@@ -42,7 +42,7 @@ def get_header(context):
 @register.inclusion_tag('main_app/navigation.html', takes_context=True)
 def get_navigation(context):
     menu = [
-        {'title': 'Главная', 'url_name': 'main'},
+        {'title': 'О сайте', 'url_name': 'main'},
         {'title': 'Каталог растений', 'url_name': 'plants'},
         {'title': 'Форум', 'url_name': 'forum'},
         {'title': 'Новости', 'url_name': 'news'}
