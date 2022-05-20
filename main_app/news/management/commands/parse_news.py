@@ -1,4 +1,4 @@
-import json
+from time import sleep
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import ObjectDoesNotExist
@@ -21,11 +21,17 @@ class Command(BaseCommand):
         parser.add_argument('--parse_for_days', type=int, default=-1,
                             help='For what period (in days) '
                                       'the parser collects information. -1 means parse all news.')
+        parser.add_argument('--parse_verbosity', type=str, default='info',
+                            help='Verbosity level of the parsing process.')
 
     def handle(self, *args, **options):
         self.parse_for_days = options['parse_for_days']
 
-        parameters = {'headers': HEADERS, 'verbosity': 'debug',
+        log_levels = ['debug', 'info', 'warning', 'error', 'critical']
+        if options['parse_verbosity'] not in log_levels:
+            raise ValueError('Invalid parse verbosity level. Acceptable options: %s' % log_levels)
+
+        parameters = {'headers': HEADERS, 'verbosity': options['parse_verbosity'],
                       'timeout': 5, 'pause_between_requests': 0.5}
 
         # create instance of news parser for all sites
@@ -35,9 +41,7 @@ class Command(BaseCommand):
             # Parsing data from each site specified LIST_PARSERS
             for news_parser in list_parsers:
                 self.parse_to_database(news_parser)
-            break
-            # parse data from all sites
-            # sleep(options['pause']*60)
+            sleep(options['pause']*60)
 
 
     def parse_to_database(self, news_parser):

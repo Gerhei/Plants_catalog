@@ -144,6 +144,17 @@ class ProfileParser(BaseParser):
                 for item in list_items:
                     content.append(item.get_text())
 
+            elif block.name == 'figure':
+                image = block.find('image')
+                if not image:
+                    continue
+                data_type = 'image'
+                try:
+                    title = image.attrs['title']
+                except KeyError:
+                    title = ''
+                content = {'source': image.attrs['src'], 'title': title}
+
             elif block.name == 'div':
                 if 'swiper-container-bg' in block['class']:
                     for image in block.find_all('img'):
