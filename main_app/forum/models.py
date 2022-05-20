@@ -164,9 +164,9 @@ class Statistics(models.Model):
 
 
 class Topics(models.Model):
-    name = models.CharField(max_length=40, verbose_name='Заголовок')
-    name_lower = models.CharField(max_length=40, editable=False)
-    slug = models.SlugField(max_length=60, unique=True, db_index=True,
+    name = models.CharField(max_length=100, verbose_name='Заголовок')
+    name_lower = models.CharField(max_length=100, editable=False)
+    slug = models.SlugField(max_length=100, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
     view_count = models.IntegerField(validators=(MinValueValidator(0),), editable=False,
                                      default=0, verbose_name="Количество просмотров")
