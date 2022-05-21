@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'plants.apps.PlantsConfig',
     'forum.apps.ForumConfig',
     'news.apps.NewsConfig',
+    'django.contrib.flatpages',
     'django_cleanup.apps.CleanupConfig'
 ]
 
@@ -54,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'main_app.middleware.ForumUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'main_app.urls'

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.staticfiles import views
+from django.contrib.flatpages import views
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.urls import path, include, re_path
@@ -7,8 +8,8 @@ from main_app import settings
 from .views import *
 
 urlpatterns = [
+    path('', views.flatpage, {'url': '/'}, name='main'),
     path('admin/', admin.site.urls, name="admin"),
-    path('', index, name="main"),
     path('plants/', include('plants.urls'), name="plants"),
     path('forum/', include('forum.urls'), name="forum"),
     path('news/', include('news.urls'), name="news"),

@@ -10,14 +10,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 
 
-def index(request):
-    return render(request,'main_app/index.html',context={'title':'О сайте'})
-
-
 @login_required()
 def registration_done(request):
     return redirect(reverse('profile', kwargs={'slug':request.forumuser.slug}))
-
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
