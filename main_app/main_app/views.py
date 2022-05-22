@@ -1,5 +1,8 @@
-from django.shortcuts import render,reverse,redirect
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import render, reverse, redirect
+from django.http import HttpResponse, HttpResponseNotFound, \
+    HttpResponseRedirect, HttpResponseForbidden, \
+    HttpResponseServerError, HttpResponseBadRequest
+from django.template.loader import render_to_string
 
 from django.views.generic import CreateView,DetailView,UpdateView
 
@@ -87,4 +90,5 @@ class CreateUserView(CreateView):
 
 
 def pageNotFound(request, exception):
-    return HttpResponseNotFound("Страница не найдена")
+    content = render_to_string(template_name='handlers/404.html', request=request)
+    return HttpResponseNotFound(content=content)
