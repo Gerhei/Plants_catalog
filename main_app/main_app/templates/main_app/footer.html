@@ -3,8 +3,26 @@
 
 <footer id="footer">
     {% block footer %}
-        <div class="footer-text">
-            {% translate "Plant catalog - website about plants" %}.</div>
+        <div class="footer-text footer-grid">
+            <div>{% translate "Plant catalog - website about plants" %}.</div>
+            <div align="right">
+                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                    <span>{% translate "Choose a language" %}</span>
+                    <input name="next" type="hidden" value="{{ redirect_to }}">
+                    <select name="language">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="{% translate 'Apply' %}">
+                </form>
+            </div>
+        </div>
         <div class="footer-text footer-grid">
             <div>{% translate "All rights reserved" %}.</div>
             <div align="right">

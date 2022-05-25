@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: pav.4nd@yandex.com\n"
-"POT-Creation-Date: 2022-05-25 23:49+0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-26 00:35+0300\n"
 "PO-Revision-Date: 2022-05-26 00:04+0300\n"
 "Last-Translator: Pavlov Andrei <pav.4nd@yandex.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,6 +52,14 @@ msgstr "Изображение пользователя"
 msgid "About user"
 msgstr "О пользователе"
 
+#: .\main_app\settings.py:126
+msgid "English"
+msgstr ""
+
+#: .\main_app\settings.py:127
+msgid "Russian"
+msgstr ""
+
 #: .\main_app\templates\handlers\404.html:6
 msgid "Page not found"
 msgstr "Страница не найдена"
@@ -78,11 +86,19 @@ msgstr ""
 msgid "Plant catalog - website about plants"
 msgstr "Энциклопедия растений - сайт про растения"
 
-#: .\main_app\templates\main_app\footer.html:9
+#: .\main_app\templates\main_app\footer.html:10
+msgid "Choose a language"
+msgstr "Выбрать язык"
+
+#: .\main_app\templates\main_app\footer.html:22
+msgid "Apply"
+msgstr "Применить"
+
+#: .\main_app\templates\main_app\footer.html:27
 msgid "All rights reserved"
 msgstr "Все права защищены"
 
-#: .\main_app\templates\main_app\footer.html:11
+#: .\main_app\templates\main_app\footer.html:29
 msgid "Contact information"
 msgstr "Контактная информация"
 
@@ -101,18 +117,19 @@ msgstr "Выйти"
 
 #: .\main_app\templates\main_app\header.html:18
 #: .\main_app\templates\registration\login.html:5
-#: .\main_app\templates\registration\login.html:41
+#: .\main_app\templates\registration\login.html:40
 #: .\main_app\templates\registration\password_reset_complete.html:7
 msgid "Log in"
 msgstr "Войти"
 
 #: .\main_app\templates\main_app\header.html:19
-#: .\main_app\templates\registration\login.html:35 .\main_app\views.py:88
+#: .\main_app\templates\registration\login.html:34 .\main_app\views.py:88
 #: .\main_app\views.py:89
 msgid "Registration"
 msgstr "Регистрация"
 
 #: .\main_app\templates\main_app\navigation.html:15
+#: .\main_app\templates\registration\user_detail.html:13
 msgid "User Profile"
 msgstr "Профиль пользователя"
 
@@ -152,15 +169,21 @@ msgstr "Войти снова"
 msgid "Invalid password or username"
 msgstr "Неправильный пароль или имя пользователя"
 
-#: .\main_app\templates\registration\login.html:24
+#: .\main_app\templates\registration\login.html:20
+msgid ""
+"Your account does not have access to this page. To continue, please log in "
+"with an account that has access"
+msgstr ""
+
+#: .\main_app\templates\registration\login.html:23
 msgid "Please log in to see this page"
 msgstr "Пожалуйста, войдите, чтобы увидеть эту страницу"
 
-#: .\main_app\templates\registration\login.html:32
+#: .\main_app\templates\registration\login.html:31
 msgid "Forgot your password"
 msgstr "Забыли ваш пароль"
 
-#: .\main_app\templates\registration\login.html:34
+#: .\main_app\templates\registration\login.html:33
 msgid "No account yet"
 msgstr "Еще нет аккаунта"
 
@@ -176,7 +199,13 @@ msgstr "Пожалуйста, исправьте ошибку ниже."
 msgid "Please correct the errors below."
 msgstr "Пожалуйста, исправьте ошибки ниже."
 
-#: .\main_app\templates\registration\password_change_form.html:24
+#: .\main_app\templates\registration\password_change_form.html:18
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: .\main_app\templates\registration\password_change_form.html:23
 #: .\main_app\templates\registration\password_reset_confirm.html:6
 msgid "Change my password"
 msgstr "Изменить пароль"
@@ -186,7 +215,37 @@ msgid "Your password has been set.  You may go ahead and log in now."
 msgstr ""
 "Ваш пароль был установлен. Вы можете пройти дальше и войти в аккаунт сейчас."
 
-#: .\main_app\templates\registration\password_reset_form.html:12
+#: .\main_app\templates\registration\password_reset_confirm.html:13
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: .\main_app\templates\registration\password_reset_confirm.html:21
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+
+#: .\main_app\templates\registration\password_reset_done.html:11
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: .\main_app\templates\registration\password_reset_done.html:12
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: .\main_app\templates\registration\password_reset_form.html:6
+msgid ""
+"Forgotten your password? Enter your email address below, and we’ll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: .\main_app\templates\registration\password_reset_form.html:11
 msgid "Reset password"
 msgstr "Сбросить пароль"
 

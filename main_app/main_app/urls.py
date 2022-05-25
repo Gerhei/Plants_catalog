@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.staticfiles import views
 from django.contrib.flatpages import views
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from django.views.static import serve
 from django.urls import path, include, re_path
 from main_app import settings
@@ -19,6 +20,10 @@ urlpatterns = [
     path('accounts/registration/done', registration_done, name="registration_done"),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+
+urlpatterns += i18n_patterns(
+    path('i18n/', include('django.conf.urls.i18n')),
+)
 
 if settings.DEBUG:
     import debug_toolbar
