@@ -1,16 +1,20 @@
 {% load static %}
 {% load main_app_tags %}
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     {% block head %}
         <meta charset="UTF-8">
-        <meta name="keywords" content="растения, справочник, энциклопедия, каталог, новости">
-        <meta name="rights" content="Павлов Андрей">
-        <meta name="description" content="Энциклопедия различных растений, начиная с комнатных цветов и заканчивая деревьями, описания и изображения растений.">
+        <meta name="keywords" content=
+                "{% translate 'plants, plant growing, directory, encyclopedia, catalog, news, forum' %}">
+        <meta name="rights" content="{% translate 'Pavlov Andrei' %}">
+        <meta name="description" content=
+                "{% translate 'Encyclopedia of various plants, starting with indoor flowers and ending with trees, descriptions and images of plants.' %}">
 
         {% block title %}
-            <title>{{title}}</title>
+            <title>{{ title }}</title>
         {% endblock title%}
 
         {% block styles %}

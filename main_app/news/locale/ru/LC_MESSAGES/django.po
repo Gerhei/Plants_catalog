@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-25 23:49+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\news\apps.py:8 .\news\models.py:47 .\news\models.py:48 .\news\models.py:57
+msgid "news"
+msgstr "новость"
+
+#: .\news\forms.py:9
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: .\news\forms.py:10
+msgid "Descending"
+msgstr "По убыванию"
+
+#: .\news\forms.py:12
+msgid "By publication date"
+msgstr "По дате публикации"
+
+#: .\news\forms.py:12
+msgid "Alphabetically"
+msgstr "По алфавиту"
+
+#: .\news\models.py:13
+msgid "title"
+msgstr "заголовок"
+
+#: .\news\models.py:17
+msgid "slug"
+msgstr "слаг"
+
+#: .\news\models.py:18 .\news\models.py:55
+msgid "time create"
+msgstr "дата создания"
+
+#: .\news\models.py:20
+msgid "publication date"
+msgstr "дата публикации"
+
+#: .\news\models.py:22
+msgid "is published"
+msgstr "опубликовано ли"
+
+#: .\news\models.py:23
+msgid "link to the source"
+msgstr "ссылка на источник"
+
+#: .\news\models.py:25
+msgid "news content"
+msgstr "содержимое новости"
+
+#: .\news\models.py:54 .\news\models.py:63
+msgid "comment"
+msgstr "комментарий"
+
+#: .\news\models.py:56
+msgid "user"
+msgstr "пользователь"
+
+#: .\news\models.py:60
+msgid "Comment"
+msgstr "Комментарий"
+
+#: .\news\models.py:64
+msgid "comments"
+msgstr "комментарии"
+
+#: .\news\templates\news\news_detail.html:13 .\news\views.py:22
+msgid "News List"
+msgstr "Список новостей"
+
+#: .\news\templates\news\news_detail.html:17
+#: .\news\templates\news\news_list.html:47
+msgid "Random news"
+msgstr "Случайная новость"
+
+#: .\news\templates\news\news_detail.html:25
+msgid "The article is taken from this source"
+msgstr "Статья взята из данного источника"
+
+#: .\news\templates\news\news_detail.html:34
+msgid "Comments"
+msgstr "Комментарии"
+
+#: .\news\templates\news\news_detail.html:42
+msgid "Anonymous"
+msgstr "Аноним"
+
+#: .\news\templates\news\news_detail.html:62
+#: .\news\templates\news\news_list.html:50
+msgid "Go back to top"
+msgstr "Назад к началу"
+
+#: .\news\templates\news\news_detail.html:63
+#: .\news\templates\news\news_list.html:51
+msgid "On top"
+msgstr "Наверх"
+
+#: .\news\templates\news\news_detail.html:67
+msgid "To the comments"
+msgstr "К комментариям"
+
+#: .\news\templates\news\news_list.html:14
+msgid "Apply"
+msgstr "Применить"
+
+#: .\news\templates\news\news_list.html:26
+msgid "News"
+msgstr "Новость"
+
+#: .\news\templates\news\news_list.html:27
+msgid "Publication date"
+msgstr "Дата публикации"
+
+#: .\news\views.py:71
+msgid "Create comment"
+msgstr "Создать комментарий"

@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-25 23:49+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\main_app\apps.py:8
+msgid "main"
+msgstr "основное"
+
+#: .\main_app\forms.py:12
+msgid "Enter your email address."
+msgstr "Введите свой адрес электронной почты."
+
+#: .\main_app\forms.py:17
+msgid ""
+"To register, you need email address that has not yet been used to create an "
+"account on this site."
+msgstr ""
+"Для регистрации вам нужен адрес электронной почты, который еще не "
+"использовался для создания учетной записи на этом сайте."
+
+#: .\main_app\forms.py:22
+msgid "Enter to prove that you are not a robot."
+msgstr "Введите, чтобы доказать, что вы не робот."
+
+#: .\main_app\forms.py:32
+msgid "The length of the user name can't exceed 20 characters."
+msgstr "Длина имени пользователя не может превышать 20 символов."
+
+#: .\main_app\forms.py:40
+msgid "User image"
+msgstr "Изображение пользователя"
+
+#: .\main_app\forms.py:42 .\main_app\templates\registration\user_detail.html:46
+msgid "About user"
+msgstr "О пользователе"
+
+#: .\main_app\templates\handlers\404.html:6
+msgid "Page not found"
+msgstr "Страница не найдена"
+
+#: .\main_app\templates\main_app\base.html:11
+msgid "plants, plant growing, directory, encyclopedia, catalog, news, forum"
+msgstr ""
+"растения, выращивание растений, справочник, энциклопедия, каталог, новости, "
+"форум"
+
+#: .\main_app\templates\main_app\base.html:12
+msgid "Pavlov Andrei"
+msgstr "Павлов Андрей"
+
+#: .\main_app\templates\main_app\base.html:14
+msgid ""
+"Encyclopedia of various plants, starting with indoor flowers and ending with "
+"trees, descriptions and images of plants."
+msgstr ""
+"Энциклопедия различных растений, начиная с комнатных цветов и заканчивая "
+"деревьями, описания и изображения растений."
+
+#: .\main_app\templates\main_app\footer.html:7
+msgid "Plant catalog - website about plants"
+msgstr "Энциклопедия растений - сайт про растения"
+
+#: .\main_app\templates\main_app\footer.html:9
+msgid "All rights reserved"
+msgstr "Все права защищены"
+
+#: .\main_app\templates\main_app\footer.html:11
+msgid "Contact information"
+msgstr "Контактная информация"
+
+#: .\main_app\templates\main_app\header.html:9
+#: .\main_app\templatetags\main_app_tags.py:50
+msgid "Plant catalog"
+msgstr "Энциклопедия растений"
+
+#: .\main_app\templates\main_app\header.html:12
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: .\main_app\templates\main_app\header.html:16
+msgid "Log out"
+msgstr "Выйти"
+
+#: .\main_app\templates\main_app\header.html:18
+#: .\main_app\templates\registration\login.html:5
+#: .\main_app\templates\registration\login.html:41
+#: .\main_app\templates\registration\password_reset_complete.html:7
+msgid "Log in"
+msgstr "Войти"
+
+#: .\main_app\templates\main_app\header.html:19
+#: .\main_app\templates\registration\login.html:35 .\main_app\views.py:88
+#: .\main_app\views.py:89
+msgid "Registration"
+msgstr "Регистрация"
+
+#: .\main_app\templates\main_app\navigation.html:15
+msgid "User Profile"
+msgstr "Профиль пользователя"
+
+#: .\main_app\templates\main_app\navigation.html:21
+msgid "Administration"
+msgstr "Администрирование"
+
+#: .\main_app\templates\main_app\pagination.html:9
+msgid "First"
+msgstr "Первая"
+
+#: .\main_app\templates\main_app\pagination.html:11
+msgid "Previous"
+msgstr "Предыдущая"
+
+#: .\main_app\templates\main_app\pagination.html:15
+msgid "Page"
+msgstr "Страница"
+
+#: .\main_app\templates\main_app\pagination.html:20
+msgid "Next"
+msgstr "Следующая"
+
+#: .\main_app\templates\main_app\pagination.html:22
+msgid "Last"
+msgstr "Последняя"
+
+#: .\main_app\templates\registration\logged_out.html:6
+msgid "You are not logged in"
+msgstr "Вы не вошли в аккаунт"
+
+#: .\main_app\templates\registration\logged_out.html:7
+msgid "Log in again"
+msgstr "Войти снова"
+
+#: .\main_app\templates\registration\login.html:12
+msgid "Invalid password or username"
+msgstr "Неправильный пароль или имя пользователя"
+
+#: .\main_app\templates\registration\login.html:24
+msgid "Please log in to see this page"
+msgstr "Пожалуйста, войдите, чтобы увидеть эту страницу"
+
+#: .\main_app\templates\registration\login.html:32
+msgid "Forgot your password"
+msgstr "Забыли ваш пароль"
+
+#: .\main_app\templates\registration\login.html:34
+msgid "No account yet"
+msgstr "Еще нет аккаунта"
+
+#: .\main_app\templates\registration\password_change_done.html:7
+msgid "Your password has been changed"
+msgstr "Ваш пароль был изменен"
+
+#: .\main_app\templates\registration\password_change_form.html:8
+msgid "Please correct the error below."
+msgstr "Пожалуйста, исправьте ошибку ниже."
+
+#: .\main_app\templates\registration\password_change_form.html:10
+msgid "Please correct the errors below."
+msgstr "Пожалуйста, исправьте ошибки ниже."
+
+#: .\main_app\templates\registration\password_change_form.html:24
+#: .\main_app\templates\registration\password_reset_confirm.html:6
+msgid "Change my password"
+msgstr "Изменить пароль"
+
+#: .\main_app\templates\registration\password_reset_complete.html:6
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+"Ваш пароль был установлен. Вы можете пройти дальше и войти в аккаунт сейчас."
+
+#: .\main_app\templates\registration\password_reset_form.html:12
+msgid "Reset password"
+msgstr "Сбросить пароль"
+
+#: .\main_app\templates\registration\profile_form.html:6
+msgid "Current user image"
+msgstr "Текущее изображение пользователя"
+
+#: .\main_app\templates\registration\user_detail.html:11
+msgid "Your profile"
+msgstr "Ваш профиль"
+
+#: .\main_app\templates\registration\user_detail.html:27
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: .\main_app\templates\registration\user_detail.html:29
+msgid "Reputation"
+msgstr "Репутация"
+
+#: .\main_app\templates\registration\user_detail.html:32
+msgid "Email"
+msgstr "Электронная почта"
+
+#: .\main_app\templates\registration\user_detail.html:41
+msgid "Edit profile"
+msgstr "Редактировать профиль"
+
+#: .\main_app\templates\registration\user_detail.html:53
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: .\main_app\templatetags\main_app_tags.py:49
+msgid "About"
+msgstr "О сайте"
+
+#: .\main_app\templatetags\main_app_tags.py:51
+msgid "Forum"
+msgstr "Форум"
+
+#: .\main_app\templatetags\main_app_tags.py:52
+msgid "News"
+msgstr "Новости"
+
+#: .\main_app\views.py:29
+msgid "Editing a profile"
+msgstr "Редактирование профиля"
+
+#: .\main_app\views.py:32
+msgid "Change"
+msgstr "Изменить"

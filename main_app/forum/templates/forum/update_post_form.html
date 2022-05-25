@@ -1,15 +1,19 @@
 {% extends "forum/default_form_page.html" %}
 {% load forum_tags %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block form %}
 
     {% if initial_files %}
         <div class="field-grid">
-            <div class="field-label">Удалить все уже прикрепленные файлы <input type="checkbox" name="delete_initial"></div>
+            <div class="field-label">
+                {% translate "Delete all already attached files" %}
+                <input type="checkbox" name="delete_initial"></div>
         </div>
 
-        <div class="field-label">К сообщению уже прикреплены файлы:
+        <div class="field-label">
+            {% translate "Files are already attached to the post" %}:
             {% for file in initial_files %}
             <span><a href="{{ file.get_absolute_url }}">
                 {% get_filename_from_url file.file.name %} </a></span>
@@ -18,23 +22,24 @@
     {% endif %}
 
     {% if attached_files_errors %}
-        <div class="text-padding">Сообщение изменено, но некоторые файлы не добавлены по причине:
+        <div class="text-padding">
+            {% translate "Post has been changed, but some files have not been added for a reason" %}:
             <ul class="errorlist">
                 {% for errors in attached_files_errors %}
                     {% for error in errors %}
-                        <li>{{error}}</li>
+                        <li>{{ error }}</li>
                     {% endfor %}
                 {% endfor %}
                 {% if not_attached_files %}
                     <li>
-                        Список файлов, которые не удалось добавить:
+                        {% translate "List of files that could not be added" %}:
                         {% for file in not_attached_files %}
-                            <li>{{file}} </li>
+                            <li>{{ file }} </li>
                         {% endfor %}
                     </li>
                 {% endif %}
             </ul>
         </div>
     {% endif %}
-    {{block.super}}
+    {{ block.super }}
 {% endblock form %}

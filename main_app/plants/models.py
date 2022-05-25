@@ -1,17 +1,18 @@
 from django.db import models
 from  django.shortcuts import reverse
+from django.utils.translation import  gettext_lazy as _
 from slugify import slugify
 import os
 
 # TODO Create a model to store this information
 PRIORITIES = (
-    (0, 'Домен'), (1, 'Надцарство'), (2, 'Царство'), (3, 'Подцарство'), (4, 'Клада'),
-    (5, 'Надотдел'), (6, 'Отдел'), (7, 'Подотдел'), (8, 'Надкласс'), (9, 'Класс'),
-    (10, 'Подкласс'), (11, 'Надпорядок'), (12, 'Порядок'), (13, 'Ряд'), (14, 'Тип'),
-    (15, 'Семейство'), (16, 'Подсемейство'), (17, 'Надтриба'), (18, 'Триба'),
-    (19, 'Подтриба'), (20, 'Род'), (21, 'Подрод'), (22, 'Секция'), (23, 'Подсекция'),
-    (24, 'Грекс'), (25, 'Естественный гибрид'), (26, 'Вид'), (27, 'Разновидность'),
-    (28, 'Подвид'), (29, 'Без ранга'),
+    (0, _('Domain')), (1, _('Supra-kingdom')), (2, _('Kingdom')), (3, _('Sub-kingdom')), (4, _('Clade')),
+    (5, _('Supra-department')), (6, _('Department')), (7, _('Sub-department')), (8, _('Superclass')), (9, _('Class')),
+    (10, _('Subclass')), (11, _('Superorder')), (12, _('Order')), (13, _('Series ')), (14, _('Type')),
+    (15, _('Family')), (16, _('Subfamily')), (17, _('Supertribe')), (18, _('Tribe')),
+    (19, _('Subtribe')), (20, _('Genus')), (21, _('Subgenus')), (22, _('Section')), (23, _('Subsection')),
+    (24, _('Grex')), (25, _('Natural hybrid')), (26, _('Kind')), (27, _('Variety')),
+    (28, _('Subkind')), (29, _('Without rank')),
 )
 
 
@@ -26,11 +27,11 @@ class NaturalKeyTaxonsManager(models.Manager):
 
 
 class Categories(models.Model):
-    name = models.CharField(max_length=60, unique=True, verbose_name='Наименование')
+    name = models.CharField(max_length=60, unique=True, verbose_name=_('name'))
     name_lower = models.CharField(max_length=60, unique=True, null=True, editable=False)
     slug = models.SlugField(max_length=60, unique=True, db_index=True, editable=False, verbose_name='URL')
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
 
     objects = NaturalKeyManager()
 
@@ -43,18 +44,18 @@ class Categories(models.Model):
         super(Categories, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name = _("category")
+        verbose_name_plural = _("categories")
         ordering = ('name',)
 
 
 class Taxons(models.Model):
-    name = models.CharField(max_length=60, verbose_name='Наименование')
+    name = models.CharField(max_length=60, verbose_name=_('name'))
     slug = models.SlugField(max_length=60, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
-    order = models.IntegerField(default=0, choices=PRIORITIES, verbose_name='Ранг')
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    order = models.IntegerField(default=0, choices=PRIORITIES, verbose_name=_('rank'))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
 
     objects = NaturalKeyTaxonsManager()
 
@@ -66,8 +67,8 @@ class Taxons(models.Model):
         super(Taxons, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Таксон"
-        verbose_name_plural = "Таксоны"
+        verbose_name = _("taxon")
+        verbose_name_plural = _("taxons")
         ordering = ('name',)
         unique_together = (('order','name'),)
 
@@ -78,15 +79,15 @@ def content_file_name(instance, filename):
     return os.path.join('plants/plants_image', filename)
 
 class Plants(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name='Название')
+    name = models.CharField(max_length=100, unique=True, verbose_name=_('name'))
     name_lower = models.CharField(max_length=100, unique=True, null=True, editable=False)
     slug = models.SlugField(max_length=100, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
-    image = models.ImageField(upload_to=content_file_name, blank=True)
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
-    categories = models.ManyToManyField(Categories, blank=True, verbose_name='Категории')
-    taxons = models.ManyToManyField(Taxons, blank=True, verbose_name='Таксоны')
+    image = models.ImageField(upload_to=content_file_name, blank=True, verbose_name=_('image'))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
+    categories = models.ManyToManyField(Categories, blank=True, verbose_name=_('categories'))
+    taxons = models.ManyToManyField(Taxons, blank=True, verbose_name=_('taxons'))
 
     objects = NaturalKeyManager()
 
@@ -102,22 +103,23 @@ class Plants(models.Model):
         super(Plants, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Растение"
-        verbose_name_plural = "Растения"
+        verbose_name = _("plant")
+        verbose_name_plural = _("plants")
         ordering = ('name',)
 
+
 class Descriptions(models.Model):
-    category = models.CharField(max_length=64, verbose_name='Категория', blank=True)
-    text = models.TextField(blank=True, verbose_name='Описание')
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
-    plant = models.ForeignKey(Plants, on_delete=models.CASCADE, verbose_name='Растение')
+    category = models.CharField(max_length=64, verbose_name=_('category'), blank=True)
+    text = models.TextField(blank=True, verbose_name=_('description'))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
+    plant = models.ForeignKey(Plants, on_delete=models.CASCADE, verbose_name=_('plant'))
 
     def __str__(self):
         return f'{self.plant.name} {self.category}'
 
     class Meta:
-        verbose_name = "Описание"
-        verbose_name_plural = "Описания"
+        verbose_name = _("description")
+        verbose_name_plural = _("descriptions")
         ordering = ('category',)
         unique_together = (('plant','category'),)

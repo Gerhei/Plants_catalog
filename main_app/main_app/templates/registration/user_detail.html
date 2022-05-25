@@ -1,6 +1,6 @@
 {% extends 'main_app/base.html' %}
 {% load static %}
-
+{% load i18n %}
 
 {% block extrastyles %}
     <link type="text/css" href="{% static 'main_app/css/profile_detail.css'%}" rel="stylesheet"/>
@@ -8,25 +8,29 @@
 
 {% block content %}
     {% if can_edit %}
-        <p class="super-title">Ваш профиль</p>
+        <p class="super-title">{% translate "Your profile" %}</p>
     {% else %}
-        <p class="super-title">Профиль пользователя {{object.username}}</p>
+        <p class="super-title">{% translate "User Profile" %}
+            {{ object.username }}</p>
     {% endif %}
 
     <div class="profile-grid">
         <div class="profile-general-info">
             {% if object.forumusers.user_image %}
                 <div class="profile-image">
-                    <a href="{{object.forumusers.user_image.url}}">
-                        <img src="{{object.forumusers.user_image.url}}">
+                    <a href="{{ object.forumusers.user_image.url }}">
+                        <img src="{{ object.forumusers.user_image.url }}">
                     </a>
                 </div>
             {% endif %}
             <div class="general-info">
-                <p>Имя пользователя: {{object.username}}</p>
-                <p>Репутация: {{object.forumusers.reputation}}</p>
+                <p>{% translate "User name" %}:
+                    {{ object.username }}</p>
+                <p>{% translate "Reputation" %}:
+                    {{ object.forumusers.reputation }}</p>
                 {% if can_edit %}
-                    <p>Почтовый адрес: {{object.email}}</p>
+                    <p>{% translate "Email" %}:
+                        {{ object.email }}</p>
                 {% endif %}
             </div>
         </div>
@@ -34,18 +38,19 @@
         {% if can_edit %}
             <div class="profile-editing">
                     <p class="profile-edit"><a href="{% url 'profile_update' %}" class="app_link">
-                        Редактировать профиль</a></p>
+                        {% translate "Edit profile" %}</a></p>
             </div>
         {% endif %}
 
         <div class="profile-detail-info">
-            <p class="title">О пользователе</p>
-            <p class="text-with-wrap">{{object.forumusers.about_user}}</p>
+            <p class="title">{% translate "About user" %}</p>
+            <p class="text-with-wrap">{{ object.forumusers.about_user }}</p>
         </div>
 
         {% if can_edit %}
             <div class="profile-settings">
-                <p><a href="{% url 'password_change' %}" class="app_link">Изменить пароль</a></p>
+                <p><a href="{% url 'password_change' %}" class="app_link">
+                    {% translate "Change password" %}</a></p>
             </div>
         {% endif %}
     </div>

@@ -1,4 +1,5 @@
 {% extends "news/base.html" %}
+{% load i18n %}
 {% load main_app_tags %}
 
 {% block extrastyles %}
@@ -8,17 +9,20 @@
 {% block content %}
     <ul class="horizontal_menu">
         <li>
-            <a href="{% url 'news' %}" class="app_menu_link">Список новостей</a>
+            <a href="{% url 'news' %}" class="app_menu_link">
+                {% translate "News List" %}</a>
         </li>
         <li>
-            <a href="{% url 'random_news' %}" class="app_menu_link">Случайная новость</a>
+            <a href="{% url 'random_news' %}" class="app_menu_link">
+                {% translate "Random news" %}</a>
         </li>
     </ul>
     <div class="article-wrapper">
         <div class="article-info">
             <h2 class="super-title">{{ object.title }}</h2>
             <div class="article-source">
-                <span>Статья взята из данного источника: </span>
+                <span>
+                    {% translate "The article is taken from this source" %}: </span>
                 <a class="app_link" href="{{ object.source_url }}">{{ object.source_url }}</a>
             </div>
         </div>
@@ -27,7 +31,7 @@
         </article>
     </div>
     <div class="comments-wrapper" id="comments">
-        <h2>Комментарии</h2>
+        <h2>{% translate "Comments" %}</h2>
         {% for comment in page_obj %}
             <div class="comment-block">
                 <div class="comment-user">
@@ -35,7 +39,7 @@
                         <a href="{{ comment.user.forumusers.get_absolute_url }}" class="app_link">
                             {{ comment.user }}</a>
                     {% else %}
-                        Anonymous
+                        {% translate "Anonymous" %}
                     {% endif %}
                 </div>
                 <div class="comment-date">{{ comment.time_create }}</div>
@@ -55,10 +59,12 @@
 {% block aside %}
     <ul class="vertical_menu">
         <li>
-            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
+            <a href="#" title="{% translate 'Go back to top' %}" class="topbutton">
+                ^{% translate "On top" %}</a>
         </li>
         <li>
-            <a href="#comments" class="topbutton">К комментариям</a>
+            <a href="#comments" class="topbutton">
+                {% translate "To the comments" %}</a>
         </li>
     </ul>
 {% endblock aside %}

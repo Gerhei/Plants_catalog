@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.utils.translation import gettext as _
 
 from django.db.models import Q
 
@@ -25,21 +26,21 @@ class PlantsListView(ListView):
 
         try:
             if ('cat' in self.request.GET):
-                context['title'] = "Категория: " + \
+                context['title'] = _("Category") + ": " + \
                                    Categories.objects.get(slug=self.request.GET['cat']).name
-                context['super_title'] = 'Категории'
+                context['super_title'] = _('Categories')
                 context['super_url'] = 'categories'
 
             elif ('taxon' in self.request.GET):
                 taxon = Taxons.objects.get(slug=self.request.GET['taxon'])
-                context['title'] = taxon.get_order_display()+': '+taxon.name
-                context['super_title'] = 'Таксоны'
+                context['title'] = taxon.get_order_display()+': ' + taxon.name
+                context['super_title'] = _('Taxons')
                 context['super_url'] = 'taxons'
 
             else:
-                context['title'] = "Каталог растений"
-                context['super_title'] = 'Все растения'
-                context['super_url'] ='plants'
+                context['title'] = _('Plant catalog')
+                context['super_title'] = _('All plants')
+                context['super_url'] = 'plants'
             return context
         except (Categories.DoesNotExist, Taxons.DoesNotExist) as ex:
             raise Http404
@@ -72,8 +73,8 @@ class CategoriesListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter_form'] = FilterForm(self.request.GET)
-        context['title'] = "Категории"
-        context['super_title'] = 'Все категории'
+        context['title'] = _("Categories")
+        context['super_title'] = _('All categories')
         context['super_url'] = 'categories'
 
         return context
@@ -103,7 +104,7 @@ class TaxonsListView(ListView):
         if (len(title)==0):
             raise Http404
         context['title'] = title[0].get_order_display()
-        context['super_title'] = 'Таксоны'
+        context['super_title'] = _('Taxons')
         context['super_url'] = 'taxons'
         return context
 
@@ -117,7 +118,7 @@ class TaxonsListView(ListView):
 
 def taxons_rang(request):
     context={
-        'title': 'Таксоны',
+        'title': _('Taxons'),
         'rangs': PRIORITIES
     }
     return render(request, 'plants/taxons_rangs.html', context)

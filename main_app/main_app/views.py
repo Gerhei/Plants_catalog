@@ -9,13 +9,15 @@ from django.views.generic import CreateView,DetailView,UpdateView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import gettext as _
 
 from .forms import *
 
 
 @login_required()
 def registration_done(request):
-    return redirect(reverse('profile', kwargs={'slug':request.forumuser.slug}))
+    return redirect(reverse('profile', kwargs={'slug': request.forumuser.slug}))
+
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
@@ -24,10 +26,10 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Редактирование профиля"
+        context['title'] = _("Editing a profile")
         context['current_image'] = self.request.forumuser.user_image.url
         context['enctype'] = "multipart/form-data"
-        context['submit_value'] = "Изменить"
+        context['submit_value'] = _("Change")
 
         return context
 
@@ -57,7 +59,7 @@ class UserDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data()
         context['title'] = self.object.username
-        context['can_edit'] = self.object == self.request.user
+        context['can_edit'] = (self.object == self.request.user)
         return context
 
 
@@ -83,8 +85,8 @@ class CreateUserView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Регистрация"
-        context['submit_value'] = "Регистрация"
+        context['title'] = _("Registration")
+        context['submit_value'] = _("Registration")
 
         return context
 

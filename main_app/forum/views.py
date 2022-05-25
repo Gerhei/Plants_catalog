@@ -8,6 +8,8 @@ from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
+from django.utils.translation import gettext as _
+
 from django.db.models import Q
 from .models import *
 from .forms import *
@@ -24,8 +26,8 @@ class SectionsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Форум"
-        context['super_title'] = "Список разделов"
+        context['title'] = _("Forum")
+        context['super_title'] = _("Sections list")
         return context
 
     def get_queryset(self):
@@ -56,7 +58,7 @@ class TopicsListView(SingleObjectMixin, ListView):
             context['sections'] = self.object.sections_set.all()
             context['super_section'] = self.object.super_sections
         else:
-            context['title'] = "Все темы"
+            context['title'] = _("All topics")
         context['filter_form'] = FilterForm(self.request.GET)
         return context
 
@@ -110,7 +112,7 @@ class TopicDetailView(SingleObjectMixin, ListView):
         context['can_delete_topic'] = self.request.user.has_perms(['forum.delete_topics', 'forum.change_topics'])
         context['rate_form'] = UpdateScorePostForm
         context['form'] = CreatePostForm()
-        context['submit_value'] = 'Создать сообщение'
+        context['submit_value'] = _('Create post')
         context['enctype'] = 'multipart/form-data'
         context['action'] = reverse('create_post', kwargs={'pk': self.object.pk})
 
@@ -190,10 +192,10 @@ class TopicCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Создание темы'
+        context['title'] = _('Creating topic')
         context['enctype'] = 'multipart/form-data'
-        context['submit_value'] = 'Создать тему'
-        context['change_text'] = f'Создать тему в разделе: {self.section}'
+        context['submit_value'] = _('Create topic')
+        context['change_text'] = '%s: %s.' % (_('Create a topic in the section'), self.section)
 
         return context
 
@@ -268,10 +270,10 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         if 'attached_files_errors' in kwargs:
             context['attached_files_errors'] = kwargs['attached_files_errors']
         context['initial_files'] = self.object.attachedfiles_set.all()
-        context['title'] = 'Редактирование сообщения'
-        context['submit_value'] = 'Изменить сообщение'
+        context['title'] = _('Editing post')
+        context['submit_value'] = _('Edit post')
         context['enctype'] = "multipart/form-data"
-        context['change_text'] = f'Изменить сообщение в теме: {self.object.topic.name}'
+        context['change_text'] = '%s: %s.' % (_('Edit a post in the topic'), self.object.topic.name)
 
         return context
 
@@ -329,10 +331,10 @@ class TopicDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super(TopicDeleteView, self).get_context_data(**kwargs)
-        context['title'] = "Удалить тему"
-        context['submit_value'] = 'Удалить тему'
-        context['change_text'] = f'Удалить тему  в разделе: {self.object.sections.name}'
-        context['form_message'] = f'Вы уверены, что хотите удалить тему "{self.object.name}"?'
+        context['title'] = _("Delete topic")
+        context['submit_value'] = _('Delete topic')
+        context['change_text'] = '%s: %s.' % (_('Delete topic in the section'), self.object.sections.name)
+        context['form_message'] = '%s "%s"?' % (_('Are you sure you want to delete the topic'), self.object.name)
         return context
 
 
@@ -351,10 +353,10 @@ class PostDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super(PostDeleteView, self).get_context_data(**kwargs)
-        context['title'] = "Удалить сообщение"
-        context['submit_value'] = 'Удалить сообщение'
-        context['change_text'] = f'Удалить сообщение в теме: {self.object.topic.name}'
-        context['form_message'] = f'Вы уверены, что хотите удалить сообщение "{self.object}"?'
+        context['title'] = _("Delete post")
+        context['submit_value'] = _('Delete post')
+        context['change_text'] = '%s: %s.' % (_('Delete a post in the topic'), self.object.topic.name)
+        context['form_message'] = '%s "%s"?' % (_('Are you sure you want to delete the post'), self.object)
         return context
 
 
@@ -369,7 +371,7 @@ class TopicUpdateView(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(TopicUpdateView, self).get_context_data(**kwargs)
-        context['title'] = "Изменить тему"
-        context['submit_value'] = 'Изменить тему'
-        context['change_text'] = f'Изменить тему в разделе: {self.object.sections.name}'
+        context['title'] = _('Change topic')
+        context['submit_value'] = _('Change topic')
+        context['change_text'] = '%s: %s.' % (_('Change the topic in the section'), self.object.sections.name)
         return context

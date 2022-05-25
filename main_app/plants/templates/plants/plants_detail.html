@@ -1,6 +1,7 @@
 {% extends "main_app/base.html" %}
 {% load static %}
 {% load plants_tags %}
+{% load i18n %}
 
 {% block extrastyles %}
     <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
@@ -11,23 +12,23 @@
         {% get_menu_plant %}
     </ul>
 
-    <h2 class="detail-title">{{object.name}}</h2>
+    <h2 class="detail-title">{{ object.name }}</h2>
     {% for description in object.descriptions_set.all %}
         {% if description.text != '' %}
             <div class="description-block">
-                <h3 class="text-padding">{{description.category}}</h3>
-                <p class="text-with-wrap text-padding">{{description.text}}</p>
+                <h3 class="text-padding">{{ description.category }}</h3>
+                <p class="text-with-wrap text-padding">{{ description.text }}</p>
             </div>
         {% endif %}
     {% endfor %}
 
     <ul class="categories">
         <li>
-            Категории:
+            {% translate "Category" %}:
         </li>
     {% for category in object.categories.all %}
         <li>
-            <a href="{% url 'plants' %}?cat={{category.slug}}">{{category.name}}</a>
+            <a href="{% url 'plants' %}?cat={{category.slug}}">{{ category.name }}</a>
         </li>
     {% endfor %}
     </ul>
@@ -36,22 +37,22 @@
 {% block aside %}
     {% if object.image %}
         <div class="image">
-            <a href="{{object.image.url }}"><img src="{{object.image.url }}"></a>
-            <p>{{object.name}}, внешний вид</p>
+            <a href="{{ object.image.url }}"><img src="{{ object.image.url }}"></a>
+            <p>{{ object.name }}, {% translate "appearance" %}</p>
         </div>
     {% endif %}
 
     <table class="taxons">
         <tr class="taxons-title">
-            <th>Таксономическая классификация</th>
+            <th>{% translate "Taxonomic classification" %}</th>
         </tr>
     {% for taxon in object.taxons.all|sort_taxons %}
         <tr class="taxon-row">
             <td class="taxon-column">
-                <a href="{% url 'taxons_rang' taxon.order%}">{{taxon.get_order_display}}: </a>
+                <a href="{% url 'taxons_rang' taxon.order%}">{{ taxon.get_order_display }}: </a>
             </td>
             <td class="taxon-column">
-                <a href="{% url 'plants' %}?taxon={{taxon.slug}}">{{taxon.name}} </a>
+                <a href="{% url 'plants' %}?taxon={{taxon.slug}}">{{ taxon.name }} </a>
             </td>
         </tr>
     {% endfor %}

@@ -1,6 +1,7 @@
 {% extends "forum/base.html" %}
 {% load forum_tags %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block content %}
     {% block menu_forum %}
@@ -10,8 +11,10 @@
     <h2 class="super-title">{{object.name}}</h2>
     {% if can_delete_topic %}
         <div class="topic-deleting">
-            <a href="{% url 'delete_topic' object.pk %}" class="app_link">Удалить тему</a>
-            <a href="{% url 'change_topic' object.pk %}" class="app_link">Изменить тему</a>
+            <a href="{% url 'delete_topic' object.pk %}" class="app_link">
+                {% translate "Delete topic" %}</a>
+            <a href="{% url 'change_topic' object.pk %}" class="app_link">
+                {% translate "Change topic" %}</a>
         </div>
     {% endif %}
 
@@ -33,7 +36,8 @@
                         <div class="author">
                             <a href="{{post.author.get_absolute_url}}" class="app_link">
                                 {{post.author.user.username}}</a>
-                            <p>Репутация: {{post.author.reputation}}</p>
+                            <p>{% translate "Reputation" %}:
+                                {{post.author.reputation}}</p>
                         </div>
 
                     </div></div>
@@ -42,14 +46,16 @@
                         <div class="time-info">
                             <p class="time-create">{{post.time_create}}</p>
                             {% if post.is_changed %}
-                                <p class="time-update">Изменено: {{post.time_update}}</p>
+                                <p class="time-update">{% translate "Changed" %}:
+                                    {{post.time_update}}</p>
                             {% endif %}
                         </div>
                     </div>
 
                     <div class="score-block">
                         <p class="post-score">
-                            Оценка: {% get_total_post_rate total_post_rate post.pk %}</p>
+                            {% translate "Rate" %}:
+                            {% get_total_post_rate total_post_rate post.pk %}</p>
                         {% if user.is_authenticated %}
                             {% if rate_form %}
                                 <div class="form-score">
@@ -69,11 +75,11 @@
 
                     {% if post.attachedfiles_set.all %}
                         <div class="attached-files">
-                            <p>Прикрепленные файлы</p>
+                            <p>{% translate "Attached files" %}</p>
                             {% for file in post.attachedfiles_set.all %}
                                 {% get_file_extension file as ext %}
                                 {% if ext in file.text_ext %}
-                                    <a href="{{file.get_absolute_url}}" download="" title="Скачать">
+                                    <a href="{{file.get_absolute_url}}" download="" title="{% translate 'Download' %}">
                                         {% get_filename_from_url file.file.name %}</a>
                                 {% else %}
                                     <a href="{{file.get_absolute_url}}">
@@ -89,16 +95,16 @@
                     {% if user.id == post.author.id and post.is_editable %}
                         <div class="edit text-padding" align="left">
                             <p><a href="{% url 'update_post' post.pk %}" class="app_link">
-                                Редактировать сообщение</a></p>
+                                {% translate "Edit post" %}</a></p>
                             <p><a href="{% url 'update_post' post.pk %}" class="app_link">
-                                Добавить вложения</a></p>
+                                {% translate "Add attachments" %}</a></p>
                         </div>
                     {% endif %}
 
                     {% if can_delete_post %}
                         <div class="delete text-padding">
                             <p><a href="{% url 'delete_post' post.pk %}" class="app_link">
-                                Удалить сообщение</a></p>
+                                {% translate "Delete post" %}</a></p>
                         </div>
                     {% endif %}
                 </div>
@@ -121,6 +127,8 @@
             </form>
         </div>
     {% else %}
-        <h3>Только зарегестрированные пользователи могут оставлять сообщения.</h3>
+        <h3>
+            {% translate "Only registered users can leave post" %}.
+        </h3>
     {% endif %}
 {% endblock content %}

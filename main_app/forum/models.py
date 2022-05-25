@@ -10,6 +10,9 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import format_lazy
+
 from main_app.settings import MAX_USERNAME_LENGTH
 
 from slugify import slugify
@@ -23,14 +26,14 @@ import os
 """
 
 class Sections(models.Model):
-    name = models.CharField(max_length=40, unique=True, verbose_name='Название')
+    name = models.CharField(max_length=40, unique=True, verbose_name=_('name'))
     name_lower = models.CharField(max_length=40, editable=False)
     slug = models.SlugField(max_length=60, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
     order = models.SmallIntegerField(default=0, db_index=True,
-                                     editable=False, verbose_name='Порядок')
+                                     editable=False, verbose_name=_('order'))
     super_sections = models.ForeignKey('Sections', on_delete=models.PROTECT, null=True,
-                                       blank=True, verbose_name='Надраздел')
+                                       blank=True, verbose_name=_('super section'))
 
     def __str__(self):
         return self.name
@@ -46,8 +49,8 @@ class Sections(models.Model):
         super(Sections, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Раздел"
-        verbose_name_plural = "Разделы"
+        verbose_name = _("section")
+        verbose_name_plural = _("sections")
         ordering = ('name',)
 
 
@@ -62,10 +65,10 @@ class ForumUsers(models.Model):
                             editable=False, verbose_name='URL')
     user_image = models.ImageField(blank=True, upload_to=forumusers_file_name,
                                  default='/forum/user_images/default_profile.jpg',
-                                 verbose_name='Изображение профиля')
-    about_user = models.TextField(blank=True, verbose_name='О пользователе')
-    reputation = models.IntegerField(default=0, verbose_name='Репутация')
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+                                 verbose_name=_('profile image'))
+    about_user = models.TextField(blank=True, verbose_name=_('about user'))
+    reputation = models.IntegerField(default=0, verbose_name=_('reputation'))
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_('user'))
 
     def __str__(self):
         return self.username_lower
@@ -79,8 +82,8 @@ class ForumUsers(models.Model):
         super(ForumUsers, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
         ordering = ('username_lower',)
 
 
@@ -90,12 +93,12 @@ class Statistics(models.Model):
      For educational purposes (using contenttypes)
      these 2 types of statistics are combined in one model.
     """
-    value_type = models.IntegerField(choices=((0, "Оценка"), (1, "Просмотр")), editable=False,
-                                     verbose_name="Тип статистики")
-    value = models.IntegerField(default=0, verbose_name="Значение статистики")
-    user = models.ForeignKey(ForumUsers, on_delete=models.CASCADE, verbose_name="Пользователь")
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name="Модель")
-    object_id = models.PositiveIntegerField(verbose_name="ID записи")
+    value_type = models.IntegerField(choices=((0, _("Rate")), (1, _("Views"))), editable=False,
+                                     verbose_name=_("type of statistics"))
+    value = models.IntegerField(default=0, verbose_name=_("value of statistics"))
+    user = models.ForeignKey(ForumUsers, on_delete=models.CASCADE, verbose_name=_("user"))
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("model"))
+    object_id = models.PositiveIntegerField(verbose_name=_("ID record"))
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
@@ -154,8 +157,8 @@ class Statistics(models.Model):
         user.save()
 
     class Meta:
-        verbose_name = "Статистика"
-        verbose_name_plural = "Статистика"
+        verbose_name = _("statistics")
+        verbose_name_plural = _("statistics")
         ordering = ('value_type', 'user', 'object_id')
 
         # this condition contains the whole meaning of the model.
@@ -164,15 +167,15 @@ class Statistics(models.Model):
 
 
 class Topics(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Заголовок')
+    name = models.CharField(max_length=100, verbose_name=_('title'))
     name_lower = models.CharField(max_length=100, editable=False)
     slug = models.SlugField(max_length=100, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
     view_count = models.IntegerField(validators=(MinValueValidator(0),), editable=False,
-                                     default=0, verbose_name="Количество просмотров")
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    author = models.ForeignKey(ForumUsers, on_delete=models.SET_NULL, null=True, verbose_name='Автор')
-    sections = models.ForeignKey(Sections, on_delete=models.PROTECT, verbose_name='Раздел')
+                                     default=0, verbose_name=_("views count"))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    author = models.ForeignKey(ForumUsers, on_delete=models.SET_NULL, null=True, verbose_name=_('author'))
+    sections = models.ForeignKey(Sections, on_delete=models.PROTECT, verbose_name=_('section'))
     statistics = GenericRelation(Statistics, related_query_name='topics')
 
     def __str__(self):
@@ -195,23 +198,23 @@ class Topics(models.Model):
         super(Topics, self).save(*args, **kwargs)
 
     class Meta:
-        verbose_name = "Тема"
-        verbose_name_plural = "Темы"
+        verbose_name = _("topic")
+        verbose_name_plural = _("topics")
         ordering = ('time_create', 'name')
 
 
 class Posts(models.Model):
-    text = models.TextField(max_length=15000, verbose_name='Сообщение')
+    text = models.TextField(max_length=15000, verbose_name=_('post'))
     post_type = models.IntegerField(choices=((0,'question'), (1,'answer')))
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
     author = models.ForeignKey(ForumUsers, on_delete=models.SET_NULL,
-                               null=True, verbose_name='Автор')
-    topic = models.ForeignKey(Topics, on_delete=models.CASCADE, verbose_name='Тема')
+                               null=True, verbose_name=_('author'))
+    topic = models.ForeignKey(Topics, on_delete=models.CASCADE, verbose_name=_('topic'))
     statistics = GenericRelation(Statistics, related_query_name='posts')
 
     def __str__(self):
-        return f'Сообщение-{self.pk}'
+        return '%s-%s' % (_("Post"), self.pk)
 
     def is_changed(self):
         return self.time_update - self.time_create > timedelta(seconds=1)
@@ -224,8 +227,8 @@ class Posts(models.Model):
             return self.is_editable() and self.author==forum_user
 
     class Meta:
-        verbose_name = "Сообщение"
-        verbose_name_plural = "Сообщения"
+        verbose_name = _("post")
+        verbose_name_plural = _("posts")
         ordering = ('topic', 'post_type', 'time_create', 'author')
 
 
@@ -240,9 +243,9 @@ class AttachedFiles(models.Model):
     max_files_per_post = 10
 
     file = models.FileField(validators=(FileExtensionValidator(allowed_extensions=allowed_ext),),
-                            upload_to=posts_file_name, verbose_name="Файл")
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE, verbose_name="Сообщение")
+                            upload_to=posts_file_name, verbose_name=_("file"))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, verbose_name=_("post"))
 
     def __str__(self):
         return self.file.name
@@ -253,11 +256,12 @@ class AttachedFiles(models.Model):
     def clean(self):
         count_files = AttachedFiles.objects.filter(post=self.post).count()
         if count_files >= self.max_files_per_post:
-            raise ValidationError({'file': ('Для данного сообщения превышено допустимое '
-                                            'количество прикрепленных файлов = %s')
-                                                % self.max_files_per_post})
+            raise ValidationError({'file': format_lazy('{message} = {number_files}',
+                                                       message= _('The allowed number of '
+                                                                  'attached files has been exceeded for this post '),
+                                                       number_files=self.max_files_per_post)})
 
     class Meta:
-        verbose_name = "Прикрепленный файл"
-        verbose_name_plural = "Прикрепленные файлы"
+        verbose_name = _("attached file")
+        verbose_name_plural = _("attached files")
         ordering = ('time_create',)

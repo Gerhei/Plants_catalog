@@ -1,14 +1,15 @@
 {% extends "main_app/default_form_page.html" %}
+{% load i18n %}
 
 {% block title %}
-    <title>Вход</title>
+    <title>{% translate "Log in" %}</title>
 {% endblock title%}
 
 
 {% block non_field_errors %}
     {% if form.non_field_errors %}
         <ul class="errorlist">
-            <li>Неверный пароль или имя пользователя.</li>
+            <li>{% translate "Invalid password or username" %}.</li>
         </ul>
     {% endif %}
 
@@ -16,27 +17,27 @@
         <ul class="errorlist">
              {% if user.is_authenticated %}
                 <li>
-                    У вашего аккаунта нет доступа к этой странице. Чтобы продолжить,
-                пожалуйста, войдите с учетной записи, которая имеет доступ.
+                    {% translate "Your account does not have access to this page. To continue, please log in with an account that has access" %}.
                 </li>
             {% else %}
-                <li>Пожалуйста, войдите, чтобы увидеть эту страницу.</li>
+                <li>{% translate "Please log in to see this page" %}.</li>
             {% endif %}
         </ul>
     {% endif %}
 {% endblock non_field_errors %}
 
 {% block extra_info %}
-    <div class="text-padding"><a href="{% url 'password_reset' %}" class="app_link">Забыли пароль?</a></div>
+    <div class="text-padding"><a href="{% url 'password_reset' %}" class="app_link">
+        {% translate "Forgot your password" %}?</a></div>
     <div class="text-padding">
-        <span>Еще нет аккаунта?</span>
-        <a href="{% url 'registration' %}" class="app_link">Регистрация</a>
+        <span>{% translate "No account yet" %}?</span>
+        <a href="{% url 'registration' %}" class="app_link">{% translate "Registration" %}</a>
     </div>
 {% endblock extra_info %}
 
 {% block submit %}
     <div class="field-input">
-        <input type="submit" value="Войти">
+        <input type="submit" value="{% translate 'Log in' %}">
         <input type="hidden" name="next" value="{{ next }}">
     </div>
 {% endblock submit %}

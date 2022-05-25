@@ -1,8 +1,9 @@
 {% extends "main_app/base.html" %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block title %}
-    <title>Страница не найдена</title>
+    <title>{% translate "Page not found" %}</title>
 {% endblock title %}
 
 {% block search-and-filters %}
@@ -11,7 +12,7 @@
 {% block content %}
 <div class="table-text table-form">
     <h1>404</h1>
-    <h2>Страница не существует. Проверьте адрес в адресной строке браузера
-        или перейдите на главную страницу</h2>
+    <h2>{% translate "The page does not exist. Check the address in the browser's address bar
+        or go to the main page" %}</h2>
 </div>
 {% endblock %}

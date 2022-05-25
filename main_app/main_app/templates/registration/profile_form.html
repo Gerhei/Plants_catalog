@@ -1,6 +1,8 @@
 {% extends 'main_app/default_form_page.html' %}
+{% load i18n %}
 
 {% block form_message %}
-    <div class="text-padding">Текущее изображение пользователя:
-                <a href="{{current_image}}">{{current_image}}</a></div>
+    <div class="text-padding">
+        {% translate "Current user image" %}:
+                <a href="{{ current_image }}">{{ current_image }}</a></div>
 {% endblock %}

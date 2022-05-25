@@ -1,0 +1,318 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-25 23:49+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\forum\apps.py:8
+msgid "forum"
+msgstr "форум"
+
+#: .\forum\forms.py:11
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: .\forum\forms.py:12
+msgid "Descending"
+msgstr "По убыванию"
+
+#: .\forum\forms.py:13
+msgid "Alphabetically"
+msgstr "По алфавиту"
+
+#: .\forum\forms.py:13
+msgid "By creation date"
+msgstr "По дате созданию"
+
+#: .\forum\forms.py:14
+msgid "By views"
+msgstr "По просмотрам"
+
+#: .\forum\models.py:29
+msgid "name"
+msgstr "название"
+
+#: .\forum\models.py:34
+msgid "order"
+msgstr "порядок"
+
+#: .\forum\models.py:36
+msgid "super section"
+msgstr "надраздел"
+
+#: .\forum\models.py:52 .\forum\models.py:178
+msgid "section"
+msgstr "раздел"
+
+#: .\forum\models.py:53
+msgid "sections"
+msgstr "разделы"
+
+#: .\forum\models.py:68
+msgid "profile image"
+msgstr "изображение профиля"
+
+#: .\forum\models.py:69
+msgid "about user"
+msgstr "о пользователе"
+
+#: .\forum\models.py:70
+msgid "reputation"
+msgstr "репутация"
+
+#: .\forum\models.py:71 .\forum\models.py:85 .\forum\models.py:99
+msgid "user"
+msgstr "пользователь"
+
+#: .\forum\models.py:86
+msgid "users"
+msgstr "пользователи"
+
+#: .\forum\models.py:96 .\forum\templates\forum\topic_detail.html:57
+msgid "Rate"
+msgstr "Оценка"
+
+#: .\forum\models.py:96 .\forum\templates\forum\topics_list.html:46
+msgid "Views"
+msgstr "Просмотры"
+
+#: .\forum\models.py:97
+msgid "type of statistics"
+msgstr "тип статистики"
+
+#: .\forum\models.py:98
+msgid "value of statistics"
+msgstr "значение статистики"
+
+#: .\forum\models.py:100
+msgid "model"
+msgstr "модель"
+
+#: .\forum\models.py:101
+msgid "ID record"
+msgstr "ID записи"
+
+#: .\forum\models.py:160 .\forum\models.py:161
+msgid "statistics"
+msgstr "статистика"
+
+#: .\forum\models.py:170
+msgid "title"
+msgstr "заголовок"
+
+#: .\forum\models.py:175
+msgid "views count"
+msgstr "количество просмотров"
+
+#: .\forum\models.py:176 .\forum\models.py:209 .\forum\models.py:247
+msgid "time create"
+msgstr "дата создания"
+
+#: .\forum\models.py:177 .\forum\models.py:212
+msgid "author"
+msgstr "автор"
+
+#: .\forum\models.py:201 .\forum\models.py:213
+msgid "topic"
+msgstr "тема"
+
+#: .\forum\models.py:202
+msgid "topics"
+msgstr "темы"
+
+#: .\forum\models.py:207 .\forum\models.py:230 .\forum\models.py:248
+msgid "post"
+msgstr "сообщение"
+
+#: .\forum\models.py:210
+msgid "time update"
+msgstr "дата изменения"
+
+#: .\forum\models.py:217
+msgid "Post"
+msgstr "Сообщение"
+
+#: .\forum\models.py:231
+msgid "posts"
+msgstr "сообщения"
+
+#: .\forum\models.py:246
+msgid "file"
+msgstr "файл"
+
+#: .\forum\models.py:260
+msgid "The allowed number of attached files has been exceeded for this post "
+msgstr ""
+"Для этого сообщения было превышено допустимое количество прикрепленных "
+"файлов "
+
+#: .\forum\models.py:265
+msgid "attached file"
+msgstr "прикрепленный файл"
+
+#: .\forum\models.py:266
+msgid "attached files"
+msgstr "прикрепленные файлы"
+
+#: .\forum\templates\forum\topic_detail.html:15 .\forum\views.py:334
+#: .\forum\views.py:335
+msgid "Delete topic"
+msgstr "Удалить тему"
+
+#: .\forum\templates\forum\topic_detail.html:17 .\forum\views.py:374
+#: .\forum\views.py:375
+msgid "Change topic"
+msgstr "Изменить тему"
+
+#: .\forum\templates\forum\topic_detail.html:39
+msgid "Reputation"
+msgstr "Репутация"
+
+#: .\forum\templates\forum\topic_detail.html:49
+msgid "Changed"
+msgstr "Изменение"
+
+#: .\forum\templates\forum\topic_detail.html:78
+msgid "Attached files"
+msgstr "Прикрепленные файлы"
+
+#: .\forum\templates\forum\topic_detail.html:82
+msgid "Download"
+msgstr "Скачать"
+
+#: .\forum\templates\forum\topic_detail.html:98 .\forum\views.py:274
+msgid "Edit post"
+msgstr "Редактировать сообщение"
+
+#: .\forum\templates\forum\topic_detail.html:100
+msgid "Add attachments"
+msgstr "Добавить вложение"
+
+#: .\forum\templates\forum\topic_detail.html:107 .\forum\views.py:356
+#: .\forum\views.py:357
+msgid "Delete post"
+msgstr "Удалить сообщение"
+
+#: .\forum\templates\forum\topic_detail.html:131
+msgid "Only registered users can leave post"
+msgstr "Только зарегистрированные пользователи могут оставлять сообщение"
+
+#: .\forum\templates\forum\topics_list.html:15
+msgid "Apply"
+msgstr "Применить"
+
+#: .\forum\templates\forum\topics_list.html:26 .\forum\views.py:197
+msgid "Create topic"
+msgstr "Создать тему"
+
+#: .\forum\templates\forum\topics_list.html:29
+msgid "Sections"
+msgstr "Разделы"
+
+#: .\forum\templates\forum\topics_list.html:39
+msgid "Topics"
+msgstr "Темы"
+
+#: .\forum\templates\forum\topics_list.html:43
+msgid "Topic"
+msgstr "Тема"
+
+#: .\forum\templates\forum\topics_list.html:44
+msgid "Author"
+msgstr "Автор"
+
+#: .\forum\templates\forum\topics_list.html:45
+msgid "Time create"
+msgstr "Дата создания"
+
+#: .\forum\templates\forum\update_post_form.html:11
+msgid "Delete all already attached files"
+msgstr "Удалить уже прикрепленные файлы"
+
+#: .\forum\templates\forum\update_post_form.html:16
+msgid "Files are already attached to the post"
+msgstr "Файлы, уже прикрепленные к сообщению"
+
+#: .\forum\templates\forum\update_post_form.html:26
+msgid "Post has been changed, but some files have not been added for a reason"
+msgstr "Сообщение создано, но некоторые файлы не были добавлены по причине"
+
+#: .\forum\templates\forum\update_post_form.html:35
+msgid "List of files that could not be added"
+msgstr "Список файлов, которые не были добавлены"
+
+#: .\forum\templatetags\forum_tags.py:10
+msgid "Main sections"
+msgstr "Главные разделы"
+
+#: .\forum\templatetags\forum_tags.py:17 .\forum\views.py:61
+msgid "All topics"
+msgstr "Все темы"
+
+#: .\forum\templatetags\forum_tags.py:18
+msgid "Random topic"
+msgstr "Случайная тема"
+
+#: .\forum\views.py:29
+msgid "Forum"
+msgstr "Форум"
+
+#: .\forum\views.py:30
+msgid "Sections list"
+msgstr "Список разделов"
+
+#: .\forum\views.py:115
+msgid "Create post"
+msgstr "Создать сообщение"
+
+#: .\forum\views.py:195
+msgid "Creating topic"
+msgstr "Создание темы"
+
+#: .\forum\views.py:198
+msgid "Create a topic in the section"
+msgstr "Создать тему в разделе"
+
+#: .\forum\views.py:273
+msgid "Editing post"
+msgstr "Редактирование сообщения"
+
+#: .\forum\views.py:276
+msgid "Edit a post in the topic"
+msgstr "Редактировать сообщение в теме"
+
+#: .\forum\views.py:336
+msgid "Delete topic in the section"
+msgstr "Удалить тему в разделе"
+
+#: .\forum\views.py:337
+msgid "Are you sure you want to delete the topic"
+msgstr "Вы уверены, что хотите удалить тему"
+
+#: .\forum\views.py:358
+msgid "Delete a post in the topic"
+msgstr "Удалить сообщение в теме"
+
+#: .\forum\views.py:359
+msgid "Are you sure you want to delete the post"
+msgstr "Вы уверены, что хотите удалить сообщение"
+
+#: .\forum\views.py:376
+msgid "Change the topic in the section"
+msgstr "Изменить тему в разделе"

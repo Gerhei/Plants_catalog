@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.db.models import Q
+from django.utils.translation import gettext as _
 
 from .models import *
 from .forms import *
@@ -18,7 +19,7 @@ class NewsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Список новостей"
+        context['title'] = _("News List")
         context['filter_form'] = FilterForm(self.request.GET)
         return context
 
@@ -67,7 +68,7 @@ class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = context['object'].title
         context['action'] = reverse('detailed_news', kwargs={'slug': self.object.slug})
-        context['submit_value'] = 'Создать комментарий'
+        context['submit_value'] = _('Create comment')
         return context
 
     def get_queryset(self):

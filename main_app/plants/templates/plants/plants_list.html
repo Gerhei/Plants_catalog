@@ -2,6 +2,7 @@
 {% load static %}
 {% load plants_tags %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block extrastyles %}
     <link type="text/css" href="{% static 'plants/css/plant.css'%}" rel="stylesheet"/>
@@ -11,9 +12,9 @@
     <div class="filters">
         <form action="{% url 'plants' %}" method="get">
             <ul class="filters">
-                {{filter_form.as_ul}}
+                {{ filter_form.as_ul }}
                 <li>
-                    <input type="submit" value="Применить"/>
+                    <input type="submit" value="{% translate 'Apply' %}"/>
                 </li>
             </ul>
         </form>
@@ -22,8 +23,8 @@
 
 {% block content %}
     {% block titles %}
-        <a href="{% url super_url %}" class="super-title"><p>{{super_title}}</p></a>
-        <p class="title">{{title}}</p>
+        <a href="{% url super_url %}" class="super-title"><p>{{ super_title }}</p></a>
+        <p class="title">{{ title }}</p>
     {% endblock titles %}
 
     {% if object_list.count != 0 %}
@@ -32,20 +33,21 @@
             {% for plant in page_obj %}
                 <tr>
                     <td class="number">{% get_number forloop.counter%}</td>
-                    <td><a href="{{ plant.get_absolute_url }}" class="name"><h2>{{plant.name}}</h2></a></td>
+                    <td><a href="{{ plant.get_absolute_url }}" class="name">
+                        <h2>{{ plant.name }}</h2></a></td>
                     <td>
                         {# TODO Show the first description of the plant #}
                         {% for description in plant.descriptions_set.all %}
                             {% if description.category == '' %}
                                 <div class="description-block">
-                                    <p>{{description.text}}</p>
+                                    <p>{{ description.text }}</p>
                                 </div>
                             {% endif %}
                         {% endfor %}
                     </td>
                     <td>
                         {% if plant.image %}
-                            <img src="{{plant.image.url }}" class="plant-image">
+                            <img src="{{ plant.image.url }}" class="plant-image">
                         {% endif %}
                     </td></tr>
             {% endfor %}
@@ -55,18 +57,21 @@
             {% get_pagination %}
         {% endblock pagination %}
     {% else %}
-        <h3 class="search-result">Результаты отсутствуют</h3>
+        <h3 class="search-result">
+            {% translate "There are no results" %}</h3>
     {% endif %}
 {% endblock content%}
 
 {% block aside %}
     <ul class="vertical_menu">
         <li>
-            <h2 class="menu-title">Разделы</h2>
+            <h2 class="menu-title">
+                {% translate "Sections" %}</h2>
         </li>
         {% get_menu_plant %}
         <li>
-            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
+            <a href="#" title="{% translate 'Go back to top' %}" class="topbutton">
+                ^{% translate "On top" %}</a>
         </li>
     </ul>
 {% endblock aside%}

@@ -1,5 +1,6 @@
 {% extends "news/base.html" %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block filters %}
     <div class="filters">
@@ -10,7 +11,7 @@
                     {{ field }}
                 {% endfor %}
                 <li>
-                    <input type="submit" value="Применить"/>
+                    <input type="submit" value="{% translate 'Apply' %}"/>
                 </li>
             </ul>
         </form>
@@ -22,8 +23,8 @@
     <table class="list">
         <tr>
             <td><h3>№</h3></td>
-            <td><h3>Новость</h3></td>
-            <td><h3>Дата публикации</h3></td>
+            <td><h3>{% translate "News" %}</h3></td>
+            <td><h3>{% translate "Publication date" %}</h3></td>
         </tr>
         {% for news in page_obj %}
             <tr>
@@ -42,10 +43,12 @@
 {% block aside %}
     <ul class="vertical_menu">
         <li>
-            <a href="{% url 'random_news' %}" class="app_link">Случайная новость</a>
+            <a href="{% url 'random_news' %}" class="app_link">
+                {% translate "Random news" %}</a>
         </li>
         <li>
-            <a href="#" title="Вернуться к началу" class="topbutton">^Наверх</a>
+            <a href="#" title="{% translate 'Go back to top' %}" class="topbutton">
+                ^{% translate "On top" %}</a>
         </li>
     </ul>
 {% endblock aside %}

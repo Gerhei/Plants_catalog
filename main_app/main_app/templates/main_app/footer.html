@@ -1,11 +1,14 @@
 {% load main_app_tags %}
+{% load i18n %}
 
 <footer id="footer">
     {% block footer %}
-        <div class="footer-text">Энциклопедия растений - сайт про растения.</div>
+        <div class="footer-text">
+            {% translate "Plant catalog - website about plants" %}.</div>
         <div class="footer-text footer-grid">
-            <div>Все права защищены.</div>
-            <div align="right">Контактная информация: <strong>pav.4nd@yandex.com</strong></div>
+            <div>{% translate "All rights reserved" %}.</div>
+            <div align="right">
+                {% translate "Contact information" %}: <strong>pav.4nd@yandex.com</strong></div>
         </div>
     {% endblock footer %}
 </footer>

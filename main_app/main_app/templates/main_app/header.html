@@ -1,25 +1,27 @@
 {% load main_app_tags %}
+{% load i18n %}
 <header>
-    {% block header %}
-        <div  id="header_title">
-            <table class="greetings">
-                <tr>
-                    <td><a href="{% url 'main' %}" class="header_link">Энциклопедия растений</a></td>
-                    <td class="rightcol">
-                        {% if request.user.is_authenticated %}
-                        <span>Добро пожаловать,
-                                <a href="{% url 'profile' request.user.forumusers.slug %}" class="app_link">
-                                    {{request.user.username}}</a>
-                            </span>
-                            <a href="{% url 'logout' %}" class="app_link">| Выйти</a>
-                        {% else %}
-                            <a href="{% url 'login' %}" class="app_link">Войти</a>
-                            <a href="{% url 'registration' %}" class="app_link">| Регистрация</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <img src="{% get_random_background_image %}" class="header-background">
-    {% endblock header%}
+{% block header %}
+    <div  id="header_title">
+        <table class="greetings">
+            <tr>
+                <td><a href="{% url 'main' %}" class="header_link">
+                    {% translate "Plant catalog" %}</a></td>
+                <td class="rightcol">
+                    {% if request.user.is_authenticated %}
+                    <span>{% translate "Welcome" %},
+                            <a href="{% url 'profile' request.user.forumusers.slug %}" class="app_link">
+                                {{ request.user.username }}</a>
+                        </span>
+                        <a href="{% url 'logout' %}" class="app_link">| {% translate "Log out" %}</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="app_link">{% translate "Log in" %}</a>
+                        <a href="{% url 'registration' %}" class="app_link">| {% translate "Registration" %}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <img src="{% get_random_background_image %}" class="header-background">
+{% endblock header%}
 </header>

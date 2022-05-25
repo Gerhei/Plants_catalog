@@ -2,8 +2,11 @@ from django import template
 import os
 import random
 from django.utils.http import urlencode
+from django.utils.translation import gettext as _
 
-register=template.Library()
+
+register = template.Library()
+
 
 @register.simple_tag(takes_context=True)
 def url_replace(context, **kwargs):
@@ -13,6 +16,7 @@ def url_replace(context, **kwargs):
         query = dict()
     query.update(kwargs)
     return urlencode(query)
+
 
 @register.inclusion_tag('main_app/pagination.html',takes_context=True)
 def get_pagination(context):
@@ -42,10 +46,10 @@ def get_header(context):
 @register.inclusion_tag('main_app/navigation.html', takes_context=True)
 def get_navigation(context):
     menu = [
-        {'title': 'О сайте', 'url_name': 'main'},
-        {'title': 'Каталог растений', 'url_name': 'plants'},
-        {'title': 'Форум', 'url_name': 'forum'},
-        {'title': 'Новости', 'url_name': 'news'}
+        {'title': _('About'), 'url_name': 'main'},
+        {'title': _('Plant catalog'), 'url_name': 'plants'},
+        {'title': _('Forum'), 'url_name': 'forum'},
+        {'title': _('News'), 'url_name': 'news'}
     ]
     try:
         request = context['request']

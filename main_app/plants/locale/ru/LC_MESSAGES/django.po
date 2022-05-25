@@ -1,0 +1,267 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-25 23:49+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\plants\apps.py:8 .\plants\models.py:107
+msgid "plants"
+msgstr "растения"
+
+#: .\plants\forms.py:7
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: .\plants\forms.py:8
+msgid "Descending"
+msgstr "По убыванию"
+
+#: .\plants\forms.py:10
+msgid "Alphabetically"
+msgstr "По алфавиту"
+
+#: .\plants\models.py:9
+msgid "Domain"
+msgstr "Домен"
+
+#: .\plants\models.py:9
+msgid "Supra-kingdom"
+msgstr "Надцарство"
+
+#: .\plants\models.py:9
+msgid "Kingdom"
+msgstr "Царство"
+
+#: .\plants\models.py:9
+msgid "Sub-kingdom"
+msgstr "Подцарство"
+
+#: .\plants\models.py:9
+msgid "Clade"
+msgstr "Клада"
+
+#: .\plants\models.py:10
+msgid "Supra-department"
+msgstr "Надотдел"
+
+#: .\plants\models.py:10
+msgid "Department"
+msgstr "Отдел"
+
+#: .\plants\models.py:10
+msgid "Sub-department"
+msgstr "Подотдел"
+
+#: .\plants\models.py:10
+msgid "Superclass"
+msgstr "Надкласс"
+
+#: .\plants\models.py:10
+msgid "Class"
+msgstr "Класс"
+
+#: .\plants\models.py:11
+msgid "Subclass"
+msgstr "Подкласс"
+
+#: .\plants\models.py:11
+msgid "Superorder"
+msgstr "Надпорядок"
+
+#: .\plants\models.py:11
+msgid "Order"
+msgstr "Порядок"
+
+#: .\plants\models.py:11
+msgid "Series "
+msgstr "Ряд "
+
+#: .\plants\models.py:11
+msgid "Type"
+msgstr "Тип"
+
+#: .\plants\models.py:12
+msgid "Family"
+msgstr "Семейство"
+
+#: .\plants\models.py:12
+msgid "Subfamily"
+msgstr "Подсемейство"
+
+#: .\plants\models.py:12
+msgid "Supertribe"
+msgstr "Надтриба"
+
+#: .\plants\models.py:12
+msgid "Tribe"
+msgstr "Триба"
+
+#: .\plants\models.py:13
+msgid "Subtribe"
+msgstr "Подтриба"
+
+#: .\plants\models.py:13
+msgid "Genus"
+msgstr "Род"
+
+#: .\plants\models.py:13
+msgid "Subgenus"
+msgstr "Подрод"
+
+#: .\plants\models.py:13
+msgid "Section"
+msgstr "Секция"
+
+#: .\plants\models.py:13
+msgid "Subsection"
+msgstr "Подсекция"
+
+#: .\plants\models.py:14
+msgid "Grex"
+msgstr "Грекс"
+
+#: .\plants\models.py:14
+msgid "Natural hybrid"
+msgstr "Естественный гибрид"
+
+#: .\plants\models.py:14
+msgid "Kind"
+msgstr "Вид"
+
+#: .\plants\models.py:14
+msgid "Variety"
+msgstr "Разновидность"
+
+#: .\plants\models.py:15
+msgid "Subkind"
+msgstr "Подвид"
+
+#: .\plants\models.py:15
+msgid "Without rank"
+msgstr "Без ранга"
+
+#: .\plants\models.py:30 .\plants\models.py:53 .\plants\models.py:82
+msgid "name"
+msgstr "название"
+
+#: .\plants\models.py:33 .\plants\models.py:57 .\plants\models.py:87
+#: .\plants\models.py:114
+msgid "time create"
+msgstr "дата создания"
+
+#: .\plants\models.py:34 .\plants\models.py:58 .\plants\models.py:88
+#: .\plants\models.py:115
+msgid "time update"
+msgstr "дата изменения"
+
+#: .\plants\models.py:47 .\plants\models.py:112
+msgid "category"
+msgstr "категория"
+
+#: .\plants\models.py:48 .\plants\models.py:89
+msgid "categories"
+msgstr "категории"
+
+#: .\plants\models.py:56
+msgid "rank"
+msgstr "ранг"
+
+#: .\plants\models.py:70
+msgid "taxon"
+msgstr "таксон"
+
+#: .\plants\models.py:71 .\plants\models.py:90
+msgid "taxons"
+msgstr "таксоны"
+
+#: .\plants\models.py:86
+msgid "image"
+msgstr "изображение"
+
+#: .\plants\models.py:106 .\plants\models.py:116
+msgid "plant"
+msgstr "растение"
+
+#: .\plants\models.py:113 .\plants\models.py:122
+msgid "description"
+msgstr "описание"
+
+#: .\plants\models.py:123
+msgid "descriptions"
+msgstr "описания"
+
+#: .\plants\templates\plants\categories_list.html:11
+#: .\plants\templates\plants\plants_list.html:17
+msgid "Apply"
+msgstr "Применить"
+
+#: .\plants\templates\plants\categories_list.html:40
+#: .\plants\templates\plants\plants_list.html:61
+msgid "There are no results"
+msgstr "Результаты отсутствуют"
+
+#: .\plants\templates\plants\plants_detail.html:27 .\plants\views.py:29
+msgid "Category"
+msgstr "Категория"
+
+#: .\plants\templates\plants\plants_detail.html:41
+msgid "appearance"
+msgstr "внешний вид"
+
+#: .\plants\templates\plants\plants_detail.html:47
+msgid "Taxonomic classification"
+msgstr "Таксономическая классификация"
+
+#: .\plants\templates\plants\plants_list.html:69
+msgid "Sections"
+msgstr "Разделы"
+
+#: .\plants\templates\plants\plants_list.html:73
+msgid "Go back to top"
+msgstr "Назад к началу"
+
+#: .\plants\templates\plants\plants_list.html:74
+msgid "On top"
+msgstr "Наверх"
+
+#: .\plants\templatetags\plants_tags.py:15 .\plants\views.py:42
+msgid "All plants"
+msgstr "Все растения"
+
+#: .\plants\templatetags\plants_tags.py:16 .\plants\views.py:31
+#: .\plants\views.py:76
+msgid "Categories"
+msgstr "Категории"
+
+#: .\plants\templatetags\plants_tags.py:17 .\plants\views.py:37
+#: .\plants\views.py:107 .\plants\views.py:121
+msgid "Taxons"
+msgstr "Таксоны"
+
+#: .\plants\templatetags\plants_tags.py:18
+msgid "Random plant"
+msgstr "Случайное растение"
+
+#: .\plants\views.py:41
+msgid "Plant catalog"
+msgstr "Каталог растений"
+
+#: .\plants\views.py:77
+msgid "All categories"
+msgstr "Все категории"

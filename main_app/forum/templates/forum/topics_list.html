@@ -1,5 +1,6 @@
 {% extends "forum/base.html" %}
 {% load main_app_tags %}
+{% load i18n %}
 
 {% block filters %}
     <div class="filters">
@@ -9,9 +10,9 @@
             <form action="{% url 'all_topics' %}" method="get">
         {% endif %}
             <ul class="filters">
-                {{filter_form.as_ul}}
+                {{ filter_form.as_ul }}
                 <li>
-                    <input type="submit" value="Применить"/>
+                    <input type="submit" value="{% translate 'Apply' %}"/>
                 </li>
             </ul>
         </form>
@@ -19,37 +20,38 @@
 {% endblock filters %}
 
 {% block sections %}
-    <a href="" class="super-title"><p>{{title}}</p></a>
+    <a href="" class="super-title"><p>{{ title }}</p></a>
     {% if object %}
-        <a href="{% url 'create_topic' object.slug %}" class="app_link">Создать тему</a>
+        <a href="{% url 'create_topic' object.slug %}" class="app_link">
+            {% translate "Create topic" %}</a>
     {% endif %}
     {% if sections %}
-        <p class="title sections-list">Разделы</p>
+        <p class="title sections-list">{% translate "Sections" %}</p>
         {% for section in sections %}
             <p>
                 <span class="number">{{ forloop.counter }}</span>
-                <a href="{{ section.get_absolute_url }}" class="menu_link title">{{section.name}}</a>
+                <a href="{{ section.get_absolute_url }}" class="menu_link title">{{ section.name }}</a>
             </p>
         {% endfor %}
     {% endif %}
 
     {% if page_obj %}
-        <p class="title topics-list">Темы</p>
+        <p class="title topics-list">{% translate "Topics" %}</p>
         <table class="list">
             <tr>
                 <td><h3>№</h3></td>
-                <td><h3>Тема</h3></td>
-                <td><h3>Автор</h3></td>
-                <td><h3>Время создания</h3></td>
-                <td><h3>Просмотры</h3></td>
+                <td><h3>{% translate "Topic" %}</h3></td>
+                <td><h3>{% translate "Author" %}</h3></td>
+                <td><h3>{% translate "Time create" %}</h3></td>
+                <td><h3>{% translate "Views" %}</h3></td>
             </tr>
             {% for topic in page_obj %}
                 <tr>
                     <td class="number">{% get_number forloop.counter %}</td>
-                    <td><a href="{{ topic.get_absolute_url }}" class="app_link">{{topic.name}}</a></td>
-                    <td><a href="{{ topic.author.get_absolute_url }}" class="app_link">{{topic.author}}</a></td>
-                    <td class="number">{{topic.time_create}}</td>
-                    <td class="number">{{topic.view_count}}</td>
+                    <td><a href="{{ topic.get_absolute_url }}" class="app_link">{{ topic.name }}</a></td>
+                    <td><a href="{{ topic.author.get_absolute_url }}" class="app_link">{{ topic.author }}</a></td>
+                    <td class="number">{{ topic.time_create }}</td>
+                    <td class="number">{{ topic.view_count }}</td>
                 </tr>
             {% endfor %}
         </table>

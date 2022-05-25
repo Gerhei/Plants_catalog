@@ -2,21 +2,24 @@ from django.forms import forms, models, fields
 
 from django.contrib.auth.forms import UserCreationForm, ValidationError
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from captcha.fields import CaptchaField
 
+
 def clean_email(data):
     if data == '':
-        raise ValidationError("Введите почтовый адрес.")
+        raise ValidationError(_("Enter your email address."))
     all_emails = User.objects.values('email')
     for email in all_emails:
         if data == email['email']:
-            raise ValidationError("Для регистрации необходим почтовый адрес, "
-                                  "который еще не использовался для создания аккаунта на этом сайте.")
+            raise ValidationError(
+                _("To register, you need email address that has not yet been used to create an account on this site."))
     return data
 
+
 class MyUserForm(UserCreationForm):
-    captcha = CaptchaField(label="Введите, чтобы доказать, что вы не робот.")
+    captcha = CaptchaField(label=_("Enter to prove that you are not a robot."))
 
     def clean_email(self):
         data = self.cleaned_data['email']
@@ -26,7 +29,7 @@ class MyUserForm(UserCreationForm):
     def clean_username(self):
         data = self.cleaned_data['username']
         if len(data) > 20:
-            raise ValidationError('Длина имени пользователя не может превышать 20 символов.')
+            raise ValidationError(_("The length of the user name can't exceed 20 characters."))
         return data
 
     class Meta(UserCreationForm.Meta):
@@ -34,9 +37,9 @@ class MyUserForm(UserCreationForm):
 
 
 class ProfileForm(models.ModelForm):
-    user_image = fields.ImageField(required=False, label="Изображение пользователя",
+    user_image = fields.ImageField(required=False, label=_("User image"),
                                    widget=fields.FileInput())
-    about_user = fields.CharField(required=False, label="О пользователе", widget=fields.Textarea)
+    about_user = fields.CharField(required=False, label=_("About user"), widget=fields.Textarea)
 
     def save(self):
         forum_user = self.instance.forumusers
