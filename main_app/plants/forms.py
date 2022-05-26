@@ -1,6 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy as _lazy
+from django.utils.translation import gettext_lazy as _
 from .models import *
 
 
@@ -11,10 +10,10 @@ order_by=[('name', _('Alphabetically'))]
 
 
 class FilterForm(forms.Form):
-    name = forms.CharField(max_length=255, required=False, label=_lazy("Name"))
-    sort = forms.ChoiceField(choices=order_by, required=False, label=_lazy("Sorting by"))
-    order = forms.ChoiceField(choices=order_choices, required=False, label=_lazy("Sorting by"))
-    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_lazy("Page"))
+    name = forms.CharField(max_length=255, required=False, label=_("Name"))
+    sort = forms.ChoiceField(choices=order_by, required=False, label=_("Sorting by"))
+    order = forms.ChoiceField(choices=order_choices, required=False, label=_("Sorting by"))
+    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_("Page"))
 
     def __init__(self, *args, **kwargs):
         super(FilterForm, self).__init__(*args, **kwargs)

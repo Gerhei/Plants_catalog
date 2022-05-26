@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-26 00:35+0300\n"
+"POT-Creation-Date: 2022-05-27 01:45+0300\n"
 "PO-Revision-Date: 2022-05-26 00:04+0300\n"
 "Last-Translator: Pavlov Andrei <pav.4nd@yandex.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,25 +24,66 @@ msgstr ""
 msgid "forum"
 msgstr "форум"
 
-#: .\forum\forms.py:11
+#: .\forum\forms.py:10
 msgid "Ascending"
 msgstr "По возрастанию"
 
-#: .\forum\forms.py:12
+#: .\forum\forms.py:11
 msgid "Descending"
 msgstr "По убыванию"
 
-#: .\forum\forms.py:13
+#: .\forum\forms.py:12
 msgid "Alphabetically"
 msgstr "По алфавиту"
 
-#: .\forum\forms.py:13
+#: .\forum\forms.py:12
 msgid "By creation date"
 msgstr "По дате созданию"
 
-#: .\forum\forms.py:14
+#: .\forum\forms.py:13
 msgid "By views"
 msgstr "По просмотрам"
+
+#: .\forum\forms.py:17
+msgid "Topic name"
+msgstr "Тема"
+
+#: .\forum\forms.py:18 .\forum\templates\forum\topics_list.html:44
+msgid "Author"
+msgstr "Автор"
+
+#: .\forum\forms.py:19 .\forum\forms.py:20
+msgid "Sorting by"
+msgstr "Сортировать по"
+
+#: .\forum\forms.py:21
+msgid "Page"
+msgstr "Страница"
+
+#: .\forum\forms.py:25
+msgid "Enter to prove that you are not a robot"
+msgstr "Введите, чтобы доказать, что вы не робот"
+
+#: .\forum\forms.py:26
+msgid "Post text"
+msgstr "Сообщение"
+
+#: .\forum\forms.py:29 .\forum\forms.py:56
+#: .\forum\templates\forum\topic_detail.html:78
+msgid "Attached files"
+msgstr "Прикрепленные файлы"
+
+#: .\forum\forms.py:30 .\forum\forms.py:57
+msgid ""
+"No more than 10 files, acceptable formats files: images, text, tables, "
+"presentations."
+msgstr ""
+"Не более 10 файлов, допустимые форматы файлов: изображения, текст, таблицы, "
+"презентации."
+
+#: .\forum\forms.py:82
+msgid "Your rating of post"
+msgstr "Ваша оценка сообщения"
 
 #: .\forum\models.py:29
 msgid "name"
@@ -170,13 +211,13 @@ msgstr "прикрепленный файл"
 msgid "attached files"
 msgstr "прикрепленные файлы"
 
-#: .\forum\templates\forum\topic_detail.html:15 .\forum\views.py:334
-#: .\forum\views.py:335
+#: .\forum\templates\forum\topic_detail.html:15 .\forum\views.py:339
+#: .\forum\views.py:340
 msgid "Delete topic"
 msgstr "Удалить тему"
 
-#: .\forum\templates\forum\topic_detail.html:17 .\forum\views.py:374
-#: .\forum\views.py:375
+#: .\forum\templates\forum\topic_detail.html:17 .\forum\views.py:379
+#: .\forum\views.py:380
 msgid "Change topic"
 msgstr "Изменить тему"
 
@@ -188,15 +229,11 @@ msgstr "Репутация"
 msgid "Changed"
 msgstr "Изменение"
 
-#: .\forum\templates\forum\topic_detail.html:78
-msgid "Attached files"
-msgstr "Прикрепленные файлы"
-
 #: .\forum\templates\forum\topic_detail.html:82
 msgid "Download"
 msgstr "Скачать"
 
-#: .\forum\templates\forum\topic_detail.html:98 .\forum\views.py:274
+#: .\forum\templates\forum\topic_detail.html:98 .\forum\views.py:279
 msgid "Edit post"
 msgstr "Редактировать сообщение"
 
@@ -204,8 +241,8 @@ msgstr "Редактировать сообщение"
 msgid "Add attachments"
 msgstr "Добавить вложение"
 
-#: .\forum\templates\forum\topic_detail.html:107 .\forum\views.py:356
-#: .\forum\views.py:357
+#: .\forum\templates\forum\topic_detail.html:107 .\forum\views.py:361
+#: .\forum\views.py:362
 msgid "Delete post"
 msgstr "Удалить сообщение"
 
@@ -217,7 +254,7 @@ msgstr "Только зарегистрированные пользовател
 msgid "Apply"
 msgstr "Применить"
 
-#: .\forum\templates\forum\topics_list.html:26 .\forum\views.py:197
+#: .\forum\templates\forum\topics_list.html:26 .\forum\views.py:202
 msgid "Create topic"
 msgstr "Создать тему"
 
@@ -232,10 +269,6 @@ msgstr "Темы"
 #: .\forum\templates\forum\topics_list.html:43
 msgid "Topic"
 msgstr "Тема"
-
-#: .\forum\templates\forum\topics_list.html:44
-msgid "Author"
-msgstr "Автор"
 
 #: .\forum\templates\forum\topics_list.html:45
 msgid "Time create"
@@ -261,7 +294,7 @@ msgstr "Список файлов, которые не были добавлен
 msgid "Main sections"
 msgstr "Главные разделы"
 
-#: .\forum\templatetags\forum_tags.py:17 .\forum\views.py:61
+#: .\forum\templatetags\forum_tags.py:17 .\forum\views.py:65
 msgid "All topics"
 msgstr "Все темы"
 
@@ -269,50 +302,50 @@ msgstr "Все темы"
 msgid "Random topic"
 msgstr "Случайная тема"
 
-#: .\forum\views.py:29
+#: .\forum\views.py:32
 msgid "Forum"
 msgstr "Форум"
 
-#: .\forum\views.py:30
+#: .\forum\views.py:33
 msgid "Sections list"
 msgstr "Список разделов"
 
-#: .\forum\views.py:115
+#: .\forum\views.py:120
 msgid "Create post"
 msgstr "Создать сообщение"
 
-#: .\forum\views.py:195
+#: .\forum\views.py:200
 msgid "Creating topic"
 msgstr "Создание темы"
 
-#: .\forum\views.py:198
+#: .\forum\views.py:203
 msgid "Create a topic in the section"
 msgstr "Создать тему в разделе"
 
-#: .\forum\views.py:273
+#: .\forum\views.py:278
 msgid "Editing post"
 msgstr "Редактирование сообщения"
 
-#: .\forum\views.py:276
+#: .\forum\views.py:281
 msgid "Edit a post in the topic"
 msgstr "Редактировать сообщение в теме"
 
-#: .\forum\views.py:336
+#: .\forum\views.py:341
 msgid "Delete topic in the section"
 msgstr "Удалить тему в разделе"
 
-#: .\forum\views.py:337
+#: .\forum\views.py:342
 msgid "Are you sure you want to delete the topic"
 msgstr "Вы уверены, что хотите удалить тему"
 
-#: .\forum\views.py:358
+#: .\forum\views.py:363
 msgid "Delete a post in the topic"
 msgstr "Удалить сообщение в теме"
 
-#: .\forum\views.py:359
+#: .\forum\views.py:364
 msgid "Are you sure you want to delete the post"
 msgstr "Вы уверены, что хотите удалить сообщение"
 
-#: .\forum\views.py:376
+#: .\forum\views.py:381
 msgid "Change the topic in the section"
 msgstr "Изменить тему в разделе"

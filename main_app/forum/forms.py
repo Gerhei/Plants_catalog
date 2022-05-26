@@ -1,6 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy as _lazy
+from django.utils.translation import gettext_lazy as _
 
 from django.db.models import ObjectDoesNotExist
 from .models import *
@@ -15,20 +14,20 @@ order_by = [('name', _('Alphabetically')), ('time_create', _('By creation date')
 
 
 class FilterForm(forms.Form):
-    name = forms.CharField(max_length=255, required=False, label=_lazy("Topic name"))
-    author = forms.CharField(max_length=255, required=False, label=_lazy("Author"))
-    sort = forms.ChoiceField(choices=order_by, required=False, label=_lazy("Sorting by"))
-    order = forms.ChoiceField(choices=order_choices, required=False, label=_lazy("Sorting by"))
-    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_lazy("Page"))
+    name = forms.CharField(max_length=255, required=False, label=_("Topic name"))
+    author = forms.CharField(max_length=255, required=False, label=_("Author"))
+    sort = forms.ChoiceField(choices=order_by, required=False, label=_("Sorting by"))
+    order = forms.ChoiceField(choices=order_choices, required=False, label=_("Sorting by"))
+    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_("Page"))
 
 
 class CreateTopicForm(forms.ModelForm):
-    captcha = CaptchaField(label=_lazy("Enter to prove that you are not a robot."))
-    text = forms.CharField(max_length=15000, label=_lazy("Post text"), widget=forms.Textarea())
+    captcha = CaptchaField(label=_("Enter to prove that you are not a robot"))
+    text = forms.CharField(max_length=15000, label=_("Post text"), widget=forms.Textarea())
     attached_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
                                      required=False, allow_empty_file=True,
-                                     label=_lazy('Attached files'),
-                                     help_text=(_lazy('No more than 10 files, acceptable formats '
+                                     label=_('Attached files'),
+                                     help_text=(_('No more than 10 files, acceptable formats '
                                                 'files: images, text, tables, presentations.')))
 
     def __init__(self, section=None, author=None, *args, **kwargs):
@@ -54,8 +53,8 @@ class CreateTopicForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     attached_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
                                      required=False, allow_empty_file=True,
-                                     label=_lazy('Attached files'),
-                                     help_text=(_lazy('No more than 10 files, acceptable formats '
+                                     label=_('Attached files'),
+                                     help_text=(_('No more than 10 files, acceptable formats '
                                                 'files: images, text, tables, presentations.')))
 
     def __init__(self, topic=None, author=None, post_type=1, *args, **kwargs):
@@ -80,7 +79,7 @@ class CreatePostForm(forms.ModelForm):
 class UpdateScorePostForm(forms.ModelForm):
     value = forms.IntegerField(min_value=-1, max_value=1,
                                widget=forms.RadioSelect(choices=((-1,'-'), (0,'0'), (1,'+'))),
-                               label=_lazy("Your rating of post"))
+                               label=_("Your rating of post"))
 
     def __init__(self, post=None, forum_user=None, *args, **kwargs):
         self.forum_user = forum_user

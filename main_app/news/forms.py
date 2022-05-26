@@ -1,6 +1,5 @@
 from django import forms
-from django.utils.translation import gettext as _
-from django.utils.translation import gettext_lazy as _lazy
+from django.utils.translation import gettext_lazy as _
 from .models import *
 
 from captcha.fields import CaptchaField
@@ -15,19 +14,19 @@ YEARS = [year for year in range(2000, 2030)]
 
 
 class FilterForm(forms.Form):
-    title = forms.CharField(max_length=255, required=False, label=_lazy("Title"))
+    title = forms.CharField(max_length=255, required=False, label=_("Title"))
     publication_date = forms.DateField(required=False,
                                        widget=forms.SelectDateWidget(years=YEARS),
-                                       label=_lazy("Publication date"))
-    sort = forms.ChoiceField(choices=order_by, required=False, label=_lazy("Sorting by"))
-    order = forms.ChoiceField(choices=order_choices, required=False, label=_lazy("Sorting by"))
-    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_lazy("Page"))
+                                       label=_("Publication date"))
+    sort = forms.ChoiceField(choices=order_by, required=False, label=_("Sorting by"))
+    order = forms.ChoiceField(choices=order_choices, required=False, label=_("Sorting by"))
+    page = forms.IntegerField(min_value=1, required=False, initial=1, label=_("Page"))
 
 
 class CreateCommentForm(forms.ModelForm):
     text = forms.CharField(max_length=1000,
                            widget = forms.Textarea,
-                           label=_lazy('Comment'))
+                           label=_('Comment'))
 
     def __init__(self, news=None, user=None, *args, **kwargs):
         super(CreateCommentForm, self).__init__(*args, **kwargs)
@@ -37,7 +36,7 @@ class CreateCommentForm(forms.ModelForm):
         else:
             self.user = None
             self.fields['captcha'] = CaptchaField(label=
-                                                  _lazy("Enter to prove that you are not a robot."))
+                                                  _("Enter to prove that you are not a robot"))
 
     def save(self):
         comment = super(CreateCommentForm, self).save(commit=False)

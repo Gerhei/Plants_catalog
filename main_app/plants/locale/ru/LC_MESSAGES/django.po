@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-26 00:35+0300\n"
+"POT-Creation-Date: 2022-05-27 01:45+0300\n"
 "PO-Revision-Date: 2022-05-26 00:04+0300\n"
 "Last-Translator: Pavlov Andrei <pav.4nd@yandex.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,17 +24,29 @@ msgstr ""
 msgid "plants"
 msgstr "растения"
 
-#: .\plants\forms.py:7
+#: .\plants\forms.py:6
 msgid "Ascending"
 msgstr "По возрастанию"
 
-#: .\plants\forms.py:8
+#: .\plants\forms.py:7
 msgid "Descending"
 msgstr "По убыванию"
 
-#: .\plants\forms.py:10
+#: .\plants\forms.py:9
 msgid "Alphabetically"
 msgstr "По алфавиту"
+
+#: .\plants\forms.py:13
+msgid "Name"
+msgstr "Название"
+
+#: .\plants\forms.py:14 .\plants\forms.py:15
+msgid "Sorting by"
+msgstr "Сортировать по"
+
+#: .\plants\forms.py:16
+msgid "Page"
+msgstr "Страница"
 
 #: .\plants\models.py:9
 msgid "Domain"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-26 00:35+0300\n"
+"POT-Creation-Date: 2022-05-27 01:45+0300\n"
 "PO-Revision-Date: 2022-05-26 00:04+0300\n"
 "Last-Translator: Pavlov Andrei <pav.4nd@yandex.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,21 +24,45 @@ msgstr ""
 msgid "news"
 msgstr "новость"
 
-#: .\news\forms.py:9
+#: .\news\forms.py:8
 msgid "Ascending"
 msgstr "По возрастанию"
 
-#: .\news\forms.py:10
+#: .\news\forms.py:9
 msgid "Descending"
 msgstr "По убыванию"
 
-#: .\news\forms.py:12
+#: .\news\forms.py:11
 msgid "By publication date"
 msgstr "По дате публикации"
 
-#: .\news\forms.py:12
+#: .\news\forms.py:11
 msgid "Alphabetically"
 msgstr "По алфавиту"
+
+#: .\news\forms.py:17
+msgid "Title"
+msgstr "Заголовок"
+
+#: .\news\forms.py:20 .\news\templates\news\news_list.html:27
+msgid "Publication date"
+msgstr "Дата публикации"
+
+#: .\news\forms.py:21 .\news\forms.py:22
+msgid "Sorting by"
+msgstr "Сортировать по"
+
+#: .\news\forms.py:23
+msgid "Page"
+msgstr "Страница"
+
+#: .\news\forms.py:29 .\news\models.py:60
+msgid "Comment"
+msgstr "Комментарий"
+
+#: .\news\forms.py:39
+msgid "Enter to prove that you are not a robot"
+msgstr "Введите, чтобы доказать, что вы не робот"
 
 #: .\news\models.py:13
 msgid "title"
@@ -76,46 +100,42 @@ msgstr "комментарий"
 msgid "user"
 msgstr "пользователь"
 
-#: .\news\models.py:60
-msgid "Comment"
-msgstr "Комментарий"
-
 #: .\news\models.py:64
 msgid "comments"
 msgstr "комментарии"
 
-#: .\news\templates\news\news_detail.html:13 .\news\views.py:22
+#: .\news\templates\news\news_detail.html:14 .\news\views.py:24
 msgid "News List"
 msgstr "Список новостей"
 
-#: .\news\templates\news\news_detail.html:17
+#: .\news\templates\news\news_detail.html:18
 #: .\news\templates\news\news_list.html:47
 msgid "Random news"
 msgstr "Случайная новость"
 
-#: .\news\templates\news\news_detail.html:25
+#: .\news\templates\news\news_detail.html:26
 msgid "The article is taken from this source"
 msgstr "Статья взята из данного источника"
 
-#: .\news\templates\news\news_detail.html:34
+#: .\news\templates\news\news_detail.html:36
 msgid "Comments"
 msgstr "Комментарии"
 
-#: .\news\templates\news\news_detail.html:42
+#: .\news\templates\news\news_detail.html:44
 msgid "Anonymous"
 msgstr "Аноним"
 
-#: .\news\templates\news\news_detail.html:62
+#: .\news\templates\news\news_detail.html:64
 #: .\news\templates\news\news_list.html:50
 msgid "Go back to top"
 msgstr "Назад к началу"
 
-#: .\news\templates\news\news_detail.html:63
+#: .\news\templates\news\news_detail.html:65
 #: .\news\templates\news\news_list.html:51
 msgid "On top"
 msgstr "Наверх"
 
-#: .\news\templates\news\news_detail.html:67
+#: .\news\templates\news\news_detail.html:69
 msgid "To the comments"
 msgstr "К комментариям"
 
@@ -127,10 +147,6 @@ msgstr "Применить"
 msgid "News"
 msgstr "Новость"
 
-#: .\news\templates\news\news_list.html:27
-msgid "Publication date"
-msgstr "Дата публикации"
-
-#: .\news\views.py:71
+#: .\news\views.py:74
 msgid "Create comment"
 msgstr "Создать комментарий"
