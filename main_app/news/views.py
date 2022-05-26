@@ -4,6 +4,8 @@ from django.views.generic.edit import FormMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.db.models import Q
 from django.utils.translation import gettext as _
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 from .models import *
 from .forms import *
@@ -47,6 +49,7 @@ class NewsListView(ListView):
         return queryset
 
 
+@method_decorator(never_cache, name='dispatch')
 class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
     paginate_by = 10
     template_name = "news/news_detail.html"

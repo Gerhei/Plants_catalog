@@ -1,6 +1,7 @@
 {% extends "news/base.html" %}
 {% load i18n %}
 {% load main_app_tags %}
+{% load cache %}
 
 {% block extrastyles %}
     {{ block.super }}
@@ -30,6 +31,7 @@
             {{ object.content|safe }}
         </article>
     </div>
+
     <div class="comments-wrapper" id="comments">
         <h2>{% translate "Comments" %}</h2>
         {% for comment in page_obj %}

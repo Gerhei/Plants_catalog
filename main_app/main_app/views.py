@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import gettext as _
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 from .forms import *
 
@@ -19,6 +21,7 @@ def registration_done(request):
     return redirect(reverse('profile', kwargs={'slug': request.forumuser.slug}))
 
 
+@method_decorator(never_cache, name='dispatch')
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
     form_class = ProfileForm
@@ -46,6 +49,7 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
         return self.request.forumuser.get_absolute_url()
 
 
+@method_decorator(never_cache, name='dispatch')
 class UserDetailView(DetailView):
     model = User
     slug_field = 'forumusers__slug'
@@ -63,6 +67,7 @@ class UserDetailView(DetailView):
         return context
 
 
+@method_decorator(never_cache, name='dispatch')
 class CreateUserView(CreateView):
     template_name = 'main_app/default_form_page.html'
     form_class = MyUserForm

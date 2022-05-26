@@ -9,6 +9,9 @@ from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from django.utils.translation import gettext as _
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+
 
 from django.db.models import Q
 from .models import *
@@ -35,6 +38,7 @@ class SectionsListView(ListView):
         return queryset
 
 
+@method_decorator(never_cache, name='dispatch')
 class TopicsListView(SingleObjectMixin, ListView):
     """
      The combination of SingleObjectMixin and ListView allows to display object
@@ -85,6 +89,7 @@ class TopicsListView(SingleObjectMixin, ListView):
         return queryset
 
 
+@method_decorator(never_cache, name='dispatch')
 class TopicDetailView(SingleObjectMixin, ListView):
     """
      The combination of SingleObjectMixin and ListView allows to display object
