@@ -1,0 +1,6 @@
+sitemap: https://plants-catalog.org/sitemap.xml
+
+User-agent: *
+
+Disallow: /admin/
+Disallow: /accounts/
