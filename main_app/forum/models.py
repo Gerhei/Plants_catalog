@@ -201,7 +201,7 @@ class Topics(models.Model):
     class Meta:
         verbose_name = _("topic")
         verbose_name_plural = _("topics")
-        ordering = ('time_create', 'name')
+        ordering = ('-time_create', 'name')
 
 
 class Posts(models.Model):
