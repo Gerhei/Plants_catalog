@@ -2,6 +2,7 @@ from django.shortcuts import reverse
 
 from django.db import models
 from django.db.models import F
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from django.core.validators import MinValueValidator, FileExtensionValidator
 from django.core.exceptions import ValidationError
@@ -215,6 +216,27 @@ class Posts(models.Model):
 
     def __str__(self):
         return '%s-%s' % (_("Post"), self.pk)
+
+    def clean_fields(self, exclude=None):
+        super().clean_fields(exclude=exclude)
+        if self.post_type==0:
+            try:
+                question = Posts.objects.get(topic=self.topic, post_type=0)
+            except MultipleObjectsReturned:
+                raise ValidationError({
+                    'post_type': _(
+                        'There is already more than 1 question in the topic.'
+                    ),
+                })
+            except ObjectDoesNotExist:
+                pass
+            else:
+                raise ValidationError({
+                    'post_type': _(
+                        'There can\'t be more than one question in one topic.'
+                     ),
+                })
+
 
     def is_changed(self):
         return self.time_update - self.time_create > timedelta(seconds=1)
