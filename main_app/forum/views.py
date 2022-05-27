@@ -186,6 +186,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
+@method_decorator(never_cache, name='dispatch')
 class TopicCreateView(LoginRequiredMixin, CreateView):
     model = Topics
     form_class = CreateTopicForm
@@ -227,6 +228,7 @@ class TopicCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
+@method_decorator(never_cache, name='dispatch')
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Posts
     form_class = CreatePostForm
@@ -322,6 +324,7 @@ class PostScoreChangeView(LoginRequiredMixin, FormView):
         return kwargs
 
 
+@method_decorator(never_cache, name='dispatch')
 class TopicDeleteView(PermissionRequiredMixin, DeleteView):
     model = Topics
     permission_required = ('forum.delete_topics',)
@@ -343,6 +346,7 @@ class TopicDeleteView(PermissionRequiredMixin, DeleteView):
         return context
 
 
+@method_decorator(never_cache, name='dispatch')
 class PostDeleteView(PermissionRequiredMixin, DeleteView):
     model = Posts
     permission_required = ('forum.delete_posts',)
@@ -365,6 +369,7 @@ class PostDeleteView(PermissionRequiredMixin, DeleteView):
         return context
 
 
+@method_decorator(never_cache, name='dispatch')
 class TopicUpdateView(PermissionRequiredMixin, UpdateView):
     model = Topics
     permission_required = ('forum.change_topics',)
