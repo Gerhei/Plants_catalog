@@ -2,7 +2,12 @@ from django.contrib import admin
 from .models import *
 
 
+class DescriptionInline(admin.StackedInline):
+    model = Descriptions
+
+
 class PlantsAdmin(admin.ModelAdmin):
+    inlines = [DescriptionInline,]
     list_display = ('id', 'name', 'time_create', 'time_update')
     list_display_links = ('name',)
     search_fields = ('name', 'name_lower', 'id')
@@ -35,7 +40,7 @@ class TaxonsAdmin(admin.ModelAdmin):
     readonly_fields = ('slug', 'time_create', 'time_update')
 
 
-admin.site.register(Plants,PlantsAdmin)
+admin.site.register(Plants, PlantsAdmin)
 admin.site.register(Descriptions,DescriptionsAdmin)
 admin.site.register(Categories,CategoriesAdmin)
 admin.site.register(Taxons,TaxonsAdmin)
