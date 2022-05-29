@@ -23,7 +23,7 @@
 
 {% block content %}
     {% block titles %}
-        <a href="{% url super_url %}" class="super-title"><p>{{ super_title }}</p></a>
+        <p class="super-title"><a href="{% url super_url %}">{{ super_title }}</a></p>
         <p class="title">{{ title }}</p>
     {% endblock titles %}
 
@@ -47,7 +47,7 @@
                     </td>
                     <td>
                         {% if plant.image %}
-                            <img src="{{ plant.image.url }}" class="plant-image">
+                            <a href="{{ plant.image.url }}"><img src="{{ plant.image.url }}" class="plant-image"></a>
                         {% endif %}
                     </td></tr>
             {% endfor %}
@@ -64,9 +64,8 @@
 
 {% block aside %}
     <ul class="vertical_menu">
-        <li>
-            <h2 class="menu-title">
-                {% translate "Sections" %}</h2>
+        <li class="title">
+            {% translate "Sections" %}
         </li>
         {% get_menu_plant %}
         <li>

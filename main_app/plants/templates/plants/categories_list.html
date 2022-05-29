@@ -7,8 +7,12 @@
 {% block filters %}
     <div class="filters">
         <form action="{% url 'categories' %}" method="get">
-            {{ filter_form }}
-            <input type="submit" value="{% translate 'Apply' %}"/>
+            <ul class="filters">
+                {{ filter_form.as_ul }}
+                <li>
+                    <input type="submit" value="{% translate 'Apply' %}"/>
+                </li>
+            </ul>
         </form>
     </div>
 {% endblock filters%}
@@ -20,17 +24,17 @@
 
     {% if object_list.count != 0 %}
         {% get_pagination %}
-        {% for category in page_obj %}
-            <table class="categories">
-                <tr>
-                    <td class="number">{% get_number forloop.counter%}</td>
-                    <td>
-                        <a href="{% url 'plants' %}?cat={{category.slug}}" class="name">
-                            <h2 class="category-name">{{ category.name }}</h2></a>
-                    </td>
-                </tr>
+            <table class="sections-list">
+                {% for category in page_obj %}
+                        <tr>
+                            <td class="number">{% get_number forloop.counter%}</td>
+                            <td>
+                                <a href="{% url 'plants' %}?cat={{category.slug}}" class="name">
+                                    <h2 class="category-name">{{ category.name }}</h2></a>
+                            </td>
+                        </tr>
+                {% endfor %}
             </table>
-        {% endfor %}
 
         {% block pagination %}
             {{block.super}}

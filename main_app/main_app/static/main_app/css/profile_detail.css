@@ -6,6 +6,8 @@
     width: 75%;
     min-width: 450px;
     left: 20%;
+    background-color: white;
+    border: 2px solid;
 }
 
 .profile-general-info {

@@ -20,21 +20,23 @@
 {% endblock filters %}
 
 {% block sections %}
-    <a href="" class="super-title"><p>{{ title }}</p></a>
+    <p class="super-title"><a href="">{{ title }}</a></p>
     {% if object %}
-        <a href="{% url 'create_topic' object.slug %}" class="app_link">
-            {% translate "Create topic" %}</a>
+        <p class="create-link">
+            <a href="{% url 'create_topic' object.slug %}" class="app_link">
+                {% translate "Create topic" %}</a>
+        </p>
     {% endif %}
     {% if sections %}
-        <p class="title sections-list">{% translate "Sections" %}</p>
+        <p class="title">{% translate "Sections" %}</p>
         {% for section in sections %}
-            <p>
+            <p class="title">
                 <span class="number">{{ forloop.counter }}</span>
-                <a href="{{ section.get_absolute_url }}" class="menu_link title">{{ section.name }}</a>
+                <a href="{{ section.get_absolute_url }}" class="menu_link">{{ section.name }}</a>
             </p>
         {% endfor %}
     {% endif %}
-
+    <br>
     {% if page_obj %}
         <p class="title topics-list">{% translate "Topics" %}</p>
         <table class="list">

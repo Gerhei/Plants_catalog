@@ -38,6 +38,7 @@ td a.name{
 
 .taxons-title {
     text-align: center;
+    font-size: 17px;
 }
 
 .taxon-column{
@@ -56,6 +57,10 @@ ul.categories {
     padding: 4px;
    }
 
+li.title {
+    border: 0px;
+}
+
 ul.categories li {
     display: inline;
     margin-right: 5px;
@@ -67,3 +72,8 @@ ul.categories li a {
     color: blue;
     text-decoration: none;
    }
+
+table.categories-list {
+    margin: auto;
+    text-align: left;
+}

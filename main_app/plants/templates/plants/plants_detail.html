@@ -11,27 +11,28 @@
     <ul class="horizontal_menu">
         {% get_menu_plant %}
     </ul>
+    <article>
+        <h2 class="detail-title">{{ object.name }}</h2>
+        {% for description in object.descriptions_set.all %}
+            {% if description.text != '' %}
+                <div class="description-block">
+                    <h3 class="text-padding">{{ description.category }}</h3>
+                    <p class="text-with-wrap text-padding">{{ description.text }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
 
-    <h2 class="detail-title">{{ object.name }}</h2>
-    {% for description in object.descriptions_set.all %}
-        {% if description.text != '' %}
-            <div class="description-block">
-                <h3 class="text-padding">{{ description.category }}</h3>
-                <p class="text-with-wrap text-padding">{{ description.text }}</p>
-            </div>
-        {% endif %}
-    {% endfor %}
-
-    <ul class="categories">
-        <li>
-            {% translate "Category" %}:
-        </li>
-    {% for category in object.categories.all %}
-        <li>
-            <a href="{% url 'plants' %}?cat={{category.slug}}">{{ category.name }}</a>
-        </li>
-    {% endfor %}
-    </ul>
+        <ul class="categories">
+            <li>
+                {% translate "Category" %}:
+            </li>
+        {% for category in object.categories.all %}
+            <li>
+                <a href="{% url 'plants' %}?cat={{category.slug}}">{{ category.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </article>
 {% endblock content %}
 
 {% block aside %}
@@ -42,7 +43,7 @@
         </div>
     {% endif %}
 
-    <table class="taxons">
+    <table class="list">
         <tr class="taxons-title">
             <th>{% translate "Taxonomic classification" %}</th>
         </tr>

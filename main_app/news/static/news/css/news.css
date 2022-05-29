@@ -3,14 +3,25 @@
     margin: 5px 5px 5px 5px;
 }
 
-.article-source span {
+.article-source {
     font-size: 18px;
+    padding: 10px;
 }
 
 .article-wrapper {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
     font-size: 18px;
+    background-color: white;
+    border: 2px solid;
+}
+
+.article-wrapper article {
+    border: 0px;
+}
+
+.article-wrapper .super-title {
+    border: 0px;
 }
 
 .news-image{
@@ -64,7 +75,10 @@ table.news-table td{
 .comments-wrapper {
     text-align: center;
     width: 50%;
-    margin: 100px auto 0px auto;
+    margin: 100px auto 20px auto;
+    background-color: white;
+    border: 2px solid;
+    padding: 20px;
 }
 
 .comment-block {

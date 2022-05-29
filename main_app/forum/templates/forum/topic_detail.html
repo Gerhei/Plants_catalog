@@ -7,8 +7,7 @@
     {% block menu_forum %}
         {{block.super}}
     {% endblock menu_forum %}
-
-    <h2 class="super-title">{{object.name}}</h2>
+    <h2 class="super-title">{{ object.name }}</h2>
     {% if can_delete_topic %}
         <div class="topic-deleting">
             <a href="{% url 'delete_topic' object.pk %}" class="app_link">
@@ -24,7 +23,7 @@
         {% for post in page_obj %}
             <tr><td>
                 <a name="{{post.pk}}"></a>
-                <div class="post-grid">
+                <article class="post-grid">
                     <div class="user-info"><div class="user-block">
                         {% if post.author.user_image %}
                             <div class="user-image">
@@ -36,7 +35,7 @@
                         <div class="author">
                             <a href="{{post.author.get_absolute_url}}" class="app_link">
                                 {{post.author.user.username}}</a>
-                            <p>{% translate "Reputation" %}:
+                            <p class="text-padding">{% translate "Reputation" %}:
                                 {{post.author.reputation}}</p>
                         </div>
 
@@ -53,12 +52,12 @@
                     </div>
 
                     <div class="score-block">
-                        <p class="post-score">
+                        <p class="post-score text-padding">
                             {% translate "Rate" %}:
                             {% get_total_post_rate total_post_rate post.pk %}</p>
                         {% if user.is_authenticated %}
                             {% if rate_form %}
-                                <div class="form-score">
+                                <div class="form-score text-padding">
                                     <form action="{% url 'rate_post' post.pk %}?next={{object.get_absolute_url}}?page={{page_obj.number}}" method="post">
                                     {% csrf_token %}
                                     {% get_rate_form_with_initial_data post.pk post_rate_by_user %}
@@ -108,7 +107,7 @@
                         </div>
                     {% endif %}
                 </div>
-            </div>
+            </article>
 
             </td></tr>
         <tr class="indent"></tr>

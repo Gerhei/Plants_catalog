@@ -6,15 +6,15 @@
 
 {% block content %}
     <h2 class="title">{{title}}</h2>
+    <table class="sections-list">
        {% for taxon in rangs %}
-            <table class="taxons-table">
-                <tr>
-                    <td>
-                        <a href="/plants/taxons/{{taxon.0}}" class="name"><h2>{{taxon.1}}</h2></a>
-                    </td>
-                </tr>
-            </table>
-    {% endfor %}
+            <tr>
+                <td>
+                    <a href="/plants/taxons/{{taxon.0}}" class="name"><h2>{{taxon.1}}</h2></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 
 {% block pagination %}
 {% endblock pagination%}

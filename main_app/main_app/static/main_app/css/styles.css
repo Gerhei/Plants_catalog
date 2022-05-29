@@ -40,6 +40,7 @@ nav {
   min-height: calc(100vh - 200px);
   display: grid;
   grid-template-columns: 6fr 1fr;
+  background-image: url("/static/main_app/images/content_backgrounds/content-background-plant-2.png")
 }
 
 .super-title{
@@ -48,11 +49,25 @@ nav {
     font-size: 32px;
     text-align: center;
     font-weight: bold;
+    background-color: white;
+    max-width: 70%;
+    margin: 0px auto 10px auto;
+    padding: 5px;
+    border: 1px solid;
 }
 
 .title{
     font-size: 24px;
     font-weight: bold;
+    background-color: white;
+    max-width: 50%;
+    padding: 5px;
+    border: 1px solid;
+}
+
+.super-title a {
+    text-decoration: none;
+    color: black;
 }
 
 table.list{
@@ -60,6 +75,7 @@ table.list{
     border-collapse: collapse;
     width: 100%;
     text-align: center;
+    background-color: white;
 }
 
 table.list td{
@@ -79,7 +95,7 @@ a.menu_link{
 ul.menu {
     margin: 0;
     padding: 4px;
-   }
+}
 
 ul.menu li {
     display: inline;
@@ -87,28 +103,36 @@ ul.menu li {
     padding: 3px;
    }
 
-.horizontal_menu
-{
-    margin-top: 20px;;
-    padding: 4px;
+.horizontal_menu {
+    margin: 0px auto 0px auto;
+    padding: 10px;
     text-align: center;
+    background-color: white;
+    border: 1px solid;
+    max-width: 70%;
+
 }
 
 .horizontal_menu li {
     display: inline;
     margin-right: 5px;
     padding: 3px;
-   }
+}
 
 .vertical_menu{
     font-size: 20px;
     list-style-type: none;
     margin: 20px;
+    padding: 10px;
     position: fixed;
+    border: 2px solid;
+    background-color: white;
+    top: 40%;
 }
 
 .vertical_menu li{
     margin-top: 20px;
+    padding: 0px;
 }
 
 .vertical_menu li a.topbutton{
@@ -139,6 +163,10 @@ ul.menu li {
 
 ul.filters{
     list-style-type: none;
+    background-color: #CCFFCC;
+    border: 1px solid;
+    padding: 20px;
+    margin-top: 0px;
 }
 
 ul.filters li{
@@ -149,13 +177,17 @@ ul.filters li{
 
 .pagination{
     text-align: center;
-    margin: 10px 0px 10px 0px;
+    margin: 10px auto 10px auto;
+    max-width: 50%;
+    background-color: white;
+    border: 1px solid;
 }
 
 .pagination span.step-links a{
     text-decoration: none;
     color: blue;
     font-size: 18px;
+    padding: 5px;
 }
 
 .pagination span.current{
@@ -167,6 +199,7 @@ ul.filters li{
     text-align: center;
     margin: 10%;
     font-size: 18px;
+    background-color: white;
 }
 
 .table-form {
@@ -221,6 +254,7 @@ ul.errorlist li {
 .text-padding {
     text-align: left;
     padding: 5px;
+    background-color: white;
 }
 
 .text-with-wrap {
@@ -236,4 +270,44 @@ ul.errorlist li {
 .footer-grid {
   display:grid;
   grid-template-columns: 1fr 1fr;
+}
+
+article {
+    background-color: white;
+    border: 1px solid;
+    margin: 10px;
+}
+
+.search-result{
+    background-color: white;
+    border: 1px solid;
+    padding: 10px;
+}
+
+.sections-list {
+    background-color: white;
+    border: 1px solid;
+    margin: 5px auto 10px auto;
+    padding: 5px;
+}
+
+.sections-list .title {
+    max-width: 100%;
+}
+
+.image {
+    background-color: white;
+    border: 3px solid;
+    margin-bottom: 5px;
+}
+
+.image p {
+    padding: 5px;
+}
+
+.create-link {
+    background-color: white;
+    border: 2px solid;
+    padding: 5px;
+    max-width: 20%;
 }
