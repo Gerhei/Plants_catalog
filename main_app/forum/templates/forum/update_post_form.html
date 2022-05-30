@@ -4,7 +4,6 @@
 {% load i18n %}
 
 {% block form %}
-
     {% if initial_files %}
         <div class="field-grid">
             <div class="field-label">
@@ -30,6 +29,7 @@
                         <li>{{ error }}</li>
                     {% endfor %}
                 {% endfor %}
+
                 {% if not_attached_files %}
                     <li>
                         {% translate "List of files that could not be added" %}:

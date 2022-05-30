@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import reverse
-
 from slugify import slugify
 from tldextract import extract
 
@@ -50,7 +49,6 @@ class News(models.Model):
 
 
 class Comments(models.Model):
-    # TODO convert to text field
     text = models.CharField(max_length=1000, verbose_name=_('comment'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name=_('user'))

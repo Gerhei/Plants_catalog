@@ -1,7 +1,8 @@
 from django.test import TestCase
-from main_app.forms import *
 
+from main_app.forms import *
 from forum.models import ForumUsers
+
 
 class MyUserFormTest(TestCase):
     def setUp(self):

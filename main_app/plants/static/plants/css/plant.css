@@ -1,16 +1,15 @@
-td a.name{
+td a.name {
     font-size: 14px;
     color: blue;
     text-decoration: none;
 }
 
-.plant-image{
+.plant-image {
     width: 200px;
     height: 200px;
 }
 
-.detail-title
-{
+.detail-title {
     text-align: center;
 }
 
@@ -27,11 +26,11 @@ td a.name{
     margin-top: 30px;
 }
 
-.image p{
+.image p {
     margin-top: 5px;
 }
 
-.taxons{
+.taxons {
     border: black 1px solid;
     border-collapse: collapse;
 }
@@ -41,13 +40,13 @@ td a.name{
     font-size: 17px;
 }
 
-.taxon-column{
+.taxon-column {
     border-bottom: 1px solid black;
     border: black 1px solid;
     text-decoration: none;
 }
 
-.taxon-column a{
+.taxon-column a {
     text-decoration: none;
     color: blue;
 }
@@ -55,7 +54,7 @@ td a.name{
 ul.categories {
     margin: 0;
     padding: 4px;
-   }
+}
 
 li.title {
     border: 0px;
@@ -66,12 +65,12 @@ ul.categories li {
     margin-right: 5px;
     padding: 3px;
     font-size: 18px;
-   }
+}
 
 ul.categories li a {
     color: blue;
     text-decoration: none;
-   }
+}
 
 table.categories-list {
     margin: auto;

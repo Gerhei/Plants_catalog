@@ -1,6 +1,7 @@
-from django.contrib import admin
 from django.urls import path, include
+
 from news.views import *
+
 
 urlpatterns = [
     path('', NewsListView.as_view(), name="news"),

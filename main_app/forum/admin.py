@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from .models import *
+
 
 class SectionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'order', 'super_sections')

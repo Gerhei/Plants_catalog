@@ -47,15 +47,15 @@
         <tr class="taxons-title">
             <th>{% translate "Taxonomic classification" %}</th>
         </tr>
-    {% for taxon in object.taxons.all|sort_taxons %}
-        <tr class="taxon-row">
-            <td class="taxon-column">
-                <a href="{% url 'taxons_rang' taxon.order%}">{{ taxon.get_order_display }}: </a>
-            </td>
-            <td class="taxon-column">
-                <a href="{% url 'plants' %}?taxon={{taxon.slug}}">{{ taxon.name }} </a>
-            </td>
-        </tr>
-    {% endfor %}
+        {% for taxon in object.taxons.all|sort_taxons %}
+            <tr class="taxon-row">
+                <td class="taxon-column">
+                    <a href="{% url 'taxons_rang' taxon.order%}">{{ taxon.get_order_display }}: </a>
+                </td>
+                <td class="taxon-column">
+                    <a href="{% url 'plants' %}?taxon={{taxon.slug}}">{{ taxon.name }} </a>
+                </td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock aside%}

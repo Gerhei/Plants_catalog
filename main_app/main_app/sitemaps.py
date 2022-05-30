@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
 from django.contrib.sitemaps import Sitemap
+
 from plants.models import Plants
 from forum.models import Topics
 from news.models import News

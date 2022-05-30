@@ -1,15 +1,11 @@
 from datetime import datetime
 
 from django.test import TestCase
-
 from django.template.loader import render_to_string
 from django.template import Context, Template
-from django.contrib.auth.models import User
 
 from news.models import *
 from news.forms import *
-
-from unittest import skip
 
 
 class BaseTemplateTest(TestCase):

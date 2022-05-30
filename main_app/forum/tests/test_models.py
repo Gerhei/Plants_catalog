@@ -1,16 +1,9 @@
+import time
+
 from django.test import TestCase
-
-from forum.models import *
-
-from django.core.validators import MinValueValidator
 from django.core.files.base import ContentFile
 
-from slugify import slugify
-from main_app.settings import MAX_USERNAME_LENGTH
-
-from django.contrib.auth.models import User
-
-import time
+from forum.models import *
 
 
 class SectionsModelTest(TestCase):
@@ -337,6 +330,3 @@ class StatisticsModelTest(TestCase):
     def test_does_not_support_statistics(self):
         statistic = Statistics(user=self.forum_user, value_type=0, content_object=self.section)
         self.assertRaises(ValidationError, statistic.save)
-
-    # TODO  Add tests:
-    #       view_count_change; user_reputation_Change

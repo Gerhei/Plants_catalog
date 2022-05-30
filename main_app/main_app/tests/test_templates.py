@@ -1,18 +1,9 @@
 from django.test import TestCase
-from django.test import Client
-
 from django.template.loader import render_to_string
 from django.template import Context, Template
-
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Permission
-from django.contrib.auth.forms import ValidationError
-
-from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-
 from django.forms import *
-
 from unittest import skip
 
 
@@ -96,21 +87,11 @@ class FooterTemplateTest(TestCase):
         template_name = 'main_app/footer.html'
         self.rendered_template = render_to_string(template_name)
 
-    @skip
-    def test_something(self):
-        # TODO add tests
-        pass
-
 
 class IndexTemplateTest(TestCase):
     def setUp(self):
         template_name = 'main_app/index.html'
         self.rendered_template = render_to_string(template_name)
-
-    @skip
-    def test_something(self):
-        # TODO add tests
-        pass
 
 
 class HeaderTemplateTest(TestCase):
@@ -118,21 +99,11 @@ class HeaderTemplateTest(TestCase):
         template_name = 'main_app/header.html'
         self.rendered_template = render_to_string(template_name)
 
-    @skip
-    def test_greetings_in_template(self):
-        # TODO add tests after implementing localization
-        pass
-
 
 class NavigationTemplateTest(TestCase):
     def setUp(self):
         template_name = 'main_app/navigation.html'
         self.rendered_template = render_to_string(template_name)
-
-    @skip
-    def test_something(self):
-        # TODO add tests after implementing localization
-        pass
 
 
 class PaginationTemplateTest(TestCase):
@@ -147,20 +118,17 @@ class PaginationTemplateTest(TestCase):
     @skip
     def test_previous_in_template(self):
         # bug 24112
-        # TODO add tests after implementing localization
         pass
 
     @skip
     def test_current_in_template(self):
         # bug 24112
-        # TODO add tests after implementing localization
         current = '<span class="current">'
         self.assertInHTML(current, self.rendered_template)
 
     @skip
     def test_last_in_template(self):
         # bug 24112
-        # TODO add tests after implementing localization
         pass
 
 
@@ -169,37 +137,17 @@ class LoggedOutTemplateTest(TestCase):
         template_name = 'registration/logged_out.html'
         self.rendered_template = render_to_string(template_name)
 
-    @skip
-    def test_login_url_in_template(self):
-        # TODO add test after implementing localization
-        pass
-
 
 class LoginTemplateTest(TestCase):
     def setUp(self):
         template_name = 'registration/login.html'
         self.rendered_template = render_to_string(template_name)
 
-    @skip
-    def test_extrainfo_in_template(self):
-        # TODO add test after implementing localization
-        pass
-
-    @skip
-    def test_non_field_error_in_template(self):
-        # TODO add test after implementing localization
-        pass
-
 
 class PasswordChangeFormTemplateTest(TestCase):
     def setUp(self):
         template_name = 'registration/password_change_form.html'
         self.rendered_template = render_to_string(template_name, {'form': SimpleForm()})
-
-    @skip
-    def test_form_errors_in_template(self):
-        # TODO add test after implementing localization
-        pass
 
     def test_form_message_in_template(self):
         form_message = '{% load i18n static %}' \
@@ -278,16 +226,3 @@ class UserDetailTemplateTest(TestCase):
         # can't edit
         self.rendered_template = render_to_string(self.template_name, {'object': self.user, 'can_edit': False})
         self.assertInHTML(edit_profile, self.rendered_template, count=0)
-
-    @skip
-    def test_can_edit_email(self):
-        # bug 24112
-        pass
-
-    @skip
-    def test_can_edit_password(self):
-        # bug 24112
-        pass
-
-
-# TODO add test templates for pages: 404, 403 and etc.

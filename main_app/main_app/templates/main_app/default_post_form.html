@@ -10,11 +10,11 @@
 {% for field in form.visible_fields %}
     <div class="field-grid">
         <div class="field-label">
-            {{field.label}}:
+            {{ field.label }}:
         </div>
 
         <div class="field-input">
-            {{field}}
+            {{ field }}
         </div>
 
         {% if field.help_text %}
@@ -22,11 +22,11 @@
         {% endif %}
 
         {% if field.errors %}
-            <div class="field-errors">{{field.errors}}</div>
+            <div class="field-errors">{{ field.errors }}</div>
         {% endif %}
     </div>
 {% endfor %}
 
 {% for hidden in form.hidden_fields %}
-    <div class="hidden-field">{{hidden}}</div>
+    <div class="hidden-field">{{ hidden }}</div>
 {% endfor %}

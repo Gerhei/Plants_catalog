@@ -1,11 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect
+from django.http import Http404
 from django.urls import reverse
-
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.utils.translation import gettext as _
-
 from django.db.models import Q
 
 from .models import *
@@ -112,12 +110,11 @@ class TaxonsListView(ListView):
         rang = self.kwargs['id_rang']
         queries = Q(order=rang)
         queryset = Taxons.objects.filter(queries)
-
         return queryset
 
 
 def taxons_rang(request):
-    context={
+    context= {
         'title': _('Taxons'),
         'rangs': PRIORITIES
     }

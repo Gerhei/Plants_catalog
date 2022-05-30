@@ -1,11 +1,8 @@
 from datetime import datetime
 
 from django.test import TestCase
-from django.contrib.auth.models import User
 
 from news.models import *
-
-from slugify import slugify
 
 
 class NewsModelTest(TestCase):

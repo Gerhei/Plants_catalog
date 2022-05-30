@@ -1,19 +1,12 @@
-from django.test import TestCase
-from django.test import Client
-
-from django.template.loader import render_to_string
+from django.test import TestCase, Client
 from django.template import Context, Template
-
-from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 from django.contrib.auth.models import Permission
 from django.core.files.base import ContentFile
 
-from unittest import skip
-
-from forum.models import *
 from forum.forms import CreateTopicForm
+from forum.models import *
 
-from time import sleep
 
 class BaseTemplateTest(TestCase):
     def setUp(self):
@@ -199,16 +192,6 @@ class TopicDetailTemplateTest(TestCase):
         response = client.get(reverse('topic', kwargs={'slug': self.topic.slug}))
         self.assertContains(response, form_rate)
 
-    @skip
-    def test_changed_post_rate(self):
-        # total post rate changes when user change his rate
-        self.assertTrue(False)
-
-    @skip
-    def test_initial_rate_post(self):
-        # show previous user rate post
-        self.assertTrue(False)
-
     def test_attached_files(self):
         attached_files = '<div class="attached-files">'
         # does not have attached files
@@ -347,9 +330,3 @@ class UpdatePostFormTemplateTest(TestCase):
         self.assertContains(response, delete_initial)
         file_url = f'a href="{attached_file.get_absolute_url()}">'
         self.assertContains(response, file_url)
-
-    @skip
-    def test_attached_files_errors(self):
-        # don't have errors
-        # have errors
-        pass

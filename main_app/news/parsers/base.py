@@ -1,13 +1,12 @@
 import logging
+import random
 import requests
-from requests.exceptions import RequestException, HTTPError, ConnectionError, Timeout
-
 from time import sleep
 from datetime import datetime
-import random
 
-import asyncio
+from requests.exceptions import RequestException, HTTPError, ConnectionError, Timeout
 import aiohttp
+import asyncio
 from aiohttp.client_exceptions import ClientConnectorError, ClientResponseError
 from asyncio.exceptions import TimeoutError
 
@@ -44,10 +43,6 @@ class ReturnNotHTML(Exception):
         super().__init__(self.message)
 
 
-# TODO return links that could not be parsed
-#   fake user agent, proxy
-#   read from file
-#   add async mode with _get_page problem
 class BaseParser():
     site = None
     url_list_articles = None

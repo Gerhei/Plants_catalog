@@ -27,6 +27,7 @@
                 {% translate "Create topic" %}</a>
         </p>
     {% endif %}
+
     {% if sections %}
         <p class="title">{% translate "Sections" %}</p>
         {% for section in sections %}
@@ -36,6 +37,7 @@
             </p>
         {% endfor %}
     {% endif %}
+
     <br>
     {% if page_obj %}
         <p class="title topics-list">{% translate "Topics" %}</p>

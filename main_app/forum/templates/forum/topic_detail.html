@@ -5,8 +5,9 @@
 
 {% block content %}
     {% block menu_forum %}
-        {{block.super}}
+        {{ block.super }}
     {% endblock menu_forum %}
+
     <h2 class="super-title">{{ object.name }}</h2>
     {% if can_delete_topic %}
         <div class="topic-deleting">
@@ -22,31 +23,33 @@
     <table class="forum-posts">
         {% for post in page_obj %}
             <tr><td>
-                <a name="{{post.pk}}"></a>
+                <a name="{{ post.pk }}"></a>
                 <article class="post-grid">
-                    <div class="user-info"><div class="user-block">
-                        {% if post.author.user_image %}
-                            <div class="user-image">
-                                <a href="{{post.author.user_image.url}}">
-                                    <img src="{{post.author.user_image.url}}"></a>
+                    <div class="user-info">
+                        <div class="user-block">
+                            {% if post.author.user_image %}
+                                <div class="user-image">
+                                    <a href="{{ post.author.user_image.url }}">
+                                        <img src="{{ post.author.user_image.url }}"></a>
+                                </div>
+                            {% endif %}
+
+                            <div class="author">
+                                <a href="{{ post.author.get_absolute_url }}" class="app_link">
+                                    {{ post.author.user.username }}</a>
+                                <p class="text-padding">{% translate "Reputation" %}:
+                                    {{ post.author.reputation }}</p>
                             </div>
-                        {% endif %}
 
-                        <div class="author">
-                            <a href="{{post.author.get_absolute_url}}" class="app_link">
-                                {{post.author.user.username}}</a>
-                            <p class="text-padding">{% translate "Reputation" %}:
-                                {{post.author.reputation}}</p>
                         </div>
-
-                    </div></div>
+                    </div>
 
                     <div class="post-info">
                         <div class="time-info">
-                            <p class="time-create">{{post.time_create}}</p>
+                            <p class="time-create">{{ post.time_create }}</p>
                             {% if post.is_changed %}
                                 <p class="time-update">{% translate "Changed" %}:
-                                    {{post.time_update}}</p>
+                                    {{ post.time_update }}</p>
                             {% endif %}
                         </div>
                     </div>
@@ -54,14 +57,15 @@
                     <div class="score-block">
                         <p class="post-score text-padding">
                             {% translate "Rate" %}:
-                            {% get_total_post_rate total_post_rate post.pk %}</p>
+                            {% get_total_post_rate total_post_rate post.pk %}
+                        </p>
                         {% if user.is_authenticated %}
                             {% if rate_form %}
                                 <div class="form-score text-padding">
-                                    <form action="{% url 'rate_post' post.pk %}?next={{object.get_absolute_url}}?page={{page_obj.number}}" method="post">
-                                    {% csrf_token %}
-                                    {% get_rate_form_with_initial_data post.pk post_rate_by_user %}
-                                    <input type="submit" value="Оценить">
+                                    <form action="{% url 'rate_post' post.pk %}?next={{ object.get_absolute_url }}?page={{ page_obj.number }}" method="post">
+                                        {% csrf_token %}
+                                        {% get_rate_form_with_initial_data post.pk post_rate_by_user %}
+                                        <input type="submit" value="{% translate 'Rate' %}">
                                     </form>
                                 </div>
                             {% endif %}
@@ -69,7 +73,7 @@
                     </div>
 
                     <div class="post-text">
-                        {{post.text}}
+                        {{ post.text }}
                     </div>
 
                     {% if post.attachedfiles_set.all %}
@@ -78,56 +82,53 @@
                             {% for file in post.attachedfiles_set.all %}
                                 {% get_file_extension file as ext %}
                                 {% if ext in file.text_ext %}
-                                    <a href="{{file.get_absolute_url}}" download="" title="{% translate 'Download' %}">
+                                    <a href="{{ file.get_absolute_url }}" download="" title="{% translate 'Download' %}">
                                         {% get_filename_from_url file.file.name %}</a>
                                 {% else %}
-                                    <a href="{{file.get_absolute_url}}">
-                                        <img src="{{file.get_absolute_url}}"
+                                    <a href="{{ file.get_absolute_url }}">
+                                        <img src="{{ file.get_absolute_url }}"
                                              height="100px" width="100px">
                                     </a>
                                 {% endif %}
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="post-editing">
+                        {% if user.id == post.author.id and post.is_editable %}
+                            <div class="edit text-padding" align="left">
+                                <p><a href="{% url 'update_post' post.pk %}" class="app_link">
+                                    {% translate "Edit post" %}</a></p>
+                                <p><a href="{% url 'update_post' post.pk %}" class="app_link">
+                                    {% translate "Add attachments" %}</a></p>
+                            </div>
+                        {% endif %}
+
+                        {% if can_delete_post %}
+                            <div class="delete text-padding">
+                                <p><a href="{% url 'delete_post' post.pk %}" class="app_link">
+                                    {% translate "Delete post" %}</a></p>
+                            </div>
+                        {% endif %}
                     </div>
-                {% endif %}
-
-                <div class="post-editing">
-                    {% if user.id == post.author.id and post.is_editable %}
-                        <div class="edit text-padding" align="left">
-                            <p><a href="{% url 'update_post' post.pk %}" class="app_link">
-                                {% translate "Edit post" %}</a></p>
-                            <p><a href="{% url 'update_post' post.pk %}" class="app_link">
-                                {% translate "Add attachments" %}</a></p>
-                        </div>
-                    {% endif %}
-
-                    {% if can_delete_post %}
-                        <div class="delete text-padding">
-                            <p><a href="{% url 'delete_post' post.pk %}" class="app_link">
-                                {% translate "Delete post" %}</a></p>
-                        </div>
-                    {% endif %}
-                </div>
             </article>
-
             </td></tr>
         <tr class="indent"></tr>
         {% endfor %}
     </table>
 
     {% block pagination %}
-        {{block.super}}
+        {{ block.super }}
     {% endblock pagination %}
 
     {% if user.is_authenticated %}
         <div class="table-text table-form">
-            <form action="{{action}}" enctype="{{enctype}}" method="post">
+            <form action="{{ action }}" enctype="{{ enctype }}" method="post">
                 {% get_default_form %}
-                <div class="field-input"><input type="submit" value="{{submit_value}}"></div>
+                <div class="field-input"><input type="submit" value="{{ submit_value }}"></div>
             </form>
         </div>
     {% else %}
-        <h3>
-            {% translate "Only registered users can leave post" %}.
-        </h3>
+        <h3>{% translate "Only registered users can leave post" %}.</h3>
     {% endif %}
 {% endblock content %}

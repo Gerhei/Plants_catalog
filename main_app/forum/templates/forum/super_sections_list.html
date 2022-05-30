@@ -2,13 +2,15 @@
 {% load main_app_tags %}
 
 {% block sections %}
-    <p class="super-title"><a href="">{{super_title}}</a></p>
+    <p class="super-title"><a href="">{{ super_title }}</a></p>
     <table class="sections-list">
         {% for super_section in object_list %}
-            <tr class="title"><td><p class="title">
-                <span class="number">{{ forloop.counter }}</span>
-                <a href="{{super_section.get_absolute_url}}" class="menu_link">{{super_section.name}}</a>
-            </p></td></tr>
+            <tr class="title"><td>
+                <p class="title">
+                    <span class="number">{{ forloop.counter }}</span>
+                    <a href="{{super_section.get_absolute_url}}" class="menu_link">{{ super_section.name }}</a>
+                </p>
+            </td></tr>
         {% endfor %}
     </table>
 {% endblock sections%}

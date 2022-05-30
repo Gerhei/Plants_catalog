@@ -1,19 +1,15 @@
 from django.shortcuts import redirect
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.urls import reverse
-
-from django.views.generic.detail import DetailView,SingleObjectMixin
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView,FormView,UpdateView,DeleteView
-
+from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
-from django.utils.translation import gettext as _
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-
-
+from django.utils.translation import gettext as _
 from django.db.models import Q
+
 from .models import *
 from .forms import *
 
@@ -152,7 +148,7 @@ class TopicDetailView(SingleObjectMixin, ListView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Posts
     form_class = CreatePostForm
-    # form displaying happens in TopicDetailView, only form processing happens here
+    # form displaying happens in TopicDetailView, only form processing happens there
     http_method_names = ['post']
 
     def setup(self, request, *args, **kwargs):
@@ -182,7 +178,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs.update({'topic': self.topic,
                        'author': self.request.forumuser,
-                       'post_type':1})
+                       'post_type': 1})
         return kwargs
 
 

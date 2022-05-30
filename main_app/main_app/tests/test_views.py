@@ -1,13 +1,10 @@
-from django.test import TestCase
-from django.test import Client
-
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
-
 from django.core.files.base import ContentFile
-
 from django.shortcuts import reverse
 
 from main_app.settings import LOGIN_REDIRECT_URL
+
 
 class UpdateProfileViewTest(TestCase):
     @classmethod
@@ -165,5 +162,3 @@ class PasswordChangeFormViewTest(TestCase):
                 'old_password': '123qwe+.'}
         response = self.client.post(reverse('password_change'), data=data)
         self.assertRedirects(response, reverse('password_change_done'))
-
-# TODO test views: 404, 403 etc.

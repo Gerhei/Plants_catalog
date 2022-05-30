@@ -2,12 +2,11 @@ from time import sleep
 
 from django.core.management.base import BaseCommand
 from django.db.models import ObjectDoesNotExist
+import dateparser
 
 from main_app.settings import HEADERS
 from news.parsers import *
 from news.models import News
-
-import dateparser
 
 
 LIST_PARSERS = [RIA_Parser, ProfileParser]

@@ -1,11 +1,7 @@
-from django.shortcuts import render, reverse, redirect
-from django.http import HttpResponse, HttpResponseNotFound, \
-    HttpResponseRedirect, HttpResponseForbidden, \
-    HttpResponseServerError, HttpResponseBadRequest
+from django.shortcuts import reverse, redirect
+from django.http import HttpResponseNotFound
 from django.template.loader import render_to_string
-
-from django.views.generic import CreateView,DetailView,UpdateView
-
+from django.views.generic import CreateView, DetailView, UpdateView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required

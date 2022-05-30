@@ -1,10 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-
-from django.db.models import ObjectDoesNotExist
-from .models import *
-
 from captcha.fields import CaptchaField
+
+from .models import *
 
 
 order_choices = [('inc', _('Ascending')),
@@ -63,7 +61,7 @@ class CreatePostForm(forms.ModelForm):
         self.post_type = post_type
         super(CreatePostForm, self).__init__(*args, **kwargs)
         
-    def save(self):
+    def save(self, commit=True):
         post = super(CreatePostForm, self).save(commit=False)
         post.topic = self.topic
         post.author = self.author
@@ -86,7 +84,7 @@ class UpdateScorePostForm(forms.ModelForm):
         self.post = post
         super(UpdateScorePostForm, self).__init__(*args, **kwargs)
 
-    def save(self):
+    def save(self, commit=True):
         try:
             self.instance = Statistics.objects.get(user=self.forum_user, posts=self.post)
             new_value = self.cleaned_data['value']

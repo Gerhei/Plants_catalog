@@ -1,9 +1,7 @@
-from django.forms import forms, models, fields
-
+from django.forms import models, fields
 from django.contrib.auth.forms import UserCreationForm, ValidationError
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-
 from captcha.fields import CaptchaField
 
 

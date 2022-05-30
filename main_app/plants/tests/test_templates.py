@@ -1,14 +1,10 @@
-from django.test import TestCase, TransactionTestCase, SimpleTestCase
-from django.test import Client
-
+from django.test import TestCase
 from django.template.loader import render_to_string
 from django.template import Context, Template
-
 from django.core.files.base import ContentFile
 
 from plants.models import *
 
-from time import sleep
 
 class CategoriesListTemplateTest(TestCase):
     def test_form_filter(self):
@@ -80,7 +76,6 @@ class PlantsListTemplateTest(TestCase):
         pagination = '<div class="pagination">'
         response = self.client.get(reverse('plants'))
         self.assertContains(response, pagination)
-
 
 
 class TaxonsListTemplateTest(TestCase):

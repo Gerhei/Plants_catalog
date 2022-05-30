@@ -1,6 +1,7 @@
 from django.test import TestCase
+
 from plants.models import *
-from slugify import slugify
+
 
 class PlantsModelTest(TestCase):
     @classmethod

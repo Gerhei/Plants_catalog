@@ -8,22 +8,22 @@
 
 {% block content %}
     {% block titles %}
-        {{block.super}}
+        {{ block.super }}
     {% endblock titles %}
 
     <table class="sections-list">
         {% for taxon in page_obj %}
-                <tr>
-                    <td class="number">{% get_number forloop.counter%}</td>
-                    <td>
-                        <a href="{% url 'plants' %}?taxon={{taxon.slug}}" class="name"><h2>{{taxon.name}}</h2></a>
-                    </td>
-                </tr>
+            <tr>
+                <td class="number">{% get_number forloop.counter%}</td>
+                <td>
+                    <a href="{% url 'plants' %}?taxon={{taxon.slug}}" class="name"><h2>{{ taxon.name }}</h2></a>
+                </td>
+            </tr>
         {% endfor %}
     </table>
 
     {% block pagination %}
-        {{block.super}}
+        {{ block.super }}
     {% endblock pagination%}
 
 {% endblock content%}

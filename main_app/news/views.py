@@ -51,6 +51,11 @@ class NewsListView(ListView):
 
 @method_decorator(never_cache, name='dispatch')
 class NewsDetailView(FormMixin, SingleObjectMixin, ListView):
+    """
+     The combination of SingleObjectMixin and ListView allows to display object
+     and at the same time use pagination for objects related to it.
+     FormMixin also allows to show and process the form on the same page.
+    """
     paginate_by = 10
     template_name = "news/news_detail.html"
     form_class = CreateCommentForm

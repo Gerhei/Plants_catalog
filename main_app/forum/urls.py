@@ -1,6 +1,7 @@
-from django.contrib import admin
 from django.urls import path, include
+
 from forum.views import *
+
 
 urlpatterns = [
     path('', SectionsListView.as_view(), name="forum"),

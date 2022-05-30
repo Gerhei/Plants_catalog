@@ -1,7 +1,7 @@
 from django.test import TestCase
-from plants.views import *
-from plants.models import *
 from django.urls import reverse
+
+from plants.models import *
 
 
 class RandomPlantViewTest(TestCase):

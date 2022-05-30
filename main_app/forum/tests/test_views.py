@@ -1,15 +1,10 @@
-from django.test import TestCase, TransactionTestCase, SimpleTestCase
-from django.test import Client
+from time import sleep
 
-from unittest import skip
-
-from django.contrib.auth.models import User
+from django.test import TestCase, Client
 from django.contrib.auth.models import Permission
 from django.core.files.base import ContentFile
 
 from forum.models import *
-
-from time import sleep
 
 
 class RandomTopicViewTest(TestCase):
@@ -139,7 +134,6 @@ class TopicsListViewTest(TestCase):
                                  Topics.objects.filter(name_lower__icontains='First'))
 
 
-
 class TopicDetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -227,7 +221,6 @@ class TopicDetailViewTest(TestCase):
         response = self.client.get(reverse('topic', kwargs={'slug': self.topic.slug}))
         after_view_count = Topics.objects.get(pk=self.topic.pk).view_count
         self.assertEqual(view_count, after_view_count)
-
 
 
 class PostCreateViewTest(TestCase):

@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.views.static import serve
 from django.urls import path, include, re_path
+
 from main_app import settings
 from .views import *
 from .sitemaps import *

@@ -1,33 +1,26 @@
-from django.shortcuts import reverse
+import os
+from datetime import timedelta, datetime
 
+from django.shortcuts import reverse
 from django.db import models
 from django.db.models import F
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-
 from django.core.validators import MinValueValidator, FileExtensionValidator
 from django.core.exceptions import ValidationError
-
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import format_lazy
+from slugify import slugify
 
 from main_app.settings import MAX_USERNAME_LENGTH
 
-from slugify import slugify
-from datetime import timedelta, datetime
-import os
-
-"""
- SQLite does not support case-insensitive lookups.
- Therefore, to be able to conduct a case-insensitive search, 
- we must have a name in lower case (name_lower)
-"""
 
 class Sections(models.Model):
     name = models.CharField(max_length=40, unique=True, verbose_name=_('name'))
+    # SQLite does not support case-insensitive lookups.
+    # Therefore, to be able to conduct a case-insensitive search, we must have a name in lower case
     name_lower = models.CharField(max_length=40, editable=False)
     slug = models.SlugField(max_length=60, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
@@ -61,6 +54,9 @@ def forumusers_file_name(instance, filename):
     return os.path.join('forum/user_images', filename)
 
 class ForumUsers(models.Model):
+    """
+    This model serves as an 'extension' of the User model via a 1-to-1 relationship
+    """
     username_lower = models.CharField(max_length=MAX_USERNAME_LENGTH, editable=False)
     slug = models.SlugField(max_length=MAX_USERNAME_LENGTH, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
@@ -132,15 +128,13 @@ class Statistics(models.Model):
             self.change_view_count(is_delete=True)
         super(Statistics, self).delete(*args, **kwargs)
 
-    """  
-     Since each instance of the model is related to the statistics 
-     of only one user and one instance content_object model,   
-     the resulting statistic is stored in the associated model (view_count of topic for example).
-     therefore, when deleting statistics instance, we must change these related fields. 
-     The following 2 methods perform this function.
-    """
-
     def change_view_count(self, is_delete=False):
+        """
+         Since each instance of the model is related to the statistics
+         of only one user and one instance content_object model,
+         the resulting statistic is stored in the associated model (view_count of topic for example).
+         therefore, when deleting statistics instance, we must change these related fields.
+        """
         # subtract current statistics value when deleting
         direction_change = -1 if is_delete else 1
 
@@ -149,6 +143,12 @@ class Statistics(models.Model):
         self.content_object.save()
 
     def change_post_rate(self, is_delete=False):
+        """
+         Since each instance of the model is related to the statistics
+         of only one user and one instance content_object model,
+         the resulting statistic is stored in the associated model (view_count of topic for example).
+         therefore, when deleting statistics instance, we must change these related fields.
+        """
         # subtract current statistics value when deleting
         direction_change = -1 if is_delete else 1
 
@@ -236,7 +236,6 @@ class Posts(models.Model):
                         'There can\'t be more than one question in one topic.'
                      ),
                 })
-
 
     def is_changed(self):
         return self.time_update - self.time_create > timedelta(seconds=1)

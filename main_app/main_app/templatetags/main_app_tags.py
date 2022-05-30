@@ -1,6 +1,7 @@
-from django import template
 import os
 import random
+
+from django import template
 from django.utils.http import urlencode
 from django.utils.translation import gettext as _
 
@@ -10,6 +11,10 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def url_replace(context, **kwargs):
+    """
+     Used to save existing get parameters when navigating to another page.
+     A typical use case is saving existing search filters on a page when using pagination.
+    """
     try:
         query = context['request'].GET.dict()
     except KeyError:
