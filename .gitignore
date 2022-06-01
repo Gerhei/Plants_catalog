@@ -1,6 +1,6 @@
 plants_env/
 .idea/
 __pycache__/
-main_app/db.sqlite3
+.sqlite3
 #main_app/media
 webparser.log
