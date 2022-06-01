@@ -20,6 +20,8 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 INTERNAL_IPS = ['127.0.0.1']
 
+SITE_ID = 0
+
 ADMINS = [('admin', 'pav.4nd@yandex.com')]
 
 # SMTP server settings
