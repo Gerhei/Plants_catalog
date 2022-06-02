@@ -1,0 +1,313 @@
+header {
+    height: 150px;
+    overflow: hidden;
+}
+
+.header-background {
+    width: 100%;
+    height: auto;
+}
+
+#header_title {
+    text-align: center;
+    background-color: PaleGreen;
+}
+
+#header_title a.header_link {
+    text-decoration: none;
+    color: black;
+    font-size: 30px;
+}
+
+table.greetings  {
+    width: 100%;
+    border-spacing: 0;
+}
+
+table.greetings td {
+    width: 75%;
+}
+
+td.rightcol {
+    text-align: right;
+}
+
+nav {
+    background-color: yellow;
+}
+
+.main {
+    min-height: calc(100vh - 200px);
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    background-image: url("/static/main_app/images/content_backgrounds/content-background-plant-2.png")
+}
+
+.super-title {
+    text-decoration: none;
+    color: black;
+    font-size: 32px;
+    text-align: center;
+    font-weight: bold;
+    background-color: white;
+    max-width: 70%;
+    margin: 0px auto 10px auto;
+    padding: 5px;
+    border: 1px solid;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    background-color: white;
+    max-width: 50%;
+    padding: 5px;
+    border: 1px solid;
+}
+
+.super-title a {
+    text-decoration: none;
+    color: black;
+}
+
+table.list {
+    border: black 2px solid;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+}
+
+table.list td {
+    border: 2px solid black;
+}
+
+.number {
+    font-size: 18px;
+}
+
+a.menu_link {
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+ul.menu {
+    margin: 0;
+    padding: 4px;
+}
+
+ul.menu li {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+}
+
+.horizontal_menu {
+    margin: 0px auto 0px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: white;
+    border: 1px solid;
+    max-width: 70%;
+
+}
+
+.horizontal_menu li {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+}
+
+.vertical_menu {
+    font-size: 20px;
+    list-style-type: none;
+    margin: 20px;
+    padding: 10px;
+    position: fixed;
+    border: 2px solid;
+    background-color: white;
+    top: 40%;
+}
+
+.vertical_menu li {
+    margin-top: 20px;
+    padding: 0px;
+}
+
+.vertical_menu li a.topbutton {
+    text-decoration: none;
+    color: blue;
+}
+
+.app_menu_link {
+    color: green;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.app_link {
+    color: blue;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+#footer {
+    background-color: yellow;
+}
+
+.filters {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+ul.filters {
+    list-style-type: none;
+    background-color: #CCFFCC;
+    border: 1px solid;
+    padding: 20px;
+    margin-top: 0px;
+}
+
+ul.filters li {
+    display: inline;
+    margin-right: 3px;
+    padding: 2px;
+}
+
+.pagination {
+    text-align: center;
+    margin: 10px auto 10px auto;
+    max-width: 50%;
+    background-color: white;
+    border: 1px solid;
+}
+
+.pagination span.step-links a {
+    text-decoration: none;
+    color: blue;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.pagination span.current {
+    font-size: 18px;
+}
+
+.table-text {
+    border: 3px solid;
+    text-align: center;
+    margin: 10%;
+    font-size: 18px;
+    background-color: white;
+}
+
+.table-form {
+    min-width: 500px;
+}
+
+.field-grid {
+    display:grid;
+}
+
+.field-label {
+    text-align: left;
+    padding: 10px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+.field-input {
+    text-align: left;
+    padding: 10px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+.field-help-text {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    text-align: left;
+    border: 1px solid blue;
+}
+
+.field-errors {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    text-align: left;
+}
+
+.errornote {
+    color: red;
+}
+
+ul.errorlist {
+    list-style-type:none;
+    border: 2px solid red;
+    margin: 5px;
+}
+
+ul.errorlist li {
+    color: red;
+}
+
+.text-padding {
+    text-align: left;
+    padding: 5px;
+    background-color: white;
+}
+
+.text-with-wrap {
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+
+.footer-text {
+    padding: 5px;
+    font-size: 18px;
+}
+
+.footer-grid {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+article {
+    background-color: white;
+    border: 1px solid;
+    margin: 10px;
+}
+
+.search-result {
+    background-color: white;
+    border: 1px solid;
+    padding: 10px;
+}
+
+.sections-list {
+    background-color: white;
+    border: 1px solid;
+    margin: 5px auto 10px auto;
+    padding: 5px;
+}
+
+.sections-list .title {
+    max-width: 100%;
+}
+
+.image {
+    background-color: white;
+    border: 3px solid;
+    margin-bottom: 5px;
+}
+
+.image p {
+    padding: 5px;
+}
+
+.create-link {
+    background-color: white;
+    border: 2px solid;
+    padding: 5px;
+    max-width: 20%;
+}
