@@ -29,9 +29,9 @@ class NaturalKeyTaxonsManager(models.Manager):
 
 
 class Categories(models.Model):
-    name = models.CharField(max_length=60, unique=True, verbose_name=_('name'))
-    name_lower = models.CharField(max_length=60, unique=True, null=True, editable=False)
-    slug = models.SlugField(max_length=60, unique=True, db_index=True, editable=False, verbose_name='URL')
+    name = models.CharField(max_length=200, unique=True, verbose_name=_('name'))
+    name_lower = models.CharField(max_length=200, unique=True, null=True, editable=False)
+    slug = models.SlugField(max_length=200, unique=True, db_index=True, editable=False, verbose_name='URL')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
     time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))
 
@@ -52,8 +52,8 @@ class Categories(models.Model):
 
 
 class Taxons(models.Model):
-    name = models.CharField(max_length=60, verbose_name=_('name'))
-    slug = models.SlugField(max_length=60, unique=True, db_index=True,
+    name = models.CharField(max_length=100, verbose_name=_('name'))
+    slug = models.SlugField(max_length=100, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
     order = models.IntegerField(default=0, choices=PRIORITIES, verbose_name=_('rank'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
@@ -111,7 +111,7 @@ class Plants(models.Model):
 
 
 class Descriptions(models.Model):
-    category = models.CharField(max_length=64, verbose_name=_('category'), blank=True)
+    category = models.CharField(max_length=100, verbose_name=_('category'), blank=True)
     text = models.TextField(blank=True, verbose_name=_('description'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
     time_update = models.DateTimeField(auto_now=True, verbose_name=_('time update'))

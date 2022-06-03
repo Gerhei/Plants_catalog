@@ -18,10 +18,10 @@ from main_app.settings import MAX_USERNAME_LENGTH
 
 
 class Sections(models.Model):
-    name = models.CharField(max_length=40, unique=True, verbose_name=_('name'))
+    name = models.CharField(max_length=60, unique=True, verbose_name=_('name'))
     # SQLite does not support case-insensitive lookups.
     # Therefore, to be able to conduct a case-insensitive search, we must have a name in lower case
-    name_lower = models.CharField(max_length=40, editable=False)
+    name_lower = models.CharField(max_length=60, editable=False)
     slug = models.SlugField(max_length=60, unique=True, db_index=True,
                             editable=False, verbose_name='URL')
     order = models.SmallIntegerField(default=0, db_index=True,

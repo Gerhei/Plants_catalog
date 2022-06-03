@@ -9,10 +9,10 @@ from tldextract import extract
 
 
 class News(models.Model):
-    title = models.CharField(max_length=60, verbose_name=_('title'))
+    title = models.CharField(max_length=200, verbose_name=_('title'))
     # case-insensitive search for SQLite
-    title_lower = models.CharField(max_length=60, editable=False)
-    slug = models.SlugField(max_length=60, unique=True, db_index=True,
+    title_lower = models.CharField(max_length=200, editable=False)
+    slug = models.SlugField(max_length=200, unique=True, db_index=True,
                             editable=False, verbose_name=_('slug'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
     # date of publication of the news on the source site, and not on this
