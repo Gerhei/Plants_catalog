@@ -9,9 +9,9 @@ from tldextract import extract
 
 
 class News(models.Model):
-    title = models.CharField(max_length=200, verbose_name=_('title'))
+    title = models.TextField(max_length=200, verbose_name=_('title'))
     # case-insensitive search for SQLite
-    title_lower = models.CharField(max_length=200, editable=False)
+    title_lower = models.TextField(max_length=200, editable=False)
     slug = models.SlugField(max_length=200, unique=True, db_index=True,
                             editable=False, verbose_name=_('slug'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
@@ -49,7 +49,7 @@ class News(models.Model):
 
 
 class Comments(models.Model):
-    text = models.CharField(max_length=1000, verbose_name=_('comment'))
+    text = models.TextField(max_length=1000, verbose_name=_('comment'))
     time_create = models.DateTimeField(auto_now_add=True, verbose_name=_('time create'))
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name=_('user'))
     news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name=_('news'))
