@@ -1,4 +1,4 @@
-sitemap: https://plants-catalog.org/sitemap.xml
+sitemap: https://plant-catalog.herokuapp.com/sitemap.xml
 
 User-agent: *
 
