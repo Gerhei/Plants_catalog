@@ -17,6 +17,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
+SECURE_SSL_REDIRECT = False if DEBUG else True
+SESSION_COOKIE_SECURE = False if DEBUG else True
+CSRF_COOKIE_SECURE = False if DEBUG else True
+
 ALLOWED_HOSTS = ['127.0.0.1', 'plant-catalog.herokuapp.com']
 
 INTERNAL_IPS = ['127.0.0.1']
