@@ -19,7 +19,7 @@ class News(models.Model):
     publication_date = models.DateTimeField(verbose_name=_('publication date'))
     # published on this site
     is_published = models.BooleanField(default=True, verbose_name=_('is published'))
-    source_url = models.URLField(max_length=None, unique=True, verbose_name=_('link to the source'))
+    source_url = models.URLField(max_length=1000, unique=True, verbose_name=_('link to the source'))
     # content in HTML
     content = models.TextField(max_length=None, verbose_name=_('news content'))
 
