@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-27 01:45+0300\n"
+"POT-Creation-Date: 2022-06-06 00:50+0300\n"
 "PO-Revision-Date: 2022-05-26 00:04+0300\n"
 "Last-Translator: Pavlov Andrei <pav.4nd@yandex.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,11 +24,11 @@ msgstr ""
 msgid "main"
 msgstr "основное"
 
-#: .\main_app\forms.py:12
+#: .\main_app\forms.py:10
 msgid "Enter your email address."
 msgstr "Введите свой адрес электронной почты."
 
-#: .\main_app\forms.py:17
+#: .\main_app\forms.py:15
 msgid ""
 "To register, you need email address that has not yet been used to create an "
 "account on this site."
@@ -36,33 +36,39 @@ msgstr ""
 "Для регистрации вам нужен адрес электронной почты, который еще не "
 "использовался для создания учетной записи на этом сайте."
 
-#: .\main_app\forms.py:22
+#: .\main_app\forms.py:20
 msgid "Enter to prove that you are not a robot."
 msgstr "Введите, чтобы доказать, что вы не робот."
 
-#: .\main_app\forms.py:32
+#: .\main_app\forms.py:30
 msgid "The length of the user name can't exceed 20 characters."
 msgstr "Длина имени пользователя не может превышать 20 символов."
 
-#: .\main_app\forms.py:40
+#: .\main_app\forms.py:38
 msgid "User image"
 msgstr "Изображение пользователя"
 
-#: .\main_app\forms.py:42 .\main_app\templates\registration\user_detail.html:46
+#: .\main_app\forms.py:40 .\main_app\templates\registration\user_detail.html:46
 msgid "About user"
 msgstr "О пользователе"
 
-#: .\main_app\settings.py:139
+#: .\main_app\settings.py:204
 msgid "English"
 msgstr "Английский"
 
-#: .\main_app\settings.py:140
+#: .\main_app\settings.py:205
 msgid "Russian"
 msgstr "Русский"
 
 #: .\main_app\templates\handlers\404.html:6
 msgid "Page not found"
 msgstr "Страница не найдена"
+
+#: .\main_app\templates\handlers\404.html:15
+msgid ""
+"The page does not exist. Check the address in the browser's address bar or "
+"go to the main page"
+msgstr ""
 
 #: .\main_app\templates\main_app\base.html:11
 msgid "plants, plant growing, directory, encyclopedia, catalog, news, forum"
@@ -74,7 +80,7 @@ msgstr ""
 msgid "Pavlov Andrei"
 msgstr "Павлов Андрей"
 
-#: .\main_app\templates\main_app\base.html:14
+#: .\main_app\templates\main_app\base.html:13
 msgid ""
 "Encyclopedia of various plants, starting with indoor flowers and ending with "
 "trees, descriptions and images of plants."
@@ -102,29 +108,29 @@ msgstr "Все права защищены"
 msgid "Contact information"
 msgstr "Контактная информация"
 
-#: .\main_app\templates\main_app\header.html:9
-#: .\main_app\templatetags\main_app_tags.py:50
+#: .\main_app\templates\main_app\header.html:10
+#: .\main_app\templatetags\main_app_tags.py:55
 msgid "Plant catalog"
 msgstr "Энциклопедия растений"
 
-#: .\main_app\templates\main_app\header.html:12
+#: .\main_app\templates\main_app\header.html:13
 msgid "Welcome"
 msgstr "Добро пожаловать"
 
-#: .\main_app\templates\main_app\header.html:16
+#: .\main_app\templates\main_app\header.html:17
 msgid "Log out"
 msgstr "Выйти"
 
-#: .\main_app\templates\main_app\header.html:18
+#: .\main_app\templates\main_app\header.html:19
 #: .\main_app\templates\registration\login.html:5
 #: .\main_app\templates\registration\login.html:40
 #: .\main_app\templates\registration\password_reset_complete.html:7
 msgid "Log in"
 msgstr "Войти"
 
-#: .\main_app\templates\main_app\header.html:19
-#: .\main_app\templates\registration\login.html:34 .\main_app\views.py:93
-#: .\main_app\views.py:94
+#: .\main_app\templates\main_app\header.html:20
+#: .\main_app\templates\registration\login.html:34 .\main_app\views.py:89
+#: .\main_app\views.py:90
 msgid "Registration"
 msgstr "Регистрация"
 
@@ -189,7 +195,7 @@ msgstr "Забыли ваш пароль"
 msgid "No account yet"
 msgstr "Еще нет аккаунта"
 
-#: .\main_app\templates\registration\password_change_done.html:7
+#: .\main_app\templates\registration\password_change_done.html:6
 msgid "Your password has been changed"
 msgstr "Ваш пароль был изменен"
 
@@ -211,7 +217,7 @@ msgstr ""
 "правильно."
 
 #: .\main_app\templates\registration\password_change_form.html:23
-#: .\main_app\templates\registration\password_reset_confirm.html:6
+#: .\main_app\templates\registration\password_reset_confirm.html:5
 msgid "Change my password"
 msgstr "Изменить пароль"
 
@@ -220,7 +226,7 @@ msgid "Your password has been set.  You may go ahead and log in now."
 msgstr ""
 "Ваш пароль был установлен. Вы можете пройти дальше и войти в аккаунт сейчас."
 
-#: .\main_app\templates\registration\password_reset_confirm.html:13
+#: .\main_app\templates\registration\password_reset_confirm.html:12
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
@@ -228,7 +234,7 @@ msgstr ""
 "Пожалуйста, введите свой новый пароль дважды, чтобы мы могли убедиться, что "
 "вы ввели его правильно."
 
-#: .\main_app\templates\registration\password_reset_confirm.html:21
+#: .\main_app\templates\registration\password_reset_confirm.html:20
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
@@ -293,22 +299,25 @@ msgstr "Редактировать профиль"
 msgid "Change password"
 msgstr "Изменить пароль"
 
-#: .\main_app\templatetags\main_app_tags.py:49
+#: .\main_app\templatetags\main_app_tags.py:54
 msgid "About"
 msgstr "О сайте"
 
-#: .\main_app\templatetags\main_app_tags.py:51
+#: .\main_app\templatetags\main_app_tags.py:56
 msgid "Forum"
 msgstr "Форум"
 
-#: .\main_app\templatetags\main_app_tags.py:52
+#: .\main_app\templatetags\main_app_tags.py:57
 msgid "News"
 msgstr "Новости"
 
-#: .\main_app\views.py:32
+#: .\main_app\views.py:28
 msgid "Editing a profile"
 msgstr "Редактирование профиля"
 
-#: .\main_app\views.py:35
+#: .\main_app\views.py:31
 msgid "Change"
 msgstr "Изменить"
+
+msgid "The page does not exist. Check the address in the browser's address bar or go to the main page"
+msgstr "Страница не существует. Проверьте адрес в поисковой строке браузера или вернитесь на главную страницу"
