@@ -27,6 +27,8 @@ INTERNAL_IPS = ['127.0.0.1']
 
 ADMINS = [('admin', 'pav.4nd@yandex.com')]
 
+SITE_ID = int(os.environ.get('SITE_ID', 0))
+
 # SMTP server settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.com'
